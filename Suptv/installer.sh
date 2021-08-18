@@ -1,6 +1,6 @@
 #!/bin/sh
 #####################################
-# wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/supinstall.sh -qO - | /bin/sh
+# wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Suptv/installer.sh -qO - | /bin/sh
 
 ###########################################
 # Configure where we can find things here #
@@ -8,7 +8,7 @@ TMPDIR='/tmp'
 VERPY2='suptv_2.0.1'
 VERPY3='suptv_3.1'
 Package='enigma2-plugin-extensions-suptv*'
-URL='https://github.com/MOHAMED19OS/Download/blob/main'
+URL='https://github.com/MOHAMED19OS/Download/blob/main/Suptv'
 
 ####################
 #  Image Checking  #
@@ -22,7 +22,8 @@ if [ $OSTYPE = "Opensource" ]; then
     OPKGINSTAL='opkg install'
 fi
 
-#####################
+###################
+#  Install Plugin #
 
 if grep -qs "Package: $Package" $STATUS ; then
     echo ""
@@ -50,7 +51,8 @@ else
     $OPKGINSTAL $TMPDIR/enigma2-plugin-extensions-"$VERPY2"_all.ipk
 fi
 
-#####################
+######################
+# Delete File In TMP #
 
 if [ -f $TMPDIR/$Package ] ; then
     rm -rf $TMPDIR/$Package
