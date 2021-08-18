@@ -1,6 +1,6 @@
 #!/bin/sh
 #####################################
-# sh <(wget -qO- https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/installer.sh)
+# sh <(wget -qO- https://raw.githubusercontent.com/MOHAMED19OS/Download/main/installer.sh)
 
 ###########################################
 # Configure where we can find things here #
@@ -11,7 +11,7 @@ VERNC='V11.9-r2'
 Package='libcurl4'
 EMUOS='enigma2-plugin-softcams-oscam*'
 EMUNC='enigma2-plugin-softcams-ncam*'
-URL='https://github.com/MOHAMED19OS/Download/blob/main/Oscam_Ncam'
+URL='https://github.com/MOHAMED19OS/Download/blob/main'
 
 ####################
 #  Image Checking  #
