@@ -1,6 +1,6 @@
 #!/bin/sh
 #####################################
-# wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/installer.sh -qO - | /bin/sh
+# wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPTVPlayer/installer.sh -qO - | /bin/sh
 
 ###########################################
 # Configure where we can find things here #
