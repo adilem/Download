@@ -127,30 +127,30 @@ do
     case $opt in
         "Oscam") checkoscam
             if [ $OSTYPE = "Opensource" ]; then
-                wget "$URL"/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk;
+                wget --show-progress "$URL"/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk;
                 $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk
             else
-                wget "$URL"/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb;
+                wget --show-progress "$URL"/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb;
                 $DPKINSTALL $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb; $OPKGINSTAL -f -y
             fi
             exit 0
             ;;
         "Revcam_Oscam") checkoscam
-            wget "$URL"/enigma2-plugin-softcams-oscam-revcamv2_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-revcam_"$VEROS"_all.ipk;
+            wget --show-progress "$URL"/enigma2-plugin-softcams-oscam-revcamv2_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-revcam_"$VEROS"_all.ipk;
             $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam-revcam_"$VEROS"_all.ipk
             exit 0
             ;;
         "SupTV_Oscam") checkoscam
-            wget "$URL"/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk;
+            wget --show-progress "$URL"/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk;
             $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk
             exit 0
             ;;
         "Ncam") checkncam
             if [ $OSTYPE = "Opensource" ]; then
-                wget "$URL"/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk;
+                wget --show-progress "$URL"/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk;
                 $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk
             else
-                wget "$URL"/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb;
+                wget --show-progress "$URL"/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb;
                 $DPKINSTALL $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb; $OPKGINSTAL -f -y
             fi
             exit 0
