@@ -38,7 +38,7 @@ elif python --version 2>&1 | grep -q '^Python 3\.'; then
     echo "Opkg Update ..."
     $OPKG > /dev/null 2>&1
     echo ""
-    wget "$URL"/enigma2-plugin-extensions-"$VERPY3"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-extensions-"$VERPY3"_all.ipk;
+    wget --show-progress "$URL"/enigma2-plugin-extensions-"$VERPY3"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-extensions-"$VERPY3"_all.ipk;
     $OPKGINSTAL $TMPDIR/enigma2-plugin-extensions-"$VERPY3"_all.ipk
 else
     echo ""
@@ -47,7 +47,7 @@ else
     echo "Opkg Update ..."
     $OPKG > /dev/null 2>&1
     echo ""
-    wget "$URL"/enigma2-plugin-extensions-"$VERPY2"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-extensions-"$VERPY2"_all.ipk;
+    wget --show-progress "$URL"/enigma2-plugin-extensions-"$VERPY2"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-extensions-"$VERPY2"_all.ipk;
     $OPKGINSTAL $TMPDIR/enigma2-plugin-extensions-"$VERPY2"_all.ipk
 fi
 
