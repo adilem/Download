@@ -37,22 +37,22 @@ fi
 ######################
 #  Remove Old Plugin #
 if grep -qs "Package: $Package" $STATUS ; then
-  echo ""
-  echo "Remove old version..."
-  if [ $OSTYPE = "Opensource" ]; then
-      $OPKGREMOV "$Package"
-      echo ""
-      sleep 2; clear
-  else
-      $OPKGREMOV "$Package"
-      echo ""
-      sleep 2; clear
-  fi
+    echo ""
+    echo "Remove old version..."
+    if [ $OSTYPE = "Opensource" ]; then
+        $OPKGREMOV "$Package"
+        echo ""
+        sleep 2; clear
+    else
+        $OPKGREMOV "$Package"
+        echo ""
+        sleep 2; clear
+    fi
 else
-  echo ""
-  echo "No older version was found on the device... "
-  sleep 1
-  echo ""; clear
+    echo ""
+    echo "No older version was found on the device... "
+    sleep 1
+    echo ""; clear
 fi
 
 #####################
@@ -73,14 +73,6 @@ else
         echo " Downloading $PKGEXP3 ......"
         echo ""
         $OPKGINSTAL $PKGEXP3
-        sleep 1
-        echo ""; clear
-    elif [ $OSTYPE = "DreamOS" ]; then
-        echo "APT Update ..."
-        $OPKG > /dev/null 2>&1
-        echo " Downloading $PKGEXP3 ......"
-        echo ""
-        $OPKGINSTAL $PKGEXP3 -y
         sleep 1
         echo ""; clear
     else
@@ -113,14 +105,6 @@ else
         $OPKGINSTAL $PKGGPLY
         sleep 1
         echo ""; clear
-    elif [ $OSTYPE = "DreamOS" ]; then
-        echo "APT Update ..."
-        $OPKG > /dev/null 2>&1
-        echo " Downloading $PKGGPLY ......"
-        echo ""
-        $OPKGINSTAL $PKGGPLY -y
-        sleep 1
-        echo ""; clear
     else
         echo ""
         echo ""
@@ -141,17 +125,7 @@ if grep -qs "Package: $PKGBAPP" $STATUS ; then
 else
     echo "Need to install  $PKGBAPP"
     echo ""
-    if [ $OSTYPE = "Opensource" ]; then
-        echo ""
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
-        echo ""
-        echo " Downloading  $PKGBAPP ......"
-        echo ""
-        $OPKGINSTAL  $PKGBAPP
-        sleep 1
-        echo ""; clear
-    elif [ $OSTYPE = "DreamOS" ]; then
+    if [ $OSTYPE = "DreamOS" ]; then
         echo "APT Update ..."
         $OPKG > /dev/null 2>&1
         echo " Downloading  $PKGBAPP ......"
