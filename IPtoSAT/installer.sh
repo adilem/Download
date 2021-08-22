@@ -57,15 +57,14 @@ fi
 
 #####################
 # Package Checking  #
-if grep -qs "Package: $PKGEXP3" $STATUS ; then
-    echo ""
-    echo "$PKGEXP3 found in device..."
-    sleep 1
-    echo ""; clear
-else
-    echo "Need to install $PKGEXP3"
-    echo ""
-    if [ $OSTYPE = "Opensource" ]; then
+if [ $OSTYPE = "Opensource" ]; then
+    if grep -qs "Package: $PKGEXP3" $STATUS ; then
+        echo ""
+        echo "$PKGEXP3 found in device..."
+        sleep 1
+        echo ""; clear
+    else
+        echo "Need to install $PKGEXP3"
         echo ""
         echo "Opkg Update ..."
         $OPKG > /dev/null 2>&1
@@ -75,27 +74,26 @@ else
         $OPKGINSTAL $PKGEXP3
         sleep 1
         echo ""; clear
-    else
-        echo ""
-        echo ""
-        echo "#########################################################"
-        echo "#            $PKGEXP3 Not found in feed                 #"
-        echo "#    Notification Emu will not work without $PKGEXP3    #"
-        echo "#########################################################"
-        sleep 2
-        exit 0
     fi
+else
+    echo ""
+    echo ""
+    echo "#########################################################"
+    echo "#            $PKGEXP3 Not found in feed                 #"
+    echo "#    Notification Emu will not work without $PKGEXP3    #"
+    echo "#########################################################"
+    sleep 2
+    exit 0
 fi
 
-if grep -qs "Package: $PKGGPLY" $STATUS ; then
-    echo ""
-    echo "$PKGGPLY found in device..."
-    sleep 1
-    echo ""; clear
-else
-    echo "Need to install $PKGGPLY"
-    echo ""
-    if [ $OSTYPE = "Opensource" ]; then
+if [ $OSTYPE = "Opensource" ]; then
+    if grep -qs "Package: $PKGGPLY" $STATUS ; then
+        echo ""
+        echo "$PKGGPLY found in device..."
+        sleep 1
+        echo ""; clear
+    else
+        echo "Need to install $PKGGPLY"
         echo ""
         echo "Opkg Update ..."
         $OPKG > /dev/null 2>&1
@@ -105,27 +103,27 @@ else
         $OPKGINSTAL $PKGGPLY
         sleep 1
         echo ""; clear
-    else
-        echo ""
-        echo ""
-        echo "#########################################################"
-        echo "#            $PKGGPLY Not found in feed                 #"
-        echo "#    Notification Emu will not work without $PKGGPLY    #"
-        echo "#########################################################"
-        sleep 2
-        exit 0
     fi
+else
+    echo ""
+    echo ""
+    echo "#########################################################"
+    echo "#            $PKGGPLY Not found in feed                 #"
+    echo "#    Notification Emu will not work without $PKGGPLY    #"
+    echo "#########################################################"
+    sleep 2
+    exit 0
 fi
 
-if grep -qs "Package: $PKGBAPP" $STATUS ; then
-    echo ""
-    echo " $PKGBAPP found in device..."
-    sleep 1
-    echo ""; clear
-else
-    echo "Need to install  $PKGBAPP"
-    echo ""
-    if [ $OSTYPE = "DreamOS" ]; then
+if [ $OSTYPE = "DreamOS" ]; then
+    if grep -qs "Package: $PKGBAPP" $STATUS ; then
+        echo ""
+        echo " $PKGBAPP found in device..."
+        sleep 1
+        echo ""; clear
+    else
+        echo "Need to install  $PKGBAPP"
+        echo ""
         echo "APT Update ..."
         $OPKG > /dev/null 2>&1
         echo " Downloading  $PKGBAPP ......"
@@ -133,16 +131,16 @@ else
         $OPKGINSTAL  $PKGBAPP -y
         sleep 1
         echo ""; clear
-    else
-        echo ""
-        echo ""
-        echo "#########################################################"
-        echo "#             $PKGBAPP Not found in feed                 #"
-        echo "#    Notification Emu will not work without  $PKGBAPP    #"
-        echo "#########################################################"
-        sleep 2
-        exit 0
     fi
+else
+    echo ""
+    echo ""
+    echo "#########################################################"
+    echo "#             $PKGBAPP Not found in feed                 #"
+    echo "#    Notification Emu will not work without  $PKGBAPP    #"
+    echo "#########################################################"
+    sleep 2
+    exit 0
 fi
 
 ###################
