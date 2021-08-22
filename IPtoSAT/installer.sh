@@ -7,9 +7,6 @@
 TMPDIR='/tmp'
 VERSION='1.8'
 Package='enigma2-plugin-extensions-iptosat*'
-PKGEXP3='exteplayer3'
-PKGGPLY='gstplayer'
-PKGBAPP='gstreamer1.0-plugins-base-apps'
 URL='https://github.com/MOHAMED19OS/Download/blob/main/IPtoSAT'
 
 ####################
@@ -17,9 +14,12 @@ URL='https://github.com/MOHAMED19OS/Download/blob/main/IPtoSAT'
 if [ -f /etc/apt/apt.conf ] ; then
     STATUS='/var/lib/dpkg/status'
     OSTYPE='DreamOS'
+    PKGBAPP='gstreamer1.0-plugins-base-apps'
 elif [ -f /etc/opkg/opkg.conf ] ; then
     STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
+    PKGEXP3='exteplayer3'
+    PKGGPLY='gstplayer'
 fi
 
 
@@ -75,18 +75,6 @@ if [ $OSTYPE = "Opensource" ]; then
         sleep 1
         echo ""; clear
     fi
-else
-    echo ""
-    echo ""
-    echo "#########################################################"
-    echo "#            $PKGEXP3 Not found in feed                 #"
-    echo "#    Notification Emu will not work without $PKGEXP3    #"
-    echo "#########################################################"
-    sleep 2
-    exit 0
-fi
-
-if [ $OSTYPE = "Opensource" ]; then
     if grep -qs "Package: $PKGGPLY" $STATUS ; then
         echo ""
         echo "$PKGGPLY found in device..."
@@ -104,18 +92,8 @@ if [ $OSTYPE = "Opensource" ]; then
         sleep 1
         echo ""; clear
     fi
-else
-    echo ""
-    echo ""
-    echo "#########################################################"
-    echo "#            $PKGGPLY Not found in feed                 #"
-    echo "#    Notification Emu will not work without $PKGGPLY    #"
-    echo "#########################################################"
-    sleep 2
-    exit 0
-fi
 
-if [ $OSTYPE = "DreamOS" ]; then
+elif [ $OSTYPE = "DreamOS" ]; then
     if grep -qs "Package: $PKGBAPP" $STATUS ; then
         echo ""
         echo " $PKGBAPP found in device..."
@@ -132,17 +110,32 @@ if [ $OSTYPE = "DreamOS" ]; then
         sleep 1
         echo ""; clear
     fi
-else
-    echo ""
-    echo ""
-    echo "#########################################################"
-    echo "#             $PKGBAPP Not found in feed                 #"
-    echo "#    Notification Emu will not work without  $PKGBAPP    #"
-    echo "#########################################################"
-    sleep 2
-    exit 0
 fi
 
+if [ $OSTYPE = "Opensource" ]; then
+    if grep -qs "Package: $PKGEXP3" $STATUS ; then
+        echo ""
+    else
+        echo "Feed Missing $PKGEXP3"
+        echo "Sorry, the plugin will not be install"
+        exit 1
+    fi
+    if grep -qs "Package: $PKGGPLY" $STATUS ; then
+        echo ""
+    else
+        echo "Feed Missing $PKGGPLY"
+        echo "Sorry, the plugin will not be install"
+        exit 1
+    fi
+elif [ $OSTYPE = "DreamOS" ]; then
+    if grep -qs "Package: $PKGBAPP" $STATUS ; then
+        echo ""
+    else
+        echo "Feed Missing $PKGBAPP"
+        echo "Sorry, the plugin will not be install"
+        exit 1
+    fi
+fi
 ###################
 #  Install Plugin #
 if [ $OSTYPE = "Opensource" ]; then
