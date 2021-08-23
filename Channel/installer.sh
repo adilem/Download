@@ -6,6 +6,7 @@
 # Configure where we can find things here #
 TMPDIR='/tmp'
 VERSION='2021_08_23'
+PAKWGET='wget'
 URL='https://github.com/MOHAMED19OS/Download/blob/main/Channel'
 
 ####################
@@ -22,6 +23,9 @@ fi
 if [ $OSTYPE = "Opensource" ]; then
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
+else
+    OPKG='apt-get update'
+    OPKGINSTAL='apt-get install'
 fi
 
 #####################
@@ -39,11 +43,35 @@ if [ $OSTYPE = "Opensource" ]; then
         $OPKGINSTAL $Package
         echo "" ;clear
     fi
+else
+    echo "Feed Missing $Package"
+    echo "Sorry, the plugin will not be install"
+    clear; echo "Goodbye!"
+    exit 0
+fi
 
-    if grep -qs "Package: $Package" $STATUS ; then
+if grep -qs "Package: $PAKWGET" $STATUS ; then
+    echo ""
+    echo "$PAKWGET Depends Are Installed..."
+    sleep 2; clear
+else
+    if [ $OSTYPE = "Opensource" ]; then
         echo ""
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1 ;clear
+        echo " Downloading $PAKWGET ......"
+        $OPKGINSTAL $PAKWGET
+        echo "" ;clear
+
+    elif [ $OSTYPE = "DreamOS" ]; then
+        echo ""
+        echo "APT Update ..."
+        $OPKG > /dev/null 2>&1 ;clear
+        echo " Downloading $PAKWGET ......"
+        $OPKGINSTAL $PAKWGET
+        echo "" ;clear
     else
-        echo "Feed Missing $Package"
+        echo "Feed Missing $PAKWGET"
         echo "Sorry, the plugin will not be install"
         clear; echo "Goodbye!"
         exit 0
@@ -56,7 +84,7 @@ set -e
 echo "Downloading And Insallling Channel Please Wait ......"
 echo
 wget --show-progress "$URL"/channels_"$VERSION".tar.xz -qO $TMPDIR/channels_"$VERSION".tar.xz
-tar -xzf channels_"$VERSION".tar.xz -C /
+tar -xf $TMPDIR/channels_"$VERSION".tar.xz -C /
 set +e
 rm -rf $TMPDIR/channels_"$VERSION".tar.xz
 
@@ -71,7 +99,7 @@ if [ $OSTYPE = "Opensource" ]; then
         echo "Downloading And Insallling Config $Package Please Wait ......"
         echo
         wget --show-progress "$URL"/astra-arm.tar.xz -qO $TMPDIR/astra-arm.tar.xz
-        tar -xzf astra-arm.tar.xz -C /
+        tar -xf $TMPDIR/astra-arm.tar.xz -C /
         set +e
         chmod -R 755 /etc/astra
         rm -rf $TMPDIR/astra-arm.tar.xz
@@ -83,7 +111,7 @@ if [ $OSTYPE = "Opensource" ]; then
         echo "Downloading And Insallling Config $Package Please Wait ......"
         echo
         wget --show-progress "$URL"/astra-mips.tar.xz -qO $TMPDIR/astra-mips.tar.xz
-        tar -xzf astra-mips.tar.xz -C /
+        tar -xf $TMPDIR/astra-mips.tar.xz -C /
         set +e
         chmod -R 755 /etc/astra
         rm -rf $TMPDIR/astra-mips.tar.xz
