@@ -5,9 +5,18 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
+CHECK='/tmp/check'
 VERSION='2021_08_23'
 PAKWGET='wget'
 URL='https://github.com/MOHAMED19OS/Download/blob/main/Channel'
+
+######################
+# Delete File In Tmp #
+
+rm -rf $TMPDIR/channels_"$VERSION".tar.xz
+rm -rf $TMPDIR/astra-mips.tar.xz
+rm -rf $TMPDIR/astra-arm.tar.xz
+
 
 ####################
 #  Image Checking  #
@@ -83,10 +92,9 @@ fi
 set -e
 echo "Downloading And Insallling Channel Please Wait ......"
 echo
-wget --show-progress "$URL"/channels_"$VERSION".tar.xz -qO $TMPDIR/channels_"$VERSION".tar.xz
-tar -xf $TMPDIR/channels_"$VERSION".tar.xz -C /
-set +e
+wget --show-progress "$URL"/channels_"$VERSION".tar.xz -qO - $TMPDIR/channels_"$VERSION".tar.xz | tar -xz -C "/"
 rm -rf $TMPDIR/channels_"$VERSION".tar.xz
+set +e
 
 if [ $OSTYPE = "Opensource" ]; then
     uname -m > $CHECK
@@ -98,11 +106,10 @@ if [ $OSTYPE = "Opensource" ]; then
         set -e
         echo "Downloading And Insallling Config $Package Please Wait ......"
         echo
-        wget --show-progress "$URL"/astra-arm.tar.xz -qO $TMPDIR/astra-arm.tar.xz
-        tar -xf $TMPDIR/astra-arm.tar.xz -C /
+        wget --show-progress "$URL"/astra-arm.tar.xz -qO - $TMPDIR/astra-arm.tar.xz | tar -xz -C "/"
+        rm -rf $TMPDIR/astra-arm.tar.xz
         set +e
         chmod -R 755 /etc/astra
-        rm -rf $TMPDIR/astra-arm.tar.xz
 
     elif grep -qs -i 'mips' cat $CHECK ; then
         echo ':Your Device IS MIPS processor ...'
@@ -110,11 +117,10 @@ if [ $OSTYPE = "Opensource" ]; then
         set -e
         echo "Downloading And Insallling Config $Package Please Wait ......"
         echo
-        wget --show-progress "$URL"/astra-mips.tar.xz -qO $TMPDIR/astra-mips.tar.xz
-        tar -xf $TMPDIR/astra-mips.tar.xz -C /
+        wget --show-progress "$URL"/astra-mips.tar.xz -qO - $TMPDIR/astra-mips.tar.xz | tar -xz -C "/"
+        rm -rf $TMPDIR/astra-mips.tar.xz
         set +e
         chmod -R 755 /etc/astra
-        rm -rf $TMPDIR/astra-mips.tar.xz
     fi
 fi
 
