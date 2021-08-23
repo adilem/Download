@@ -92,9 +92,10 @@ fi
 set -e
 echo "Downloading And Insallling Channel Please Wait ......"
 echo
-wget --show-progress "$URL"/channels_"$VERSION".tar.xz -qO - $TMPDIR/channels_"$VERSION".tar.xz | tar -xz -C "/"
-rm -rf $TMPDIR/channels_"$VERSION".tar.xz
+wget --show-progress "$URL"/channels_"$VERSION".tar.xz -qO - $TMPDIR/channels_"$VERSION".tar.xz
+tar -xf $TMPDIR/channels_"$VERSION".tar.xz -C /
 set +e
+rm -rf $TMPDIR/channels_"$VERSION".tar.xz
 
 if [ $OSTYPE = "Opensource" ]; then
     uname -m > $CHECK
@@ -106,9 +107,10 @@ if [ $OSTYPE = "Opensource" ]; then
         set -e
         echo "Downloading And Insallling Config $Package Please Wait ......"
         echo
-        wget --show-progress "$URL"/astra-arm.tar.xz -qO - $TMPDIR/astra-arm.tar.xz | tar -xz -C "/"
-        rm -rf $TMPDIR/astra-arm.tar.xz
+        wget --show-progress "$URL"/astra-arm.tar.xz -qO - $TMPDIR/astra-arm.tar.xz
+        tar -xf $TMPDIR/astra-arm.tar.xz -C /
         set +e
+        rm -rf $TMPDIR/astra-arm.tar.xz
         chmod -R 755 /etc/astra
 
     elif grep -qs -i 'mips' cat $CHECK ; then
@@ -117,9 +119,10 @@ if [ $OSTYPE = "Opensource" ]; then
         set -e
         echo "Downloading And Insallling Config $Package Please Wait ......"
         echo
-        wget --show-progress "$URL"/astra-mips.tar.xz -qO - $TMPDIR/astra-mips.tar.xz | tar -xz -C "/"
-        rm -rf $TMPDIR/astra-mips.tar.xz
+        wget --show-progress "$URL"/astra-mips.tar.xz -qO - $TMPDIR/astra-mips.tar.xz
+        tar -xf $TMPDIR/astra-mips.tar.xz -C /
         set +e
+        rm -rf $TMPDIR/astra-mips.tar.xz
         chmod -R 755 /etc/astra
     fi
 fi
