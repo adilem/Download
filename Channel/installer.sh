@@ -18,9 +18,9 @@ URL='https://github.com/MOHAMED19OS/Download/blob/main/Channel'
 ######################
 # Delete File In Tmp #
 
-rm -rf $TMPDIR/channels_${VERSION}.tar.xz
-rm -rf $TMPDIR/astra-mips.tar.xz
-rm -rf $TMPDIR/astra-arm.tar.xz
+rm -rf $TMPDIR/channels_${VERSION}.tar.gz
+rm -rf $TMPDIR/astra-mips.tar.gz
+rm -rf $TMPDIR/astra-arm.tar.gz
 
 
 ####################
@@ -96,10 +96,10 @@ fi
 # Downlaod And Install Plugin #
 set -e
 echo "Downloading And Insallling Channel Please Wait ......"
-wget ${URL}/channels_${VERSION}.tar.xz -qO ${TMPDIR}/channels_${VERSION}.tar.xz
-tar -xf ${TMPDIR}/channels_${VERSION}.tar.xz
+wget ${URL}/channels_${VERSION}.tar.gz -qO ${TMPDIR}/channels_${VERSION}.tar.gz
+tar -xf ${TMPDIR}/channels_${VERSION}.tar.gz
 set +e
-rm -rf ${TMPDIR}/channels_${VERSION}.tar.xz
+rm -rf ${TMPDIR}/channels_${VERSION}.tar.gz
 
 if [ $OSTYPE = "Opensource" ]; then
     uname -m > $CHECK
@@ -110,10 +110,10 @@ if [ $OSTYPE = "Opensource" ]; then
         sleep 2; clear
         set -e
         echo "Downloading And Insallling Config $Package Please Wait ......"
-        wget ${URL}/astra-arm.tar.xz -qO ${TMPDIR}/astra-arm.tar.xz
-        tar -xf ${TMPDIR}/astra-arm.tar.xz
+        wget ${URL}/astra-arm.tar.gz -qO ${TMPDIR}/astra-arm.tar.gz
+        tar -xf ${TMPDIR}/astra-arm.tar.gz
         set +e
-        rm -rf ${TMPDIR}/astra-arm.tar.xz
+        rm -rf ${TMPDIR}/astra-arm.tar.gz
         chmod -R 755 /etc/astra
 
     elif grep -qs -i 'mips' cat $CHECK ; then
@@ -121,10 +121,10 @@ if [ $OSTYPE = "Opensource" ]; then
         sleep 2; clear
         set -e
         echo "Downloading And Insallling Config $Package Please Wait ......"
-        wget ${URL}/astra-mips.tar.xz -qO ${TMPDIR}/astra-mips.tar.xz
-        tar -xf ${TMPDIR}/astra-mips.tar.xz
+        wget ${URL}/astra-mips.tar.gz -qO ${TMPDIR}/astra-mips.tar.gz
+        tar -xf ${TMPDIR}/astra-mips.tar.gz
         set +e
-        rm -rf ${TMPDIR}/astra-mips.tar.xz
+        rm -rf ${TMPDIR}/astra-mips.tar.gz
         chmod -R 755 /etc/astra
     fi
 fi
