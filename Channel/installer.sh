@@ -1,6 +1,11 @@
 #!/bin/sh
-#####################################
-# wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel/installer.sh -qO - | /bin/sh
+# ###########################################
+# SCRIPT : DOWNLOAD AND INSTALL Channel
+# ###########################################
+#
+# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel/installer.sh -qO - | /bin/sh
+#
+# ###########################################
 
 ###########################################
 # Configure where we can find things here #
@@ -13,7 +18,7 @@ URL='https://github.com/MOHAMED19OS/Download/blob/main/Channel'
 ######################
 # Delete File In Tmp #
 
-rm -rf $TMPDIR/channels_"$VERSION".tar.xz
+rm -rf $TMPDIR/channels_${VERSION}.tar.xz
 rm -rf $TMPDIR/astra-mips.tar.xz
 rm -rf $TMPDIR/astra-arm.tar.xz
 
@@ -91,11 +96,10 @@ fi
 # Downlaod And Install Plugin #
 set -e
 echo "Downloading And Insallling Channel Please Wait ......"
-echo
-wget --show-progress "$URL"/channels_"$VERSION".tar.xz -qO $TMPDIR/channels_"$VERSION".tar.xz
-tar -xf $TMPDIR/channels_"$VERSION".tar.xz
+wget ${URL}/channels_${VERSION}.tar.xz -qO ${TMPDIR}/channels_${VERSION}.tar.xz
+tar -xf ${TMPDIR}/channels_${VERSION}.tar.xz
 set +e
-rm -rf $TMPDIR/channels_"$VERSION".tar.xz
+rm -rf ${TMPDIR}/channels_${VERSION}.tar.xz
 
 if [ $OSTYPE = "Opensource" ]; then
     uname -m > $CHECK
@@ -106,11 +110,10 @@ if [ $OSTYPE = "Opensource" ]; then
         sleep 2; clear
         set -e
         echo "Downloading And Insallling Config $Package Please Wait ......"
-        echo
-        wget --show-progress "$URL"/astra-arm.tar.xz -qO $TMPDIR/astra-arm.tar.xz
-        tar -xf $TMPDIR/astra-arm.tar.xz
+        wget ${URL}/astra-arm.tar.xz -qO ${TMPDIR}/astra-arm.tar.xz
+        tar -xf ${TMPDIR}/astra-arm.tar.xz
         set +e
-        rm -rf $TMPDIR/astra-arm.tar.xz
+        rm -rf ${TMPDIR}/astra-arm.tar.xz
         chmod -R 755 /etc/astra
 
     elif grep -qs -i 'mips' cat $CHECK ; then
@@ -118,26 +121,24 @@ if [ $OSTYPE = "Opensource" ]; then
         sleep 2; clear
         set -e
         echo "Downloading And Insallling Config $Package Please Wait ......"
-        echo
-        wget --show-progress "$URL"/astra-mips.tar.xz -qO $TMPDIR/astra-mips.tar.xz
-        tar -xf $TMPDIR/astra-mips.tar.xz
+        wget ${URL}/astra-mips.tar.xz -qO ${TMPDIR}/astra-mips.tar.xz
+        tar -xf ${TMPDIR}/astra-mips.tar.xz
         set +e
-        rm -rf $TMPDIR/astra-mips.tar.xz
+        rm -rf ${TMPDIR}/astra-mips.tar.xz
         chmod -R 755 /etc/astra
     fi
 fi
 
 sync
 echo ""
+echo "***********************************************************************"
+echo "**                                                                    *"
+echo "**                       Channel    : $VERSION                      *"
+echo "**                       Uploaded by: MOHAMED_OS                      *"
+echo "**  Support    : https://www.tunisia-sat.com/forums/threads/4208717/  *"
+echo "**                                                                    *"
+echo "***********************************************************************"
 echo ""
-echo "#########################################################"
-echo "#       Channel And Config INSTALLED SUCCESSFULLY       #"
-echo "#                   MOHAMED_OS                          #"
-echo "#                     support                           #"
-echo "#  https://www.tunisia-sat.com/forums/threads/4208717   #"
-echo "#########################################################"
-echo "#           your Device will RESTART Now                #"
-echo "#########################################################"
 sleep 2
 
 if [ $OSTYPE = "Opensource" ]; then
