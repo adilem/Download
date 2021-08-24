@@ -165,7 +165,7 @@ sleep 1; clear
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"
-echo "**                       Ansite     : $VERSION                             *"
+echo "**                       IPtoSAT    : $VERSION                             *"
 echo "**                       Uploaded by: MOHAMED_OS                      *"
 echo "**                       Develop by : ZAKARIYA KHA                    *"
 echo "**  Support    : https://www.tunisia-sat.com/forums/threads/4171372/  *"
