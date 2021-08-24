@@ -1,12 +1,16 @@
 #!/bin/sh
-#####################################
-# wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPTVPlayer/installer.sh -qO - | /bin/sh
+# ###########################################
+# SCRIPT : DOWNLOAD AND INSTALL TSIPlayer
+# ###########################################
+#
+# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPTVPlayer/installer.sh -qO - | /bin/sh
+#
+# ###########################################
 
 ###########################################
 # Configure where we can find things here #
+VERSION='14.08.2021'
 DUKTAPE='duktape'
-PY3SQLITE='python3-sqlite3'
-PY2SQLITE='python-sqlite3'
 TMPDIR='/tmp'
 CHECK='/tmp/check'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
@@ -40,13 +44,21 @@ else
     OPKGINSTAL='apt-get install'
 fi
 
+if python --version 2>&1 | grep -q '^Python 3\.'; then
+   echo "You have Python3 image"
+   sleep 2; clear
+   PY3SQLITE='python3-sqlite3'
+else
+  echo "You have Python2 image"
+  sleep 2; clear
+  PY2SQLITE='python-sqlite3'
+fi
+
 #####################
 # Package Checking  #
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
         echo ""
-        echo "$DUKTAPE Depends Are Installed..."
-        sleep 2; clear
     else
         clear ;echo ""
         echo "Some Depends Need to Be downloaded From Feeds ...."
@@ -57,18 +69,11 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
             echo " Downloading $DUKTAPE ......"
             $OPKGINSTAL $DUKTAPE
             echo "" ;clear
-        elif [ $OSTYPE = "DreamOS" ]; then
-            echo "APT Update ..."
-            $OPKG > /dev/null 2>&1 ;clear
-            echo " Downloading $DUKTAPE ......"
-            $OPKGINSTAL $DUKTAPE -y
         fi
     fi
 else
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
         echo ""
-        echo "$DUKTAPE Depends Are Installed..."
-        sleep 2; clear
     else
         clear ;echo ""
         echo "Some Depends Need to Be downloaded From Feeds ...."
@@ -94,8 +99,6 @@ fi
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     if grep -qs "Package: $PY3SQLITE" $STATUS ; then
         echo ""
-        echo "$PY3SQLITE Depends Are Installed..."
-        sleep 2; clear
     else
         clear ;echo ""
         echo "Some Depends Need to Be downloaded From Feeds ...."
@@ -111,8 +114,6 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
 else
     if grep -qs "Package: $PY2SQLITE" $STATUS ; then
         echo ""
-        echo "$PY2SQLITE Depends Are Installed..."
-        sleep 2; clear
     else
         clear ;echo ""
         echo "Some Depends Need to Be downloaded From Feeds ...."
@@ -128,7 +129,6 @@ else
 
 fi
 
-echo ""
 cd $TMPDIR
 ###############################
 # Downlaod And Install Plugin #
@@ -137,7 +137,7 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     set -e
     echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
     echo
-    wget "http://ipkinstall.ath.cx/ipk-install/E2IPLAYER+TSIPLAYER-PYTHON3/E2IPLAYER_TSiplayer-PYTHON3.tar.gz" -q --show-progress
+    wget "http://ipkinstall.ath.cx/ipk-install/E2IPLAYER+TSIPLAYER-PYTHON3/E2IPLAYER_TSiplayer-PYTHON3.tar.gz" -q
     tar -xzf E2IPLAYER_TSiplayer-PYTHON3.tar.gz -C /
     set +e
     rm -f E2IPLAYER_TSiplayer-PYTHON3.tar.gz
@@ -228,7 +228,7 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     echo "#########################################################"
     echo "#           your Device will RESTART Now                #"
     echo "#########################################################"
-    sleep 2
+    sleep 1
     if which systemctl > /dev/null 2>&1; then
         sleep 2; systemctl restart enigma2
     else
@@ -238,7 +238,7 @@ else
     set -e
     echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
     echo
-    wget "http://ipkinstall.ath.cx/ipk-install/E2IPLAYER+TSIPLAYER/E2IPLAYER_TSiplayer.tar.gz" -q --show-progress
+    wget "http://ipkinstall.ath.cx/ipk-install/E2IPLAYER+TSIPLAYER/E2IPLAYER_TSiplayer.tar.gz" -q
     tar -xzf E2IPLAYER_TSiplayer.tar.gz -C /
     set +e
     rm -f E2IPLAYER_TSiplayer.tar.gz
@@ -336,5 +336,19 @@ else
         init 4; sleep 2; init 3;
     fi
 fi
+
+
+clear
+echo ""
+echo "***********************************************************************"
+echo "**                                                                    *"
+echo "**                       TSIPlayer  : $VERSION                      *"
+echo "**                       Uploaded by: LINUXSAT                        *"
+echo "**                       Script by  : MOHAMED_OS                      *"
+echo "**                       Develop by : rgysoft                         *"
+echo "**  Support    : https://www.tunisia-sat.com/forums/threads/3951696/  *"
+echo "**                                                                    *"
+echo "***********************************************************************"
+echo ""
 
 exit 0
