@@ -1,6 +1,11 @@
 #!/bin/sh
-#####################################
-# wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPtoSAT/installer.sh -qO - | /bin/sh
+# ###########################################
+# SCRIPT : DOWNLOAD AND INSTALL IPtoSAT
+# ###########################################
+#
+# Command: wget wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPtoSAT/installer.sh -qO - | /bin/sh
+#
+# ###########################################
 
 ###########################################
 # Configure where we can find things here #
@@ -49,7 +54,6 @@ if grep -qs "Package: $Package" $STATUS ; then
         sleep 2; clear
     fi
 else
-    echo ""
     echo "No older version was found on the device... "
     sleep 1
     echo ""; clear
@@ -59,7 +63,6 @@ fi
 # Package Checking  #
 if [ $OSTYPE = "Opensource" ]; then
     if grep -qs "Package: $PKGEXP3" $STATUS ; then
-        echo ""
         echo "$PKGEXP3 found in device..."
         sleep 1
         echo ""; clear
@@ -139,10 +142,12 @@ fi
 ###################
 #  Install Plugin #
 if [ $OSTYPE = "Opensource" ]; then
-    wget --show-progress "$URL"/enigma2-plugin-extensions-iptosat_"$VERSION"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-extensions-iptosat_"$VERSION"_all.ipk;
+    echo "Downloading And Insallling IPtoSAT plugin Please Wait ......"
+    wget "$URL"/enigma2-plugin-extensions-iptosat_"$VERSION"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-extensions-iptosat_"$VERSION"_all.ipk;
     $OPKGINSTAL $TMPDIR/enigma2-plugin-extensions-iptosat_"$VERSION"_all.ipk
 else
-    wget --show-progress "$URL"/enigma2-plugin-extensions-iptosat_"$VERSION".deb?raw=true -qO $TMPDIR/enigma2-plugin-extensions-iptosat_"$VERSION".deb;
+    echo "Downloading And Insallling IPtoSAT plugin Please Wait ......"
+    wget "$URL"/enigma2-plugin-extensions-iptosat_"$VERSION".deb?raw=true -qO $TMPDIR/enigma2-plugin-extensions-iptosat_"$VERSION".deb;
     $DPKINSTALL $TMPDIR/enigma2-plugin-extensions-iptosat_"$VERSION".deb; $OPKGINSTAL -f -y
 fi
 
@@ -154,5 +159,18 @@ if [ -f $TMPDIR/$Package ] ; then
 else
     echo ""
 fi
+
+
+sleep 1; clear
+echo ""
+echo "***********************************************************************"
+echo "**                                                                    *"
+echo "**                       Ansite     : $VERSION                             *"
+echo "**                       Uploaded by: MOHAMED_OS                      *"
+echo "**                       Develop by : ZAKARIYA KHA                    *"
+echo "**  Support    : https://www.tunisia-sat.com/forums/threads/4171372/  *"
+echo "**                                                                    *"
+echo "***********************************************************************"
+echo ""
 
 exit 0
