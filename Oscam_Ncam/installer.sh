@@ -1,6 +1,11 @@
 #!/bin/sh
-#####################################
-# sh <(wget -qO- https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/installer.sh)
+# ###########################################
+# SCRIPT : DOWNLOAD AND INSTALL Oscam_Ncam
+# ###########################################
+#
+# Command: sh <(wget -qO- https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/installer.sh)
+#
+# ###########################################
 
 ###########################################
 # Configure where we can find things here #
@@ -83,9 +88,6 @@ checkncam() {
 # Package Checking  #
 if grep -qs "Package: $Package" $STATUS ; then
     echo ""
-    echo "$Package found in device..."
-    sleep 2
-    echo ""; clear
 else
     echo "Need to install $Package"
     echo ""
@@ -127,30 +129,36 @@ do
     case $opt in
         "Oscam") checkoscam
             if [ $OSTYPE = "Opensource" ]; then
-                wget --show-progress "$URL"/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk;
+                echo "Downloading And Insallling Oscam plugin Please Wait ......"
+                wget "$URL"/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk;
                 $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk
             else
-                wget --show-progress "$URL"/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb;
+                echo "Downloading And Insallling Oscam plugin Please Wait ......"
+                wget "$URL"/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb;
                 $DPKINSTALL $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb; $OPKGINSTAL -f -y
             fi
             exit 0
             ;;
         "Revcam_Oscam") checkoscam
-            wget --show-progress "$URL"/enigma2-plugin-softcams-oscam-revcamv2_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-revcam_"$VEROS"_all.ipk;
+            echo "Downloading And Insallling Revcam_Oscam plugin Please Wait ......"
+            wget "$URL"/enigma2-plugin-softcams-oscam-revcamv2_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-revcam_"$VEROS"_all.ipk;
             $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam-revcam_"$VEROS"_all.ipk
             exit 0
             ;;
         "SupTV_Oscam") checkoscam
-            wget --show-progress "$URL"/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk;
+            echo "Downloading And Insallling SupTV_Oscam plugin Please Wait ......"
+            wget "$URL"/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk;
             $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk
             exit 0
             ;;
         "Ncam") checkncam
             if [ $OSTYPE = "Opensource" ]; then
-                wget --show-progress "$URL"/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk;
+                echo "Downloading And Insallling Ncam plugin Please Wait ......"
+                wget "$URL"/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk;
                 $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk
             else
-                wget --show-progress "$URL"/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb;
+                echo "Downloading And Insallling Ncam plugin Please Wait ......"
+                wget "$URL"/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb;
                 $DPKINSTALL $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb; $OPKGINSTAL -f -y
             fi
             exit 0
