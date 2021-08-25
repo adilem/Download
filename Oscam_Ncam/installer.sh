@@ -12,7 +12,7 @@
 
 TMPDIR='/tmp'
 VEROS='11.695-emu-r798'
-VERNC='V11.9-r2'
+VERNC='V11.9-r3'
 Package='libcurl4'
 EMUOS='enigma2-plugin-softcams-oscam*'
 EMUNC='enigma2-plugin-softcams-ncam*'
