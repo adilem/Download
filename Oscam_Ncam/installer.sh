@@ -3,7 +3,7 @@
 # SCRIPT : DOWNLOAD AND INSTALL Oscam_Ncam
 # ###########################################
 #
-# Command: sh <(wget -qO- https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/installer.sh)
+# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/installer.sh -q; sh installer.sh; rm -rf installer.sh
 #
 # ###########################################
 
@@ -12,7 +12,7 @@
 
 TMPDIR='/tmp'
 VEROS='11.695-emu-r798'
-VERNC='V11.9-r3'
+VERNC='11.9-r3'
 Package='libcurl4'
 EMUOS='enigma2-plugin-softcams-oscam*'
 EMUNC='enigma2-plugin-softcams-ncam*'
@@ -39,76 +39,65 @@ else
     OPKGREMOV='apt-get purge --auto-remove'
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
+
 ##################
 # Oscam Checking #
 checkoscam() {
     if grep -qs "Package: $EMUOS" $STATUS ; then
-        echo ""
+        echo
         echo "Remove old version..."
         if [ $OSTYPE = "Opensource" ]; then
             $OPKGREMOV $EMUOS
-            echo ""
-            sleep 1; clear
+            sleep 2; clear
         else
             $OPKGREMOV $EMUOS
-            echo ""
-            sleep 1; clear
+            sleep 2; clear
         fi
     else
-        echo ""
+        echo
         echo "No older version was found on the device... "
-        sleep 2
-        echo ""
+        sleep 1
     fi
 }
 ##################
 # Ncam Checking  #
 checkncam() {
     if grep -qs "Package: $EMUNC" $STATUS ; then
-        echo ""
+        echo
         echo "Remove old version..."
         if [ $OSTYPE = "Opensource" ]; then
             $OPKGREMOV "$EMUNC"
-            echo ""
             sleep 2; clear
         else
             $OPKGREMOV "$EMUNC"
-            echo ""
             sleep 2; clear
         fi
     else
-        echo ""
+        echo
         echo "No older version was found on the device... "
         sleep 1
-        echo ""; clear
     fi
 }
-
 #####################
 # Package Checking  #
 if grep -qs "Package: $Package" $STATUS ; then
-    echo ""
+    echo
 else
     echo "Need to install $Package"
-    echo ""
+    echo
     if [ $OSTYPE = "Opensource" ]; then
-        echo ""
         echo "Opkg Update ..."
         $OPKG > /dev/null 2>&1
-        echo ""
+        echo
         echo " Downloading $Package ......"
-        echo ""
+        echo
         $OPKGINSTAL $Package
-        sleep 1
-        echo ""; clear
     elif [ $OSTYPE = "DreamOS" ]; then
         echo "APT Update ..."
         $OPKG > /dev/null 2>&1
         echo " Downloading $Package ......"
-        echo ""
+        echo
         $OPKGINSTAL $Package -y
-        sleep 1
-        echo ""; clear
     else
         echo ""
         echo ""
@@ -122,53 +111,61 @@ else
 fi
 
 #####################
-PS3='Please enter your choice: '
-options=("Oscam" "Revcam_Oscam" "SupTV_Oscam" "Ncam" "Quit")
-select opt in "${options[@]}"
-do
-    case $opt in
-        "Oscam") checkoscam
-            if [ $OSTYPE = "Opensource" ]; then
-                echo "Downloading And Insallling Oscam plugin Please Wait ......"
-                wget "$URL"/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk;
-                $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.ipk
-            else
-                echo "Downloading And Insallling Oscam plugin Please Wait ......"
-                wget "$URL"/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb;
-                $DPKINSTALL $TMPDIR/enigma2-plugin-softcams-oscam_"$VEROS"_all.deb; $OPKGINSTAL -f -y
-            fi
-            exit 0
-            ;;
-        "Revcam_Oscam") checkoscam
-            echo "Downloading And Insallling Revcam_Oscam plugin Please Wait ......"
-            wget "$URL"/enigma2-plugin-softcams-oscam-revcamv2_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-revcam_"$VEROS"_all.ipk;
-            $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam-revcam_"$VEROS"_all.ipk
-            exit 0
-            ;;
-        "SupTV_Oscam") checkoscam
-            echo "Downloading And Insallling SupTV_Oscam plugin Please Wait ......"
-            wget "$URL"/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk;
-            $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam-supcam_"$VEROS"_all.ipk
-            exit 0
-            ;;
-        "Ncam") checkncam
-            if [ $OSTYPE = "Opensource" ]; then
-                echo "Downloading And Insallling Ncam plugin Please Wait ......"
-                wget "$URL"/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk;
-                $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.ipk
-            else
-                echo "Downloading And Insallling Ncam plugin Please Wait ......"
-                wget "$URL"/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb;
-                $DPKINSTALL $TMPDIR/enigma2-plugin-softcams-ncam_"$VERNC"_all.deb; $OPKGINSTAL -f -y
-            fi
-            exit 0
-            ;;
-        "Quit")
-            echo ""; clear
-            echo "Goodbye!"
-            sleep 2
-            break
-            ;;
-        *) echo "Invalid option. Try another one.";continue ;;
-    esac
-done
+clear
+echo "> Oscam EMU MENU"
+echo
+echo "  1 - Oscam"
+echo "  2 - Revcam_Oscam"
+echo "  3 - SupTV_Oscam"
+echo "  4 - Ncam"
+echo
+echo "  x - Exit"
+echo
+echo "- Enter option:"
+read opt
+case $opt in
+    "1") EMU=Oscam checkoscam
+        if [ $OSTYPE = "Opensource" ]; then
+            echo "Downloading And Insallling Oscam plugin Please Wait ......"
+            wget $URL/enigma2-plugin-softcams-oscam_${VEROS}_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_${VEROS}_all.ipk
+            $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam_${VEROS}_all.ipk
+        else
+            echo "Downloading And Insallling Oscam plugin Please Wait ......"
+            wget $URL/enigma2-plugin-softcams-oscam_${VEROS}_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam_${VEROS}_all.deb
+            $DPKINSTALL $TMPDIR/enigma2-plugin-softcams-oscam_${VEROS}_all.deb; $OPKGINSTAL -f -y
+        fi
+        ;;
+    "2") EMU=Revcam_Oscam checkoscam
+        echo "Downloading And Insallling Revcam_Oscam plugin Please Wait ......"
+        wget $URL/enigma2-plugin-softcams-oscam-revcamv2_${VEROS}_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-revcam_${VEROS}_all.ipk
+        $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam-revcam_${VEROS}_all.ipk
+        ;;
+    "3") EMU=SupTV_Oscam checkoscam
+        echo "Downloading And Insallling SupTV_Oscam plugin Please Wait ......"
+        wget $URL/enigma2-plugin-softcams-oscam-supcam_${VEROS}_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-oscam-supcam_${VEROS}_all.ipk
+        $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam-supcam_${VEROS}_all.ipk
+        ;;
+    "4") EMU=Ncam checkncam
+        if [ $OSTYPE = "Opensource" ]; then
+            echo "Downloading And Insallling Ncam plugin Please Wait ......"
+            wget $URL/enigma2-plugin-softcams-ncam_V${VERNC}_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_V${VERNC}_all.ipk
+            $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-ncam_V${VERNC}_all.ipk
+        else
+            echo "Downloading And Insallling Ncam plugin Please Wait ......"
+            wget $URL/enigma2-plugin-softcams-ncam_V${VERNC}_all.deb?raw=true -qO $TMPDIR/enigma2-plugin-softcams-ncam_V${VERNC}_all.deb
+            $DPKINSTALL $TMPDIR/enigma2-plugin-softcams-ncam_V${VERNC}_all.deb; $OPKGINSTAL -f -y
+        fi
+        ;;
+    x)
+        clear
+        echo
+        echo "Goodbye ;)"
+        echo
+        exit 1
+        ;;
+    *)
+        echo "Invalid option"
+        sleep 2
+        exit 1
+        ;;
+esac
