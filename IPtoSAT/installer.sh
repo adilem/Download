@@ -11,8 +11,8 @@
 # Configure where we can find things here #
 TMPDIR='/tmp'
 VERSION='1.8'
-Package='enigma2-plugin-extensions-iptosat*'
-URL='https://github.com/MOHAMED19OS/Download/blob/main/IPtoSAT'
+PACKAGE='enigma2-plugin-extensions-iptosat'
+MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPtoSAT/'
 
 ####################
 #  Image Checking  #
@@ -39,17 +39,21 @@ else
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
 
+##################################
+# Remove previous files (if any) #
+rm -rf $TMPDIR/${PACKAGE}*
+
 ######################
 #  Remove Old Plugin #
-if grep -qs "Package: $Package" $STATUS ; then
+if grep -qs "Package: $PACKAGE" $STATUS ; then
     echo ""
     echo "Remove old version..."
     if [ $OSTYPE = "Opensource" ]; then
-        $OPKGREMOV "$Package"
+        $OPKGREMOV $PACKAGE
         echo ""
         sleep 2; clear
     else
-        $OPKGREMOV "$Package"
+        $OPKGREMOV $PACKAGE
         echo ""
         sleep 2; clear
     fi
@@ -64,67 +68,57 @@ fi
 if [ $OSTYPE = "Opensource" ]; then
     if grep -qs "Package: $PKGEXP3" $STATUS ; then
         echo "$PKGEXP3 found in device..."
-        sleep 1
-        echo ""; clear
+        sleep 1; clear
     else
         echo "Need to install $PKGEXP3"
-        echo ""
+        echo
         echo "Opkg Update ..."
         $OPKG > /dev/null 2>&1
-        echo ""
         echo " Downloading $PKGEXP3 ......"
-        echo ""
+        echo
         $OPKGINSTAL $PKGEXP3
-        sleep 1
-        echo ""; clear
+        sleep 1; clear
     fi
     if grep -qs "Package: $PKGGPLY" $STATUS ; then
-        echo ""
         echo "$PKGGPLY found in device..."
-        sleep 1
-        echo ""; clear
+        sleep 1; clear
     else
         echo "Need to install $PKGGPLY"
-        echo ""
+        echo
         echo "Opkg Update ..."
         $OPKG > /dev/null 2>&1
-        echo ""
         echo " Downloading $PKGGPLY ......"
-        echo ""
+        echo
         $OPKGINSTAL $PKGGPLY
-        sleep 1
-        echo ""; clear
+        sleep 1; clear
     fi
 
 elif [ $OSTYPE = "DreamOS" ]; then
     if grep -qs "Package: $PKGBAPP" $STATUS ; then
-        echo ""
         echo " $PKGBAPP found in device..."
-        sleep 1
-        echo ""; clear
+        sleep 1; clear
     else
         echo "Need to install  $PKGBAPP"
-        echo ""
+        echo
         echo "APT Update ..."
         $OPKG > /dev/null 2>&1
         echo " Downloading  $PKGBAPP ......"
-        echo ""
+        echo
         $OPKGINSTAL  $PKGBAPP -y
-        sleep 1
-        echo ""; clear
+        sleep 1; clear
     fi
 fi
 
 if [ $OSTYPE = "Opensource" ]; then
     if grep -qs "Package: $PKGEXP3" $STATUS ; then
-        echo ""
+        echo
     else
         echo "Feed Missing $PKGEXP3"
         echo "Sorry, the plugin will not be install"
         exit 1
     fi
     if grep -qs "Package: $PKGGPLY" $STATUS ; then
-        echo ""
+        echo
     else
         echo "Feed Missing $PKGGPLY"
         echo "Sorry, the plugin will not be install"
@@ -132,7 +126,7 @@ if [ $OSTYPE = "Opensource" ]; then
     fi
 elif [ $OSTYPE = "DreamOS" ]; then
     if grep -qs "Package: $PKGBAPP" $STATUS ; then
-        echo ""
+        echo
     else
         echo "Feed Missing $PKGBAPP"
         echo "Sorry, the plugin will not be install"
@@ -143,23 +137,17 @@ fi
 #  Install Plugin #
 if [ $OSTYPE = "Opensource" ]; then
     echo "Downloading And Insallling IPtoSAT plugin Please Wait ......"
-    wget "$URL"/enigma2-plugin-extensions-iptosat_"$VERSION"_all.ipk?raw=true -qO $TMPDIR/enigma2-plugin-extensions-iptosat_"$VERSION"_all.ipk;
-    $OPKGINSTAL $TMPDIR/enigma2-plugin-extensions-iptosat_"$VERSION"_all.ipk
+    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
 else
     echo "Downloading And Insallling IPtoSAT plugin Please Wait ......"
-    wget "$URL"/enigma2-plugin-extensions-iptosat_"$VERSION".deb?raw=true -qO $TMPDIR/enigma2-plugin-extensions-iptosat_"$VERSION".deb;
-    $DPKINSTALL $TMPDIR/enigma2-plugin-extensions-iptosat_"$VERSION".deb; $OPKGINSTAL -f -y
+    wget $MY_URL/${PACKAGE}_${VERSION}.deb -qP $TMPDIR
+    $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}.deb; $OPKGINSTAL -f -y
 fi
 
-######################
-# Delete File In TMP #
-
-if [ -f $TMPDIR/$Package ] ; then
-    rm -rf $TMPDIR/$Package
-else
-    echo ""
-fi
-
+##################################
+# Remove previous files (if any) #
+rm -rf $TMPDIR/${PACKAGE}*
 
 sleep 1; clear
 echo ""
