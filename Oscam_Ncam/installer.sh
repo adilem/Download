@@ -3,7 +3,7 @@
 # SCRIPT : DOWNLOAD AND INSTALL Oscam_Ncam
 # ###########################################
 #
-# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/installer.sh -q; sh installer.sh; rm -rf installer.sh
+# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/installer.sh -q; sh installer.sh
 #
 # ###########################################
 
@@ -39,6 +39,10 @@ else
     OPKGREMOV='apt-get purge --auto-remove'
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
+
+##################################
+# Remove previous files (if any) #
+rm -rf $TMPDIR/${OSC_PACKAGE} $TMPDIR/${ENC_PACKAGE}*
 
 ##################
 # Oscam Checking #
@@ -159,11 +163,19 @@ case $opt in
         echo
         echo "Goodbye ;)"
         echo
-        exit 1
         ;;
     *)
         echo "Invalid option"
         sleep 2
-        exit 1
         ;;
 esac
+
+MY_RESULT=$?
+
+################################
+# Remove script files (if any) #
+if [ $MY_RESULT -eq 0 ] ; then
+    rm -rf $TMPDIR/${OSC_PACKAGE} $TMPDIR/${ENC_PACKAGE}*
+    rm -rf $TMPDIR/installer.sh
+    exit 1
+fi
