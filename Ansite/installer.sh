@@ -15,12 +15,10 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Ansite/'
 
 ####################
 #  Image Checking  #
-if [ -f /etc/opkg/opkg.conf ] ; then
+
+if which opkg > /dev/null 2>&1; then
     STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
-fi
-
-if [ $OSTYPE = "Opensource" ]; then
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
     OPKGREMOV='opkg remove --force-depends'
