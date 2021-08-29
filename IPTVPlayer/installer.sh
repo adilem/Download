@@ -14,11 +14,12 @@ DUKTAPE='duktape'
 TMPDIR='/tmp'
 CHECK='/tmp/check'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
+SETTINGS='/etc/enigma2/settings'
 
 ######################
 # Delete File In TMP #
 
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer
+rm -rf $PLUGINPATH
 rm -rf /etc/enigma2/iptvplayerarabicgroup.json
 rm -rf /etc/enigma2/iptvplayerenglishgroup.json
 rm -rf /etc/enigma2/iptvplayerhostsgroups.json
@@ -28,29 +29,26 @@ rm -rf /iptvplayer_rootfs
 
 ####################
 #  Image Checking  #
-if [ -f /etc/apt/apt.conf ] ; then
-    STATUS='/var/lib/dpkg/status'
-    OSTYPE='DreamOS'
-elif [ -f /etc/opkg/opkg.conf ] ; then
-    STATUS='/var/lib/opkg/status'
-    OSTYPE='Opensource'
-fi
 
-if [ $OSTYPE = "Opensource" ]; then
-    OPKG='opkg update'
-    OPKGINSTAL='opkg install'
+if which dpkg > /dev/null 2>&1; then
+  STATUS='/var/lib/opkg/status'
+  OSTYPE='Opensource'
+  OPKG='opkg update'
+  OPKGINSTAL='opkg install'
 else
-    OPKG='apt-get update'
-    OPKGINSTAL='apt-get install'
+  STATUS='/var/lib/dpkg/status'
+  OSTYPE='DreamOS'
+  OPKG='apt-get update'
+  OPKGINSTAL='apt-get install'
 fi
 
 if python --version 2>&1 | grep -q '^Python 3\.'; then
    echo "You have Python3 image"
-   sleep 2; clear
+   sleep 1; clear
    PY3SQLITE='python3-sqlite3'
 else
   echo "You have Python2 image"
-  sleep 2; clear
+  sleep 1; clear
   PY2SQLITE='python-sqlite3'
 fi
 
@@ -58,32 +56,30 @@ fi
 # Package Checking  #
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
-        echo ""
+        echo
     else
-        clear ;echo ""
+        clear ;echo
         echo "Some Depends Need to Be downloaded From Feeds ...."
         if [ $OSTYPE = "Opensource" ]; then
-            echo ""
             echo "Opkg Update ..."
             $OPKG > /dev/null 2>&1 ;clear
             echo " Downloading $DUKTAPE ......"
-            $OPKGINSTAL $DUKTAPE
-            echo "" ;clear
+            $OPKGINSTAL $DUKTAPE ;clear
         fi
     fi
 else
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
-        echo ""
+        echo
     else
-        clear ;echo ""
+        echo
         echo "Some Depends Need to Be downloaded From Feeds ...."
         if [ $OSTYPE = "Opensource" ]; then
-            echo ""
+            echo
             echo "Opkg Update ..."
             $OPKG > /dev/null 2>&1 ;clear
             echo " Downloading $DUKTAPE ......"
-            $OPKGINSTAL $DUKTAPE
-            echo "" ;clear
+            $OPKGINSTAL $DUKTAPE ;clear
+
         elif [ $OSTYPE = "DreamOS" ]; then
             echo "APT Update ..."
             $OPKG > /dev/null 2>&1 ;clear
@@ -98,32 +94,30 @@ fi
 
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     if grep -qs "Package: $PY3SQLITE" $STATUS ; then
-        echo ""
+        echo
     else
-        clear ;echo ""
+        echo
         echo "Some Depends Need to Be downloaded From Feeds ...."
         if [ $OSTYPE = "Opensource" ]; then
-            echo ""
+            echo
             echo "Opkg Update ..."
             $OPKG > /dev/null 2>&1 ;clear
             echo " Downloading $PY3SQLITE ......"
-            $OPKGINSTAL $PY3SQLITE
-            echo "" ;clear
+            $OPKGINSTAL $PY3SQLITE ;clear
         fi
     fi
 else
     if grep -qs "Package: $PY2SQLITE" $STATUS ; then
-        echo ""
+        echo
     else
-        clear ;echo ""
+        echo
         echo "Some Depends Need to Be downloaded From Feeds ...."
         if [ $OSTYPE = "Opensource" ]; then
-            echo ""
+            echo
             echo "Opkg Update ..."
             $OPKG > /dev/null 2>&1 ;clear
             echo " Downloading $PY2SQLITE ......"
-            $OPKGINSTAL $PY2SQLITE
-            echo "" ;clear
+            $OPKGINSTAL $PY2SQLITE ;clear
         fi
     fi
 
@@ -146,76 +140,76 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     sleep 1;
     if grep -qs -i 'armv7l' cat $CHECK ; then
         echo ':Your Device IS ARM processor ...'
-        echo "Add Setting To /etc/enigma2/settings ..."
+        echo "Add Setting To ${SETTINGS} ..."
         init 2
         sleep 2
-        sed -i '/iptvplayer/d' /etc/enigma2/settings
+        sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer0=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer0=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.plarform=armv7" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> /etc/enigma2/settings
+        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer0=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer0=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.plarform=armv7" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
     elif grep -qs -i 'mips' cat $CHECK ; then
         echo ':Your Device IS MIPS processor ...'
-        echo "Add Setting To /etc/enigma2/settings ..."
+        echo "Add Setting To ${SETTINGS} ..."
         init 2
         sleep 2
-        sed -i '/iptvplayer/d' /etc/enigma2/settings
+        sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer0=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer0=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.plarform=mipsel" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> /etc/enigma2/settings
+        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer0=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer0=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.plarform=mipsel" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
     elif grep -qs -i 'aarch64' cat $CHECK ; then
         echo ':Your Device IS AARCH64 processor ...'
-        echo "Add Setting To /etc/enigma2/settings ..."
+        echo "Add Setting To ${SETTINGS} ..."
         init 2
         sleep 2
-        sed -i '/iptvplayer/d' /etc/enigma2/settings
+        sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer0=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer0=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.plarform=ARCH64" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> /etc/enigma2/settings
+        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer0=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer0=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.plarform=ARCH64" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
     elif grep -qs -i 'sh4' cat $CHECK ; then
         echo ':Your Device IS SH4 processor ...'
-        echo "Add Setting To /etc/enigma2/settings ..."
+        echo "Add Setting To ${SETTINGS} ..."
         init 2
         sleep 2
-        sed -i '/iptvplayer/d' /etc/enigma2/settings
+        sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer0=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer0=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.plarform=sh4" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> /etc/enigma2/settings
+        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer0=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer0=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.plarform=sh4" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
 
     fi
 
@@ -247,76 +241,76 @@ else
     sleep 1;
     if grep -qs -i 'armv7l' cat $CHECK ; then
         echo ':Your Device IS ARM processor ...'
-        echo "Add Setting To /etc/enigma2/settings ..."
+        echo "Add Setting To ${SETTINGS} ..."
         init 2
         sleep 2
-        sed -i '/iptvplayer/d' /etc/enigma2/settings
+        sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer0=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer0=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.plarform=armv7" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> /etc/enigma2/settings
+        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer0=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer0=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.plarform=armv7" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
     elif grep -qs -i 'mips' cat $CHECK ; then
         echo ':Your Device IS MIPS processor ...'
-        echo "Add Setting To /etc/enigma2/settings ..."
+        echo "Add Setting To ${SETTINGS} ..."
         init 2
         sleep 2
-        sed -i '/iptvplayer/d' /etc/enigma2/settings
+        sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer0=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer0=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.plarform=mipsel" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> /etc/enigma2/settings
+        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer0=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer0=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.plarform=mipsel" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
     elif grep -qs -i 'aarch64' cat $CHECK ; then
         echo ':Your Device IS AARCH64 processor ...'
-        echo "Add Setting To /etc/enigma2/settings ..."
+        echo "Add Setting To ${SETTINGS} ..."
         init 2
         sleep 2
-        sed -i '/iptvplayer/d' /etc/enigma2/settings
+        sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer0=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer0=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.plarform=ARCH64" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> /etc/enigma2/settings
+        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer0=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer0=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.plarform=ARCH64" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
     elif grep -qs -i 'sh4' cat $CHECK ; then
         echo ':Your Device IS SH4 processor ...'
-        echo "Add Setting To /etc/enigma2/settings ..."
+        echo "Add Setting To ${SETTINGS} ..."
         init 2
         sleep 2
-        sed -i '/iptvplayer/d' /etc/enigma2/settings
+        sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer0=extgstplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer0=exteplayer" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.plarform=sh4" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> /etc/enigma2/settings
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> /etc/enigma2/settings
+        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer0=extgstplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer0=exteplayer" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.plarform=sh4" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
+        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
 
     fi
 
