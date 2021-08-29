@@ -30,26 +30,26 @@ rm -rf /iptvplayer_rootfs
 ####################
 #  Image Checking  #
 
-if which dpkg > /dev/null 2>&1; then
-  STATUS='/var/lib/opkg/status'
-  OSTYPE='Opensource'
-  OPKG='opkg update'
-  OPKGINSTAL='opkg install'
+if which opkg > /dev/null 2>&1; then
+    STATUS='/var/lib/opkg/status'
+    OSTYPE='Opensource'
+    OPKG='opkg update'
+    OPKGINSTAL='opkg install'
 else
-  STATUS='/var/lib/dpkg/status'
-  OSTYPE='DreamOS'
-  OPKG='apt-get update'
-  OPKGINSTAL='apt-get install'
+    STATUS='/var/lib/dpkg/status'
+    OSTYPE='DreamOS'
+    OPKG='apt-get update'
+    OPKGINSTAL='apt-get install'
 fi
 
 if python --version 2>&1 | grep -q '^Python 3\.'; then
-   echo "You have Python3 image"
-   sleep 1; clear
-   PY3SQLITE='python3-sqlite3'
+    echo "You have Python3 image"
+    sleep 1; clear
+    PY3SQLITE='python3-sqlite3'
 else
-  echo "You have Python2 image"
-  sleep 1; clear
-  PY2SQLITE='python-sqlite3'
+    echo "You have Python2 image"
+    sleep 1; clear
+    PY2SQLITE='python-sqlite3'
 fi
 
 #####################
@@ -58,7 +58,6 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
         echo
     else
-        clear ;echo
         echo "Some Depends Need to Be downloaded From Feeds ...."
         if [ $OSTYPE = "Opensource" ]; then
             echo "Opkg Update ..."
@@ -72,10 +71,8 @@ else
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
         echo
     else
-        echo
         echo "Some Depends Need to Be downloaded From Feeds ...."
         if [ $OSTYPE = "Opensource" ]; then
-            echo
             echo "Opkg Update ..."
             $OPKG > /dev/null 2>&1
             echo " Downloading $DUKTAPE ......"
@@ -98,10 +95,8 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     if grep -qs "Package: $PY3SQLITE" $STATUS ; then
         echo
     else
-        echo
         echo "Some Depends Need to Be downloaded From Feeds ...."
         if [ $OSTYPE = "Opensource" ]; then
-            echo
             echo "Opkg Update ..."
             $OPKG > /dev/null 2>&1
             echo " Downloading $PY3SQLITE ......"
@@ -113,10 +108,8 @@ else
     if grep -qs "Package: $PY2SQLITE" $STATUS ; then
         echo
     else
-        echo
         echo "Some Depends Need to Be downloaded From Feeds ...."
         if [ $OSTYPE = "Opensource" ]; then
-            echo
             echo "Opkg Update ..."
             $OPKG > /dev/null 2>&1
             echo " Downloading $PY2SQLITE ......"
