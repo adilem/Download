@@ -12,6 +12,7 @@
 
 PACKAGE='libcurl4'
 TMPDIR='/tmp'
+DIR=$(pwd)
 OSC_VERSION='11.695-emu-r798'
 ENC_VERSION='V11.9-r3'
 OSC_PACKAGE='enigma2-plugin-softcams-oscam*'
@@ -22,18 +23,18 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/'
 #  Image Checking  #
 
 if which opkg > /dev/null 2>&1; then
-  STATUS='/var/lib/opkg/status'
-  OSTYPE='Opensource'
-  OPKG='opkg update'
-  OPKGINSTAL='opkg install'
-  OPKGREMOV='opkg remove --force-depends'
+    STATUS='/var/lib/opkg/status'
+    OSTYPE='Opensource'
+    OPKG='opkg update'
+    OPKGINSTAL='opkg install'
+    OPKGREMOV='opkg remove --force-depends'
 else
-  STATUS='/var/lib/dpkg/status'
-  OSTYPE='DreamOS'
-  OPKG='apt-get update'
-  OPKGINSTAL='apt-get install'
-  OPKGREMOV='apt-get purge --auto-remove'
-  DPKINSTALL='dpkg -i --force-overwrite'
+    STATUS='/var/lib/dpkg/status'
+    OSTYPE='DreamOS'
+    OPKG='apt-get update'
+    OPKGINSTAL='apt-get install'
+    OPKGREMOV='apt-get purge --auto-remove'
+    DPKINSTALL='dpkg -i --force-overwrite'
 fi
 
 ##################################
@@ -166,12 +167,10 @@ case $opt in
         ;;
 esac
 
-MY_RESULT=$?
 
 ################################
 # Remove script files (if any) #
-if [ $MY_RESULT -eq 0 ] ; then
-    rm -rf $TMPDIR/${OSC_PACKAGE} $TMPDIR/${ENC_PACKAGE}*
-    rm -rf $TMPDIR/installer.sh
-    exit 1
-fi
+rm -rf $TMPDIR/${OSC_PACKAGE} $TMPDIR/${ENC_PACKAGE}*
+rm -rf $DIR/installer.sh
+
+exit 1
