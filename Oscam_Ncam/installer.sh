@@ -20,24 +20,20 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/'
 
 ####################
 #  Image Checking  #
-if [ -f /etc/apt/apt.conf ] ; then
-    STATUS='/var/lib/dpkg/status'
-    OSTYPE='DreamOS'
-elif [ -f /etc/opkg/opkg.conf ] ; then
-    STATUS='/var/lib/opkg/status'
-    OSTYPE='Opensource'
-fi
 
-
-if [ $OSTYPE = "Opensource" ]; then
-    OPKG='opkg update'
-    OPKGINSTAL='opkg install'
-    OPKGREMOV='opkg remove --force-depends'
+if which opkg > /dev/null 2>&1; then
+  STATUS='/var/lib/opkg/status'
+  OSTYPE='Opensource'
+  OPKG='opkg update'
+  OPKGINSTAL='opkg install'
+  OPKGREMOV='opkg remove --force-depends'
 else
-    OPKG='apt-get update'
-    OPKGINSTAL='apt-get install'
-    OPKGREMOV='apt-get purge --auto-remove'
-    DPKINSTALL='dpkg -i --force-overwrite'
+  STATUS='/var/lib/dpkg/status'
+  OSTYPE='DreamOS'
+  OPKG='apt-get update'
+  OPKGINSTAL='apt-get install'
+  OPKGREMOV='apt-get purge --auto-remove'
+  DPKINSTALL='dpkg -i --force-overwrite'
 fi
 
 ##################################
