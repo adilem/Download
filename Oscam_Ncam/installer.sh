@@ -126,7 +126,7 @@ case $opt in
         if [ $OSTYPE = "Opensource" ]; then
             echo "Downloading And Insallling Oscam plugin Please Wait ......"
             wget $MY_URL/enigma2-plugin-softcams-oscam_${OSC_VERSION}_all.ipk -qP $TMPDIR
-            $OPKGINSTAL enigma2-plugin-softcams-oscam_${OSC_VERSION}_all.ipk
+            $OPKGINSTAL $TMPDIR/enigma2-plugin-softcams-oscam_${OSC_VERSION}_all.ipk
         else
             echo "Downloading And Insallling Oscam plugin Please Wait ......"
             wget $MY_URL/enigma2-plugin-softcams-oscam_${OSC_VERSION}_all.deb -qP $TMPDIR

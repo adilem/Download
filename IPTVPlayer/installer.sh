@@ -62,9 +62,10 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
         echo "Some Depends Need to Be downloaded From Feeds ...."
         if [ $OSTYPE = "Opensource" ]; then
             echo "Opkg Update ..."
-            $OPKG > /dev/null 2>&1 ;clear
+            $OPKG > /dev/null 2>&1
             echo " Downloading $DUKTAPE ......"
-            $OPKGINSTAL $DUKTAPE ;clear
+            $OPKGINSTAL $DUKTAPE
+            clear
         fi
     fi
 else
@@ -76,13 +77,14 @@ else
         if [ $OSTYPE = "Opensource" ]; then
             echo
             echo "Opkg Update ..."
-            $OPKG > /dev/null 2>&1 ;clear
+            $OPKG > /dev/null 2>&1
             echo " Downloading $DUKTAPE ......"
-            $OPKGINSTAL $DUKTAPE ;clear
+            $OPKGINSTAL $DUKTAPE
+            clear
 
         elif [ $OSTYPE = "DreamOS" ]; then
             echo "APT Update ..."
-            $OPKG > /dev/null 2>&1 ;clear
+            $OPKG > /dev/null 2>&1
             echo " Downloading $DUKTAPE ......"
             $OPKGINSTAL $DUKTAPE -y
         fi
@@ -101,9 +103,10 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
         if [ $OSTYPE = "Opensource" ]; then
             echo
             echo "Opkg Update ..."
-            $OPKG > /dev/null 2>&1 ;clear
+            $OPKG > /dev/null 2>&1
             echo " Downloading $PY3SQLITE ......"
-            $OPKGINSTAL $PY3SQLITE ;clear
+            $OPKGINSTAL $PY3SQLITE
+            clear
         fi
     fi
 else
@@ -115,9 +118,10 @@ else
         if [ $OSTYPE = "Opensource" ]; then
             echo
             echo "Opkg Update ..."
-            $OPKG > /dev/null 2>&1 ;clear
+            $OPKG > /dev/null 2>&1
             echo " Downloading $PY2SQLITE ......"
-            $OPKGINSTAL $PY2SQLITE ;clear
+            $OPKGINSTAL $PY2SQLITE
+            clear
         fi
     fi
 
