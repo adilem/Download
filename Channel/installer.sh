@@ -11,7 +11,7 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-CHECK='$TMPDIR/check'
+CHECK='tmp/check'
 VERSION='2021_08_30'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
@@ -62,7 +62,7 @@ set -e
 echo "Downloading And Insallling Channel Please Wait ......"
 wget $MY_URL/channels_${VERSION}.tar.gz -qP $TMPDIR
 tar xf $TMPDIR/channels_${VERSION}.tar.gz -C /
-sleep 1
+sleep 2
 set +e
 
 if [ $OSTYPE = "Opensource" ]; then
@@ -76,7 +76,7 @@ if [ $OSTYPE = "Opensource" ]; then
         echo "Downloading And Insallling Config $PACKAGE Please Wait ......"
         wget $MY_URL/astra-arm.tar.gz -qP $TMPDIR
         tar xf $TMPDIR/astra-arm.tar.gz -C /
-        sleep 1
+        sleep 2
         set +e
         chmod -R 755 /etc/astra
 
@@ -87,7 +87,7 @@ if [ $OSTYPE = "Opensource" ]; then
         echo "Downloading And Insallling Config $PACKAGE Please Wait ......"
         wget $MY_URL/astra-mips.tar.gz -qP $TMPDIR
         tar xf $TMPDIR/astra-mips.tar.gz -C /
-        sleep 1
+        sleep 2
         set +e
         chmod -R 755 /etc/astra
 
