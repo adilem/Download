@@ -11,7 +11,7 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-CHECK='tmp/check'
+CHECK='/tmp/check'
 VERSION='2021_08_30'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
