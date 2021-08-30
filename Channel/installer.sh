@@ -27,7 +27,7 @@ fi
 
 ###########################
 # Remove Channel (if any) #
-rm -rf /etc/enigma2/lamedb*
+rm -rf /etc/enigma2/lamedb
 rm -rf /etc/enigma2/userbouquet.*
 rm -rf /etc/tuxbox/*.xml
 
