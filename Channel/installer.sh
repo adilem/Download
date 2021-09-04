@@ -63,7 +63,7 @@ fi
 set -e
 echo "Downloading And Insallling Channel Please Wait ......"
 wget $MY_URL/channels_backup_user_${VERSION}.tar.gz -qP $TMPDIR
-tar --warning=no-unknown-keyword -zxf $TMPDIR/channels_backup_user_${VERSION}.tar.gz -C /
+tar -zxf $TMPDIR/channels_backup_user_${VERSION}.tar.gz -C /
 sleep 1
 set +e
 echo
