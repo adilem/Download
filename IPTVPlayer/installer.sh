@@ -9,16 +9,16 @@
 
 ###########################################
 # Configure where we can find things here #
-VERSION='14.08.2021'
+VERSION='04.09.2021'
 DUKTAPE='duktape'
 TMPDIR='/tmp'
 CHECK='/tmp/check'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
 SETTINGS='/etc/enigma2/settings'
+MY_URL='http://ipkinstall.ath.cx/ipk-install'
 
-######################
-# Delete File In TMP #
-
+#########################
+# Delete File In Plugin #
 rm -rf $PLUGINPATH
 rm -rf /etc/enigma2/iptvplayerarabicgroup.json
 rm -rf /etc/enigma2/iptvplayerenglishgroup.json
@@ -26,6 +26,10 @@ rm -rf /etc/enigma2/iptvplayerhostsgroups.json
 rm -rf /etc/enigma2/iptvplayertsiplayercgroup.json
 rm -rf /etc/tsiplayer_xtream.conf
 rm -rf /iptvplayer_rootfs
+
+#########################
+# Remove files (if any) #
+rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-*.tar.gz
 
 ####################
 #  Image Checking  #
@@ -46,11 +50,17 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     echo "You have Python3 image"
     sleep 1; clear
     PY3SQLITE='python3-sqlite3'
+    PLUGINPY3='E2IPLAYER_TSiplayer-PYTHON3.tar.gz'
 else
     echo "You have Python2 image"
     sleep 1; clear
     PY2SQLITE='python-sqlite3'
+    PLUGINPY2='E2IPLAYER_TSiplayer.tar.gz'
 fi
+
+#########################
+# Remove files (if any) #
+rm -rf $TMPDIR/$PLUGINPY2 $PLUGINPY3
 
 #####################
 # Package Checking  #
@@ -120,7 +130,6 @@ else
 
 fi
 
-cd $TMPDIR
 ###############################
 # Downlaod And Install Plugin #
 
@@ -128,10 +137,9 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     set -e
     echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
     echo
-    wget "http://ipkinstall.ath.cx/ipk-install/E2IPLAYER+TSIPLAYER-PYTHON3/E2IPLAYER_TSiplayer-PYTHON3.tar.gz" -q
-    tar -xzf E2IPLAYER_TSiplayer-PYTHON3.tar.gz -C /
+    wget $MY_URL/E2IPLAYER+TSIPLAYER-PYTHON3/$PLUGINPY3 -qP $TMPDIR
+    tar -xzf $TMPDIR/$PLUGINPY3 -C /
     set +e
-    rm -f E2IPLAYER_TSiplayer-PYTHON3.tar.gz
     echo "checking your device Arch ....."
     uname -m > $CHECK
     sleep 1;
@@ -229,10 +237,9 @@ else
     set -e
     echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
     echo
-    wget "http://ipkinstall.ath.cx/ipk-install/E2IPLAYER+TSIPLAYER/E2IPLAYER_TSiplayer.tar.gz" -q
-    tar -xzf E2IPLAYER_TSiplayer.tar.gz -C /
+    wget $MY_URL/E2IPLAYER+TSIPLAYER/$PLUGINPY2 -qP $TMPDIR
+    tar -xzf $TMPDIR/$PLUGINPY2 -C /
     set +e
-    rm -f E2IPLAYER_TSiplayer.tar.gz
     echo "checking your device Arch ....."
     uname -m > $CHECK
     sleep 1;
@@ -310,8 +317,10 @@ else
         echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
 
     fi
+    #########################
+    # Remove files (if any) #
+    rm -rf $TMPDIR/$PLUGINPY2 $PLUGINPY3
 
-    cd ..
     sync
     echo "#########################################################"
     echo "#          IPTVPlayer INSTALLED SUCCESSFULLY            #"
