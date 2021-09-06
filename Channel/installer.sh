@@ -12,6 +12,7 @@
 # Configure where we can find things here #
 TMPDIR='/tmp'
 CHECK='/tmp/check'
+PACKAGE='astra-sm'
 VERSION='2021_09_04'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
@@ -22,7 +23,13 @@ if which opkg > /dev/null 2>&1; then
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
-    PACKAGE='astra-sm'
+else
+    STATUS='/var/lib/dpkg/status'
+    OSTYPE='DreamOS'
+    OPKG='apt-get update'
+    OPKGINSTAL='apt-get install'
+    LIBAIO1='libaio1'
+    LIBC6='libc6'
 fi
 
 ###########################
@@ -35,7 +42,7 @@ rm -rf /etc/tuxbox/*.xml
 
 #########################
 # Remove files (if any) #
-rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-*.tar.gz
+rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-*.tar.gz bbc_pmt_v6.tar.gz
 
 #####################
 #  Checking Package #
@@ -48,14 +55,51 @@ if [ $OSTYPE = "Opensource" ]; then
         echo " Downloading $PACKAGE ......"
         $OPKGINSTAL $PACKAGE
     fi
+elif [ $OSTYPE = 'DreamOS' ]; then
+    if grep -qs "Package: $LIBAIO1" $STATUS ; then
+        echo
+    else
+        echo "APT Update ..."
+        $OPKG > /dev/null 2>&1
+        echo " Downloading $LIBAIO1 ......"
+        $OPKGINSTAL $LIBAIO1
+    fi
+elif grep -qs "Package: $LIBC6" $STATUS ; then
+    echo
 else
-    echo ""
-    echo "#########################################################"
-    echo "#              $PACKAGE Not found in feed               #"
-    echo "#      Notification Abertis DTT Channel will not work   #"
-    echo "#                    without $PACKAGE                   #"
-    echo "#########################################################"
-    sleep 3
+    echo "APT Update ..."
+    $OPKG > /dev/null 2>&1
+    echo " Downloading $LIBC6 ......"
+    $OPKGINSTAL $LIBC6
+fi
+
+if [ $OSTYPE = "Opensource" ]; then
+    if grep -qs "Package: $PACKAGE" $STATUS ; then
+        echo
+    else
+        echo ""
+        echo "#########################################################"
+        echo "#              $PACKAGE Not found in feed               #"
+        echo "#      Notification Abertis DTT Channel will not work   #"
+        echo "#                    without $PACKAGE                   #"
+        echo "#########################################################"
+    fi
+elif [ $OSTYPE = "DreamOS" ]; then
+    if grep -qs "Package: $LIBAIO1" $STATUS ; then
+        echo
+    else
+        echo "Feed Missing $LIBAIO1"
+        echo "Sorry, the $PACKAGE will not be work"
+        exit 1
+    fi
+    if grep -qs "Package: $LIBC6" $STATUS ; then
+        echo
+    else
+        echo "Feed Missing $LIBC6"
+        echo "Sorry, the $PACKAGE will not be work"
+        exit 1
+    fi
+
 fi
 
 ###############################
@@ -71,6 +115,15 @@ echo 'Reloading Services - Please Wait'
 wget -qO http://127.0.0.1/web/servicelistreload?mode=0 > /dev/null 2>&1
 sleep 1
 echo
+
+set -e
+echo "Downloading And Insallling Config BBC Please Wait ......"
+wget $MY_URL/bbc_pmt_v6.tar.gz -qP $TMPDIR
+tar -zxf $TMPDIR/bbc_pmt_v6.tar.gz -C /
+sleep 1
+set +e
+chmod 755 /usr/bin/{bbc_pmt_starter.sh,bbc_pmt_v6.py,enigma2_pre_start.sh}
+
 
 if [ $OSTYPE = "Opensource" ]; then
     uname -m > "$CHECK"
@@ -99,11 +152,23 @@ if [ $OSTYPE = "Opensource" ]; then
         chmod -R 755 /etc/astra
 
     fi
+elif [ $OSTYPE = "DreamOS" ]; then
+    if grep -qs -i 'aarch64' cat "$CHECK" ; then
+        echo ':Your Device IS AARCH64 processor ...'
+        sleep 2; clear
+        set -e
+        echo "Downloading And Insallling Config $PACKAGE Please Wait ......"
+        wget $MY_URL/astra-aarch64.tar.gz -qP $TMPDIR
+        tar -xzf $TMPDIR/astra-aarch64.tar.gz -C /
+        sleep 1
+        set +e
+        chmod 755 /usr/bin/{astra,spammer,t2mi_decap}
+        chmod -R 755 /etc/astra
+    fi
 fi
-
 #########################
 # Remove files (if any) #
-rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-*.tar.gz
+rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-*.tar.gz bbc_pmt_v6.tar.gz
 
 sync
 echo ""
