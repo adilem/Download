@@ -13,9 +13,36 @@
 TMPDIR='/tmp'
 CHECK='/tmp/check'
 PACKAGE='astra-sm'
-VERSION='2021_09_04'
+VERSION='2021_09_08'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
+########################
+# Path of Config Files #
+BINPATH=/usr/bin
+ETCPATH=/etc
+ASTRAPATH=${ETCPATH}/astra
+######
+BBCPMT=$BINPATH/bbc_pmt_starter.sh
+BBCPY=$BINPATH/bbc_pmt_v6.py
+BBCENIGMA=$BINPATH/enigma2_pre_start.sh
+######
+SYSCONF=${ETCPATH}/sysctl.conf
+ASTRACONF=${ASTRAPATH}/astra.conf
+ABERTISBIN=${ASTRAPATH}/scripts/abertis
+ASTRABIN=$BINPATH/astra
+SPAMMERBIN=$BINPATH/spammer
+T2MBIN=$BINPATH/t2mi_decap
+###############################
+# Path of Config Files in Tmp #
+CONFIGpmttmp=${TMPDIR}/bbc_pmt_v6/bbc_pmt_starter.sh
+CONFIGpytmp=${TMPDIR}/bbc_pmt_v6/bbc_pmt_v6.py
+CONFIGentmp=${TMPDIR}/bbc_pmt_v6/enigma2_pre_start.sh
+CONFIGsysctltmp=${TMPDIR}/${PACKAGE}/sysctl.conf
+CONFIGastratmp=${TMPDIR}/${PACKAGE}/astra.conf
+CONFIGabertistmp=${TMPDIR}/${PACKAGE}/abertis
+CONFIGBINastratmp=${TMPDIR}/${PACKAGE}/astra
+CONFIGspammertmp=${TMPDIR}/${PACKAGE}/spammer
+CONFIGt2mi_decaptmp=${TMPDIR}/${PACKAGE}/t2mi_decap
 ####################
 #  Image Checking  #
 if which opkg > /dev/null 2>&1; then
@@ -42,7 +69,8 @@ rm -rf /etc/tuxbox/*.xml
 
 #########################
 # Remove files (if any) #
-rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-*.tar.gz bbc_pmt_v6.tar.gz
+rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-* bbc_pmt_v6*
+rm -rf $ASTRACONF $SYSCONF
 
 #####################
 #  Checking Package #
@@ -111,17 +139,36 @@ tar -zxf $TMPDIR/channels_backup_user_${VERSION}.tar.gz -C /
 sleep 1
 set +e
 echo
-echo 'Reloading Services - Please Wait'
+echo "   >>>>   Reloading Services - Please Wait   <<<<"
 wget -qO http://127.0.0.1/web/servicelistreload?mode=0 > /dev/null 2>&1
 sleep 1
 echo
 
-set -e
-echo "Downloading And Insallling Config BBC Please Wait ......"
-wget $MY_URL/bbc_pmt_v6.tar.gz -qP $TMPDIR
-tar -zxf $TMPDIR/bbc_pmt_v6.tar.gz -C /
-sleep 1
-set +e
+if [ -f $BBCPMT ] && [ -f $BBCPY ] && [ -f $BBCENIGMA ]; then
+    echo "   >>>>   All Config BBC Files found   <<<<"
+    sleep 2
+else
+    set -e
+    echo "Downloading Config BBC Please Wait ......"
+    wget $MY_URL/bbc_pmt_v6.tar.gz -qP $TMPDIR
+    tar -xzf bbc_pmt_v6.tar.gz
+    set +e
+    sleep 1
+    echo "---------------------------------------------"
+    if [ ! -f $BBCPMT ]; then
+        cp -f $CONFIGpmttmp $BINPATH > /dev/null 2>&1
+        echo "[send (bbc_pmt_starter.sh) file]"
+    fi
+    if [ ! -f $BBCPY ]; then
+        cp -f $CONFIGpytmp $BINPATH > /dev/null 2>&1
+        echo "[send (bbc_pmt_v6.py) file]"
+    fi
+    if [ ! -f $BBCENIGMA ]; then
+        cp -f $CONFIGentmp $BINPATH > /dev/null 2>&1
+        echo "[send (enigma2_pre_start.sh) file]"
+    fi
+    echo "---------------------------------------------"
+fi
 chmod 755 /usr/bin/{bbc_pmt_starter.sh,bbc_pmt_v6.py,enigma2_pre_start.sh}
 
 
@@ -132,43 +179,115 @@ if [ $OSTYPE = "Opensource" ]; then
     if grep -qs -i 'armv7l' cat "$CHECK" ; then
         echo ':Your Device IS ARM processor ...'
         echo
-        set -e
-        echo "Downloading And Insallling Config $PACKAGE Please Wait ......"
-        wget $MY_URL/astra-arm.tar.gz -qP $TMPDIR
-        tar -xzf $TMPDIR/astra-arm.tar.gz -C /
-        sleep 1
-        set +e
+        if [ -f $ASTRACONF ] && [ -f $ABERTISBIN ] && [ -f $SYSCONF ]; then
+            echo "   >>>>   All Config $PACKAGE Files found   <<<<"
+            sleep 2
+        else
+            set -e
+            echo "Downloading Config $PACKAGE Please Wait ......"
+            wget $MY_URL/astra-arm.tar.gz -qP $TMPDIR
+            tar -xzf astra-arm.tar.gz
+            mv astra-arm ${PACKAGE}
+            set +e
+            sleep 1
+            echo "---------------------------------------------"
+            if [ ! -f $SYSCONF ]; then
+                cp -f $CONFIGsysctltmp $ETCPATH > /dev/null 2>&1
+                echo "[send (sysctl.conf) file]"
+            fi
+            if [ ! -f $ASTRACONF ]; then
+                cp -f $CONFIGastratmp $ASTRAPATH > /dev/null 2>&1
+                echo "[send (astra.conf) file]"
+            fi
+            if [ ! -f $ABERTISBIN ]; then
+                cp -f $CONFIGabertistmp $ASTRAPATH/scripts > /dev/null 2>&1
+                echo "[send (abertis) file]"
+            fi
+            echo "---------------------------------------------"
+        fi
         chmod -R 755 /etc/astra
 
     elif grep -qs -i 'mips' cat "$CHECK" ; then
         echo ':Your Device IS MIPS processor ...'
-        sleep 2; clear
-        set -e
-        echo "Downloading And Insallling Config $PACKAGE Please Wait ......"
-        wget $MY_URL/astra-mips.tar.gz -qP $TMPDIR
-        tar -xzf $TMPDIR/astra-mips.tar.gz -C /
-        sleep 1
-        set +e
+        echo
+        if [ -f $ASTRACONF ] && [ -f $ABERTISBIN ] && [ -f $SYSCONF ]; then
+            echo "   >>>>   All Config $PACKAGE Files found   <<<<"
+            sleep 2
+        else
+            set -e
+            echo "Downloading Config $PACKAGE Please Wait ......"
+            wget $MY_URL/astra-mips.tar.gz -qP $TMPDIR
+            tar -xzf astra-mips.tar.gz
+            mv astra-mips ${PACKAGE}
+            set +e
+            sleep 1
+            echo "---------------------------------------------"
+            if [ ! -f $SYSCONF ]; then
+                cp -f $CONFIGsysctltmp $ETCPATH > /dev/null 2>&1
+                echo "[send (sysctl.conf) file]"
+            fi
+            if [ ! -f $ASTRACONF ]; then
+                cp -f $CONFIGastratmp $ASTRAPATH > /dev/null 2>&1
+                echo "[send (astra.conf) file]"
+            fi
+            if [ ! -f $ABERTISBIN ]; then
+                cp -f $CONFIGabertistmp $ASTRAPATH/scripts > /dev/null 2>&1
+                echo "[send (abertis) file]"
+            fi
+            echo "---------------------------------------------"
+        fi
         chmod -R 755 /etc/astra
 
     fi
 elif [ $OSTYPE = "DreamOS" ]; then
     if grep -qs -i 'aarch64' cat "$CHECK" ; then
         echo ':Your Device IS AARCH64 processor ...'
-        sleep 2; clear
-        set -e
-        echo "Downloading And Insallling Config $PACKAGE Please Wait ......"
-        wget $MY_URL/astra-aarch64.tar.gz -qP $TMPDIR
-        tar -xzf $TMPDIR/astra-aarch64.tar.gz -C /
-        sleep 1
-        set +e
+        echo
+        if [ -f $ASTRACONF ] && [ -f $ABERTISBIN ] && [ -f $SYSCONF ] && [ -f $ASTRABIN ] && [ -f $SPAMMERBIN ] && [ -f $T2MBIN ]; then
+            echo "   >>>>   All Config $PACKAGE Files found   <<<<"
+            sleep 2
+        else
+            set -e
+            echo "Downloading Config $PACKAGE Please Wait ......"
+            wget $MY_URL/astra-aarch64.tar.gz -qP $TMPDIR
+            tar -xzf astra-aarch64.tar.gz
+            mv astra-aarch64 ${PACKAGE}
+            set +e
+            sleep 1; clear
+            echo "---------------------------------------------"
+            if [ ! -f $ASTRABIN ]; then
+                cp -f $CONFIGBINastratmp $BINPATH > /dev/null 2>&1
+                echo "[send (astra) file]"
+            fi
+            if [ ! -f $SPAMMERBIN ]; then
+                cp -f $CONFIGspammertmp $BINPATH > /dev/null 2>&1
+                echo "[send (spammer) file]"
+            fi
+            if [ ! -f $T2MBIN ]; then
+                cp -f $CONFIGt2mi_decaptmp $BINPATH > /dev/null 2>&1
+                echo "[send (t2mi_decap) file]"
+            fi
+            if [ ! -f $SYSCONF ]; then
+                cp -f $CONFIGsysctltmp $ETCPATH > /dev/null 2>&1
+                echo "[send (sysctl.conf) file]"
+            fi
+            if [ ! -f $ASTRACONF ]; then
+                cp -f $CONFIGastratmp $ASTRAPATH > /dev/null 2>&1
+                echo "[send (astra.conf) file]"
+            fi
+            if [ ! -f $ABERTISBIN ]; then
+                cp -f $CONFIGabertistmp $ASTRAPATH/scripts > /dev/null 2>&1
+                echo "[send (abertis) file]"
+            fi
+            echo "---------------------------------------------"
+        fi
         chmod 755 /usr/bin/{astra,spammer,t2mi_decap}
         chmod -R 755 /etc/astra
     fi
 fi
 #########################
 # Remove files (if any) #
-rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-*.tar.gz bbc_pmt_v6.tar.gz
+rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-* bbc_pmt_v6*
 
 sync
 echo ""
