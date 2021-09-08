@@ -36,13 +36,12 @@ fi
 
 ##################################
 # Remove previous files (if any) #
-rm -rf $TMPDIR/${PACKAGE}*
+rm -rf $TMPDIR/"${PACKAGE:?}/"* > /dev/null 2>&1
 
 ######################
 #  Remove Old Plugin #
 if grep -qs "Package: $PACKAGE" $STATUS ; then
-    echo ""
-    echo "Remove old version..."
+    echo "   >>>>   Remove old version   <<<<"
     if [ $OSTYPE = "Opensource" ]; then
         $OPKGREMOV $PACKAGE
         echo ""
@@ -53,7 +52,7 @@ if grep -qs "Package: $PACKAGE" $STATUS ; then
         sleep 2; clear
     fi
 else
-    echo "No older version was found on the device... "
+    echo "   >>>>   No Older Version Was Found   <<<<"
     sleep 1
     echo ""; clear
 fi
@@ -131,18 +130,18 @@ fi
 ###################
 #  Install Plugin #
 if [ $OSTYPE = "Opensource" ]; then
-    echo "Downloading And Insallling IPtoSAT plugin Please Wait ......"
+    echo "Insallling IPtoSAT plugin Please Wait ......"
     wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
     $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
 else
-    echo "Downloading And Insallling IPtoSAT plugin Please Wait ......"
+    echo "Insallling IPtoSAT plugin Please Wait ......"
     wget $MY_URL/${PACKAGE}_${VERSION}.deb -qP $TMPDIR
     $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}.deb; $OPKGINSTAL -f -y
 fi
 
 ##################################
 # Remove previous files (if any) #
-rm -rf $TMPDIR/${PACKAGE}*
+rm -rf $TMPDIR/"${PACKAGE:?}/"* > /dev/null 2>&1
 
 sleep 1; clear
 echo ""

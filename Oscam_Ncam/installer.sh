@@ -39,7 +39,7 @@ fi
 
 ##################################
 # Remove previous files (if any) #
-rm -rf $TMPDIR/${OSC_PACKAGE}* $TMPDIR/${NCM_PACKAGE}*
+rm -rf $TMPDIR/"${OSC_PACKAGE:?}/"* $TMPDIR/"${NCM_PACKAGE:?}/"* > /dev/null 2>&1
 
 ################
 # Oscam Remove #
@@ -168,7 +168,7 @@ esac
 
 ################################
 # Remove script files (if any) #
-rm -rf $TMPDIR/${OSC_PACKAGE}* $TMPDIR/${NCM_PACKAGE}*
-rm -rf $DIR/installer.sh
+rm -rf $TMPDIR/"${OSC_PACKAGE:?}/"* $TMPDIR/"${NCM_PACKAGE:?}/"* > /dev/null 2>&1
+rm -rf $DIR/installer.sh > /dev/null 2>&1
 
 exit 1

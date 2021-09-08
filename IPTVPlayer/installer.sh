@@ -27,10 +27,6 @@ rm -rf /etc/enigma2/iptvplayertsiplayercgroup.json
 rm -rf /etc/tsiplayer_xtream.conf
 rm -rf /iptvplayer_rootfs
 
-#########################
-# Remove files (if any) #
-rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-*.tar.gz
-
 ####################
 #  Image Checking  #
 
