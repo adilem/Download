@@ -43,7 +43,7 @@ CONFIGastratmp=${TMPDIR}/${PACKAGE}/astra.conf
 CONFIGabertistmp=${TMPDIR}/${PACKAGE}/abertis
 CONFIGBINastratmp=${TMPDIR}/${PACKAGE}/astra
 CONFIGspammertmp=${TMPDIR}/${PACKAGE}/spammer
-CONFIGt2mi_decaptmp=${TMPDIR}/${PACKAGE}/t2mi_decap
+CONFIGt2midecaptmp=${TMPDIR}/${PACKAGE}/t2mi_decap
 CONFIGastrasmtmp=${TMPDIR}/${PACKAGE}/astra-sm
 ####################
 #  Image Checking  #
@@ -149,9 +149,9 @@ else
     set -e
     echo "Downloading Config BBC Please Wait ......"
     wget $MY_URL/bbc_pmt_v6.tar.gz -qP $TMPDIR
-    tar -xzf $TMPDIR/bbc_pmt_v6.tar.gz
+    tar -xzf $TMPDIR/bbc_pmt_v6.tar.gz -C $TMPDIR
     set +e
-    chmod -R 755 $TMPDIR/bbc_pmt_v6
+    chmod -R 755 ${TMPDIR}/bbc_pmt_v6
     sleep 1
     echo "---------------------------------------------"
     if [ ! -f $BBCPMT ]; then
@@ -174,8 +174,6 @@ if [ $OSTYPE = "Opensource" ]; then
     sleep 1
 
     if grep -qs -i 'armv7l' cat "$CHECK" ; then
-        echo ':Your Device IS ARM processor ...'
-        echo
         if [ -f $ASTRACONF ] && [ -f $ABERTISBIN ] && [ -f $SYSCONF ]; then
             echo "   >>>>   All Config $PACKAGE Files found   <<<<"
             sleep 2
@@ -183,10 +181,10 @@ if [ $OSTYPE = "Opensource" ]; then
             set -e
             echo "Downloading Config $PACKAGE Please Wait ......"
             wget $MY_URL/astra-arm.tar.gz -qP $TMPDIR
-            tar -xzf $TMPDIR/astra-arm.tar.gz
+            tar -xzf $TMPDIR/astra-arm.tar.gz -C $TMPDIR
             mv $TMPDIR/astra-arm $TMPDIR/${PACKAGE}
             set +e
-            chmod -R 755 $TMPDIR/${PACKAGE}
+            chmod -R 755 ${TMPDIR}/${PACKAGE}
             sleep 1
             echo "---------------------------------------------"
             if [ ! -f $SYSCONF ]; then
@@ -205,8 +203,6 @@ if [ $OSTYPE = "Opensource" ]; then
         fi
 
     elif grep -qs -i 'mips' cat "$CHECK" ; then
-        echo ':Your Device IS MIPS processor ...'
-        echo
         if [ -f $ASTRACONF ] && [ -f $ABERTISBIN ] && [ -f $SYSCONF ]; then
             echo "   >>>>   All Config $PACKAGE Files found   <<<<"
             sleep 2
@@ -214,10 +210,10 @@ if [ $OSTYPE = "Opensource" ]; then
             set -e
             echo "Downloading Config $PACKAGE Please Wait ......"
             wget $MY_URL/astra-mips.tar.gz -qP $TMPDIR
-            tar -xzf $TMPDIR/astra-mips.tar.gz
+            tar -xzf $TMPDIR/astra-mips.tar.gz -C $TMPDIR
             mv $TMPDIR/astra-mips $TMPDIR/${PACKAGE}
             set +e
-            chmod -R 755 $TMPDIR/${PACKAGE}
+            chmod -R 755 ${TMPDIR}/${PACKAGE}
             sleep 1
             echo "---------------------------------------------"
             if [ ! -f $SYSCONF ]; then
@@ -243,10 +239,10 @@ elif [ $OSTYPE = "DreamOS" ]; then
         set -e
         echo "Downloading Config $PACKAGE Please Wait ......"
         wget $MY_URL/astra-dreamos.tar.gz -qP $TMPDIR
-        tar -xzf $TMPDIR/astra-dreamos.tar.gz
+        tar -xzf $TMPDIR/astra-dreamos.tar.gz -C $TMPDIR
         mv $TMPDIR/astra-dreamos $TMPDIR/${PACKAGE}
         set +e
-        chmod -R 755 $TMPDIR/${PACKAGE}
+        chmod -R 755 ${TMPDIR}/${PACKAGE}
         sleep 1; clear
         echo "---------------------------------------------"
         if [ ! -f $ASTRABIN ]; then
@@ -258,7 +254,7 @@ elif [ $OSTYPE = "DreamOS" ]; then
             echo "[send (spammer) file]"
         fi
         if [ ! -f $T2MBIN ]; then
-            cp -f $CONFIGt2mi_decaptmp $BINPATH > /dev/null 2>&1
+            cp -f $CONFIGt2midecaptmp $BINPATH > /dev/null 2>&1
             echo "[send (t2mi_decap) file]"
         fi
         if [ ! -f $SYSCONF ]; then
