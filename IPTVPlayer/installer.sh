@@ -43,12 +43,12 @@ else
 fi
 
 if python --version 2>&1 | grep -q '^Python 3\.'; then
-    echo "You have Python3 image"
+    echo ":You have Python3 image ..."
     sleep 1; clear
     PY3SQLITE='python3-sqlite3'
     PLUGINPY3='E2IPLAYER_TSiplayer-PYTHON3.tar.gz'
 else
-    echo "You have Python2 image"
+    echo ":You have Python2 image ..."
     sleep 1; clear
     PY2SQLITE='python-sqlite3'
     PLUGINPY2='E2IPLAYER_TSiplayer.tar.gz'
@@ -56,7 +56,7 @@ fi
 
 #########################
 # Remove files (if any) #
-rm -rf $TMPDIR/$PLUGINPY2 $PLUGINPY3
+rm -rf $TMPDIR/"${PLUGINPY2:-}" "${PLUGINPY3:-}"
 
 #####################
 # Package Checking  #
@@ -64,7 +64,7 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
         echo
     else
-        echo "Some Depends Need to Be downloaded From Feeds ...."
+        echo "   >>>>   Need to install $DUKTAPE   <<<<"
         if [ $OSTYPE = "Opensource" ]; then
             echo "Opkg Update ..."
             $OPKG > /dev/null 2>&1
@@ -77,7 +77,7 @@ else
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
         echo
     else
-        echo "Some Depends Need to Be downloaded From Feeds ...."
+        echo "   >>>>   Need to install $DUKTAPE   <<<<"
         if [ $OSTYPE = "Opensource" ]; then
             echo "Opkg Update ..."
             $OPKG > /dev/null 2>&1
@@ -101,7 +101,7 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     if grep -qs "Package: $PY3SQLITE" $STATUS ; then
         echo
     else
-        echo "Some Depends Need to Be downloaded From Feeds ...."
+        echo "   >>>>   Need to install $PY3SQLITE   <<<<"
         if [ $OSTYPE = "Opensource" ]; then
             echo "Opkg Update ..."
             $OPKG > /dev/null 2>&1
@@ -114,7 +114,7 @@ else
     if grep -qs "Package: $PY2SQLITE" $STATUS ; then
         echo
     else
-        echo "Some Depends Need to Be downloaded From Feeds ...."
+        echo "   >>>>   Need to install $PY2SQLITE   <<<<"
         if [ $OSTYPE = "Opensource" ]; then
             echo "Opkg Update ..."
             $OPKG > /dev/null 2>&1
@@ -146,17 +146,19 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
         sleep 2
         sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer0=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer0=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.plarform=armv7" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
+        {
+            echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/"
+            echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer=extgstplayer"
+            echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer0=extgstplayer"
+            echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer=exteplayer"
+            echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer0=exteplayer"
+            echo "config.plugins.iptvplayer.remember_last_position=true"
+            echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24"
+            echo "config.plugins.iptvplayer.extplayer_skin=red"
+            echo "config.plugins.iptvplayer.plarform=armv7"
+            echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk"
+            echo "config.plugins.iptvplayer.wgetpath=wget"
+        } >> ${SETTINGS}
     elif grep -qs -i 'mips' cat $CHECK ; then
         echo ':Your Device IS MIPS processor ...'
         echo "Add Setting To ${SETTINGS} ..."
@@ -164,17 +166,19 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
         sleep 2
         sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer0=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer0=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.plarform=mipsel" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
+        {
+            echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/"
+            echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer=extgstplayer"
+            echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer0=extgstplayer"
+            echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer=exteplayer"
+            echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer0=exteplayer"
+            echo "config.plugins.iptvplayer.remember_last_position=true"
+            echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24"
+            echo "config.plugins.iptvplayer.extplayer_skin=red"
+            echo "config.plugins.iptvplayer.plarform=mipsel"
+            echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk"
+            echo "config.plugins.iptvplayer.wgetpath=wget"
+        } >> ${SETTINGS}
     elif grep -qs -i 'aarch64' cat $CHECK ; then
         echo ':Your Device IS AARCH64 processor ...'
         echo "Add Setting To ${SETTINGS} ..."
@@ -182,17 +186,19 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
         sleep 2
         sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer0=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer0=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.plarform=ARCH64" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
+        {
+            echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/"
+            echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer=extgstplayer"
+            echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer0=extgstplayer"
+            echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer=exteplayer"
+            echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer0=exteplayer"
+            echo "config.plugins.iptvplayer.remember_last_position=true"
+            echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24"
+            echo "config.plugins.iptvplayer.extplayer_skin=red"
+            echo "config.plugins.iptvplayer.plarform=ARCH64"
+            echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk"
+            echo "config.plugins.iptvplayer.wgetpath=wget"
+        } >> ${SETTINGS}
     elif grep -qs -i 'sh4' cat $CHECK ; then
         echo ':Your Device IS SH4 processor ...'
         echo "Add Setting To ${SETTINGS} ..."
@@ -200,17 +206,19 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
         sleep 2
         sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer0=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer0=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.plarform=sh4" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
+        {
+            echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/"
+            echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer=extgstplayer"
+            echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer0=extgstplayer"
+            echo "config.plugins.iptvplayer.defaultSH4MoviePlayer=exteplayer"
+            echo "config.plugins.iptvplayer.defaultSH4MoviePlayer0=exteplayer"
+            echo "config.plugins.iptvplayer.remember_last_position=true"
+            echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24"
+            echo "config.plugins.iptvplayer.extplayer_skin=red"
+            echo "config.plugins.iptvplayer.plarform=sh4"
+            echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk"
+            echo "config.plugins.iptvplayer.wgetpath=wget"
+        } >> ${SETTINGS}
 
     fi
 
@@ -246,17 +254,19 @@ else
         sleep 2
         sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer0=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer0=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.plarform=armv7" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
+        {
+            echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/"
+            echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer=extgstplayer"
+            echo "config.plugins.iptvplayer.alternativeARMV7MoviePlayer0=extgstplayer"
+            echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer=exteplayer"
+            echo "config.plugins.iptvplayer.defaultARMV7MoviePlayer0=exteplayer"
+            echo "config.plugins.iptvplayer.remember_last_position=true"
+            echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24"
+            echo "config.plugins.iptvplayer.extplayer_skin=red"
+            echo "config.plugins.iptvplayer.plarform=armv7"
+            echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk"
+            echo "config.plugins.iptvplayer.wgetpath=wget"
+        } >> ${SETTINGS}
     elif grep -qs -i 'mips' cat $CHECK ; then
         echo ':Your Device IS MIPS processor ...'
         echo "Add Setting To ${SETTINGS} ..."
@@ -264,17 +274,19 @@ else
         sleep 2
         sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer0=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer0=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.plarform=mipsel" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
+        {
+            echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/"
+            echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer=extgstplayer"
+            echo "config.plugins.iptvplayer.alternativeMIPSELMoviePlayer0=extgstplayer"
+            echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer=exteplayer"
+            echo "config.plugins.iptvplayer.defaultMIPSELMoviePlayer0=exteplayer"
+            echo "config.plugins.iptvplayer.remember_last_position=true"
+            echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24"
+            echo "config.plugins.iptvplayer.extplayer_skin=red"
+            echo "config.plugins.iptvplayer.plarform=mipsel"
+            echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk"
+            echo "config.plugins.iptvplayer.wgetpath=wget"
+        } >> ${SETTINGS}
     elif grep -qs -i 'aarch64' cat $CHECK ; then
         echo ':Your Device IS AARCH64 processor ...'
         echo "Add Setting To ${SETTINGS} ..."
@@ -282,17 +294,19 @@ else
         sleep 2
         sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer0=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer0=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.plarform=ARCH64" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
+        {
+            echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/"
+            echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer=extgstplayer"
+            echo "config.plugins.iptvplayer.alternativeARCH64MoviePlayer0=extgstplayer"
+            echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer=exteplayer"
+            echo "config.plugins.iptvplayer.defaultARCH64MoviePlayer0=exteplayer"
+            echo "config.plugins.iptvplayer.remember_last_position=true"
+            echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24"
+            echo "config.plugins.iptvplayer.extplayer_skin=red"
+            echo "config.plugins.iptvplayer.plarform=ARCH64"
+            echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk"
+            echo "config.plugins.iptvplayer.wgetpath=wget"
+        } >> ${SETTINGS}
     elif grep -qs -i 'sh4' cat $CHECK ; then
         echo ':Your Device IS SH4 processor ...'
         echo "Add Setting To ${SETTINGS} ..."
@@ -300,22 +314,24 @@ else
         sleep 2
         sed -i '/iptvplayer/d' ${SETTINGS}
         sleep 2
-        echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer0=extgstplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.defaultSH4MoviePlayer0=exteplayer" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.remember_last_position=true" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.extplayer_skin=red" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.plarform=sh4" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk" >> ${SETTINGS}
-        echo "config.plugins.iptvplayer.wgetpath=wget" >> ${SETTINGS}
+        {
+            echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/"
+            echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer=extgstplayer"
+            echo "config.plugins.iptvplayer.alternativeSH4MoviePlayer0=extgstplayer"
+            echo "config.plugins.iptvplayer.defaultSH4MoviePlayer=exteplayer"
+            echo "config.plugins.iptvplayer.defaultSH4MoviePlayer0=exteplayer"
+            echo "config.plugins.iptvplayer.remember_last_position=true"
+            echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24"
+            echo "config.plugins.iptvplayer.extplayer_skin=red"
+            echo "config.plugins.iptvplayer.plarform=sh4"
+            echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk"
+            echo "config.plugins.iptvplayer.wgetpath=wget"
+        } >> ${SETTINGS}
 
     fi
     #########################
     # Remove files (if any) #
-    rm -rf $TMPDIR/$PLUGINPY2 $PLUGINPY3
+    rm -rf $TMPDIR/"${PLUGINPY2:-}" "${PLUGINPY3:-}"
 
     sync
     echo "#########################################################"
