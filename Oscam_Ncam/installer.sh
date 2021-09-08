@@ -14,7 +14,7 @@ PACKAGE='libcurl4'
 TMPDIR='/tmp'
 DIR=$(pwd)
 OSC_VERSION='11.695-emu-r798'
-ENC_VERSION='V11.9-r3'
+NCM_VERSION='V11.9-r3'
 OSC_PACKAGE='enigma2-plugin-softcams-oscam'
 NCM_PACKAGE='enigma2-plugin-softcams-ncam'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/'
@@ -39,7 +39,7 @@ fi
 
 ##################################
 # Remove previous files (if any) #
-rm -rf $TMPDIR/"${OSC_PACKAGE:?}/"* $TMPDIR/"${NCM_PACKAGE:?}/"* > /dev/null 2>&1
+rm -rf $TMPDIR/"${OSC_PACKAGE:?}"* $TMPDIR/"${NCM_PACKAGE:?}"* > /dev/null 2>&1
 
 ################
 # Oscam Remove #
@@ -123,33 +123,33 @@ read opt
 case $opt in
     "1") EMU=Oscam removeoscam
         if [ $OSTYPE = "Opensource" ]; then
-            echo "Downloading And Insallling Oscam plugin Please Wait ......"
+            echo "Insallling Oscam plugin Please Wait ......"
             wget $MY_URL/${OSC_PACKAGE}_${OSC_VERSION}_all.ipk -qP $TMPDIR
             $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}_${OSC_VERSION}_all.ipk
         else
-            echo "Downloading And Insallling Oscam plugin Please Wait ......"
+            echo "Insallling Oscam plugin Please Wait ......"
             wget $MY_URL/${OSC_PACKAGE}_${OSC_VERSION}_all.deb -qP $TMPDIR
             $DPKINSTALL $TMPDIR/${OSC_PACKAGE}_${OSC_VERSION}_all.deb; $OPKGINSTAL -f -y
         fi
         ;;
     "2") EMU=Ncam removencam
         if [ $OSTYPE = "Opensource" ]; then
-            echo "Downloading And Insallling Ncam plugin Please Wait ......"
-            wget $MY_URL/${ENC_PACKAGE}_${ENC_VERSION}_all.ipk -qP $TMPDIR
-            $OPKGINSTAL $TMPDIR/${ENC_PACKAGE}_${ENC_VERSION}_all.ipk
+            echo "Insallling Ncam plugin Please Wait ......"
+            wget $MY_URL/${NCM_PACKAGE}_${NCM_VERSION}_all.ipk -qP $TMPDIR
+            $OPKGINSTAL $TMPDIR/${NCM_PACKAGE}_${NCM_VERSION}_all.ipk
         else
-            echo "Downloading And Insallling Ncam plugin Please Wait ......"
-            wget $MY_URL/${ENC_PACKAGE}_${ENC_VERSION}_all.deb -qP $TMPDIR
-            $DPKINSTALL $TMPDIR/${ENC_PACKAGE}_${ENC_VERSION}_all.deb; $OPKGINSTAL -f -y
+            echo "Insallling Ncam plugin Please Wait ......"
+            wget $MY_URL/${NCM_PACKAGE}_${NCM_VERSION}_all.deb -qP $TMPDIR
+            $DPKINSTALL $TMPDIR/${NCM_PACKAGE}_${NCM_VERSION}_all.deb; $OPKGINSTAL -f -y
         fi
         ;;
     "3") EMU=SupTV_Oscam removeoscam
-        echo "Downloading And Insallling SupTV_Oscam plugin Please Wait ......"
+        echo "Insallling SupTV_Oscam plugin Please Wait ......"
         wget $MY_URL/${OSC_PACKAGE}-supcam_${OSC_VERSION}_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-supcam_${OSC_VERSION}_all.ipk
         ;;
     "4") EMU=Revcam_Oscam removeoscam
-        echo "Downloading And Insallling Revcam_Oscam plugin Please Wait ......"
+        echo "Insallling Revcam_Oscam plugin Please Wait ......"
         wget $MY_URL/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk
         ;;
@@ -168,7 +168,6 @@ esac
 
 ################################
 # Remove script files (if any) #
-rm -rf $TMPDIR/"${OSC_PACKAGE:?}/"* $TMPDIR/"${NCM_PACKAGE:?}/"* > /dev/null 2>&1
-rm -rf $DIR/installer.sh > /dev/null 2>&1
+rm -rf $TMPDIR/"${OSC_PACKAGE:?}"* $TMPDIR/"${NCM_PACKAGE:?}"* "$DIR"/installer.sh > /dev/null 2>&1
 
 exit 1

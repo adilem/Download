@@ -36,7 +36,7 @@ fi
 
 ##################################
 # Remove previous files (if any) #
-rm -rf $TMPDIR/"${PACKAGE:?}/"* > /dev/null 2>&1
+rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 
 ######################
 #  Remove Old Plugin #
@@ -66,7 +66,7 @@ fi
 
 #########################
 # Remove files (if any) #
-rm -rf $TMPDIR/"${PACKAGE:?}/"* > /dev/null 2>&1
+rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 
 
 sleep 2; clear
