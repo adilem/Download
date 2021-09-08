@@ -240,9 +240,9 @@ if [ $OSTYPE = "Opensource" ]; then
 
     fi
 elif [ $OSTYPE = "DreamOS" ]; then
-    if grep -qs -i 'aarch64' cat "$CHECK" ; then
-        echo ':Your Device IS AARCH64 processor ...'
-        echo
+    #if grep -qs -i 'aarch64' cat "$CHECK" ; then
+        #echo ':Your Device IS AARCH64 processor ...'
+        #echo
         if [ -f $ASTRACONF ] && [ -f $ABERTISBIN ] && [ -f $SYSCONF ] && [ -f $ASTRABIN ] && [ -f $SPAMMERBIN ] && [ -f $T2MBIN ]; then
             echo "   >>>>   All Config $PACKAGE Files found   <<<<"
             sleep 2
@@ -283,7 +283,7 @@ elif [ $OSTYPE = "DreamOS" ]; then
         fi
         chmod 755 /usr/bin/{astra,spammer,t2mi_decap}
         chmod -R 755 /etc/astra
-    fi
+    #fi
 fi
 #########################
 # Remove files (if any) #
