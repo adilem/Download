@@ -241,48 +241,48 @@ if [ $OSTYPE = "Opensource" ]; then
     fi
 elif [ $OSTYPE = "DreamOS" ]; then
     #if grep -qs -i 'aarch64' cat "$CHECK" ; then
-        #echo ':Your Device IS AARCH64 processor ...'
-        #echo
-        if [ -f $ASTRACONF ] && [ -f $ABERTISBIN ] && [ -f $SYSCONF ] && [ -f $ASTRABIN ] && [ -f $SPAMMERBIN ] && [ -f $T2MBIN ]; then
-            echo "   >>>>   All Config $PACKAGE Files found   <<<<"
-            sleep 2
-        else
-            set -e
-            echo "Downloading Config $PACKAGE Please Wait ......"
-            wget $MY_URL/astra-aarch64.tar.gz -qP $TMPDIR
-            tar -xzf astra-aarch64.tar.gz
-            mv astra-aarch64 ${PACKAGE}
-            set +e
-            sleep 1; clear
-            echo "---------------------------------------------"
-            if [ ! -f $ASTRABIN ]; then
-                cp -f $CONFIGBINastratmp $BINPATH > /dev/null 2>&1
-                echo "[send (astra) file]"
-            fi
-            if [ ! -f $SPAMMERBIN ]; then
-                cp -f $CONFIGspammertmp $BINPATH > /dev/null 2>&1
-                echo "[send (spammer) file]"
-            fi
-            if [ ! -f $T2MBIN ]; then
-                cp -f $CONFIGt2mi_decaptmp $BINPATH > /dev/null 2>&1
-                echo "[send (t2mi_decap) file]"
-            fi
-            if [ ! -f $SYSCONF ]; then
-                cp -f $CONFIGsysctltmp $ETCPATH > /dev/null 2>&1
-                echo "[send (sysctl.conf) file]"
-            fi
-            if [ ! -f $ASTRACONF ]; then
-                cp -f $CONFIGastratmp $ASTRAPATH > /dev/null 2>&1
-                echo "[send (astra.conf) file]"
-            fi
-            if [ ! -f $ABERTISBIN ]; then
-                cp -f $CONFIGabertistmp $ASTRAPATH/scripts > /dev/null 2>&1
-                echo "[send (abertis) file]"
-            fi
-            echo "---------------------------------------------"
+    #echo ':Your Device IS AARCH64 processor ...'
+    #echo
+    if [ -f $ASTRACONF ] && [ -f $ABERTISBIN ] && [ -f $SYSCONF ] && [ -f $ASTRABIN ] && [ -f $SPAMMERBIN ] && [ -f $T2MBIN ]; then
+        echo "   >>>>   All Config $PACKAGE Files found   <<<<"
+        sleep 2
+    else
+        set -e
+        echo "Downloading Config $PACKAGE Please Wait ......"
+        wget $MY_URL/astra-aarch64.tar.gz -qP $TMPDIR
+        tar -xzf astra-aarch64.tar.gz
+        mv astra-aarch64 ${PACKAGE}
+        set +e
+        sleep 1; clear
+        echo "---------------------------------------------"
+        if [ ! -f $ASTRABIN ]; then
+            cp -f $CONFIGBINastratmp $BINPATH > /dev/null 2>&1
+            echo "[send (astra) file]"
         fi
-        chmod 755 /usr/bin/{astra,spammer,t2mi_decap}
-        chmod -R 755 /etc/astra
+        if [ ! -f $SPAMMERBIN ]; then
+            cp -f $CONFIGspammertmp $BINPATH > /dev/null 2>&1
+            echo "[send (spammer) file]"
+        fi
+        if [ ! -f $T2MBIN ]; then
+            cp -f $CONFIGt2mi_decaptmp $BINPATH > /dev/null 2>&1
+            echo "[send (t2mi_decap) file]"
+        fi
+        if [ ! -f $SYSCONF ]; then
+            cp -f $CONFIGsysctltmp $ETCPATH > /dev/null 2>&1
+            echo "[send (sysctl.conf) file]"
+        fi
+        if [ ! -f $ASTRACONF ]; then
+            cp -f $CONFIGastratmp $ASTRAPATH > /dev/null 2>&1
+            echo "[send (astra.conf) file]"
+        fi
+        if [ ! -f $ABERTISBIN ]; then
+            cp -f $CONFIGabertistmp $ASTRAPATH/scripts > /dev/null 2>&1
+            echo "[send (abertis) file]"
+        fi
+        echo "---------------------------------------------"
+    fi
+    chmod 755 /usr/bin/{astra,spammer,t2mi_decap}
+    chmod -R 755 /etc/astra
     #fi
 fi
 #########################
