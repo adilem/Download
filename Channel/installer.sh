@@ -132,7 +132,7 @@ rm -rf ${TMPDIR}/channels_backup_user_${VERSION}* astra-* bbc_pmt_v6*
 ###############################
 # Downlaod And Install Plugin #
 echo "   >>>>   Downloading And Insallling Config Tuner - Please Wait   <<<<"
-init 2
+init 2   # Stops Enigma2
 sleep 2
 sed -i '/Nims/d' ${SETTINGS}
 sleep 2
@@ -334,7 +334,7 @@ echo "*********************************************************"
 sleep 2
 
 if [ $OSTYPE = "Opensource" ]; then
-    killall -9 enigma2
+    init 6    # Reboots the box
 else
     systemctl restart enigma2
 fi
