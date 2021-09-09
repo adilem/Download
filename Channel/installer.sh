@@ -62,15 +62,13 @@ else
     LIBC6='libc6'
 fi
 
-#########################
-# Remove files (if any) #
+###########################
+# Remove Channel (if any) #
 rm -rf /etc/enigma2/lamedb
 rm -rf /etc/enigma2/*list
 rm -rf /etc/enigma2/*.tv
 rm -rf /etc/enigma2/*.radio
 rm -rf /etc/tuxbox/*.xml
-rm -rf ${ASTRACONF} ${SYSCONF}
-rm -rf ${TMPDIR}/channels_backup_user_${VERSION}* astra-* bbc_pmt_v6*
 
 #####################
 #  Checking Package #
@@ -125,6 +123,11 @@ elif [ $OSTYPE = "DreamOS" ]; then
     fi
 
 fi
+
+#########################
+# Remove files (if any) #
+rm -rf ${ASTRACONF} ${SYSCONF}
+rm -rf ${TMPDIR}/channels_backup_user_${VERSION}* astra-* bbc_pmt_v6*
 
 ###############################
 # Downlaod And Install Plugin #
