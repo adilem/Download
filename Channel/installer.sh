@@ -334,9 +334,9 @@ echo "*********************************************************"
 sleep 2
 
 if [ $OSTYPE = "Opensource" ]; then
-    sleep 2; init 3
+    killall -9 enigma2
 else
-    sleep 2; systemctl restart enigma2
+    systemctl restart enigma2
 fi
 
 exit 0
