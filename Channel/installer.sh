@@ -21,17 +21,18 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 BINPATH=/usr/bin
 ETCPATH=/etc
 ASTRAPATH=${ETCPATH}/astra
+SETTINGS=${ETCPATH}/enigma2/settings
 ######
-BBCPMT=$BINPATH/bbc_pmt_starter.sh
-BBCPY=$BINPATH/bbc_pmt_v6.py
-BBCENIGMA=$BINPATH/enigma2_pre_start.sh
+BBCPMT=${BINPATH}/bbc_pmt_starter.sh
+BBCPY=${BINPATH}/bbc_pmt_v6.py
+BBCENIGMA=${BINPATH}/enigma2_pre_start.sh
 ######
 SYSCONF=${ETCPATH}/sysctl.conf
 ASTRACONF=${ASTRAPATH}/astra.conf
 ABERTISBIN=${ASTRAPATH}/scripts/abertis
-ASTRABIN=$BINPATH/astra
-SPAMMERBIN=$BINPATH/spammer
-T2MBIN=$BINPATH/t2mi_decap
+ASTRABIN=${BINPATH}/astra
+SPAMMERBIN=${BINPATH}/spammer
+T2MBIN=${BINPATH}/t2mi_decap
 ASTRASM=${ETCPATH}/init.d/astra-sm
 ###############################
 # Path of Config Files in Tmp #
@@ -61,18 +62,15 @@ else
     LIBC6='libc6'
 fi
 
-###########################
-# Remove Channel (if any) #
+#########################
+# Remove files (if any) #
 rm -rf /etc/enigma2/lamedb
 rm -rf /etc/enigma2/*list
 rm -rf /etc/enigma2/*.tv
 rm -rf /etc/enigma2/*.radio
 rm -rf /etc/tuxbox/*.xml
-
-#########################
-# Remove files (if any) #
-rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-* bbc_pmt_v6* > /dev/null 2>&1
-rm -rf $ASTRACONF $SYSCONF > /dev/null 2>&1
+rm -rf ${ASTRACONF} ${SYSCONF}
+rm -rf ${TMPDIR}/channels_backup_user_${VERSION}* astra-* bbc_pmt_v6*
 
 #####################
 #  Checking Package #
@@ -130,6 +128,44 @@ fi
 
 ###############################
 # Downlaod And Install Plugin #
+echo "   >>>>   Downloading And Insallling Config Tuner - Please Wait   <<<<"
+init 2
+sleep 2
+sed -i '/Nims/d' ${SETTINGS}
+sleep 2
+{
+    echo config.Nims.0.dvbs.advanced.sat.19.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.30.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.48.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.70.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.90.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.100.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.130.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.160.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.192.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.215.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.235.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.260.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.330.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.392.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.420.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.450.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.460.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.525.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.3300.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.3325.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.3355.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.3380.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.3450.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.3520.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.3530.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.3550.lnb=1
+    echo config.Nims.0.dvbs.advanced.sat.3592.lnb=1
+    echo config.Nims.0.dvbs.configMode=advanced
+    echo config.Nims.1.dvbs.configMode=nothing
+} >> ${SETTINGS}
+
+echo
 set -e
 echo "Downloading And Insallling Channel Please Wait ......"
 wget $MY_URL/channels_backup_user_${VERSION}.tar.gz -qP $TMPDIR
@@ -139,7 +175,7 @@ set +e
 echo
 echo "   >>>>   Reloading Services - Please Wait   <<<<"
 wget -qO http://127.0.0.1/web/servicelistreload?mode=0 > /dev/null 2>&1
-sleep 1
+sleep 2
 echo
 
 if [ -f $BBCPMT ] && [ -f $BBCPY ] && [ -f $BBCENIGMA ]; then
@@ -147,7 +183,7 @@ if [ -f $BBCPMT ] && [ -f $BBCPY ] && [ -f $BBCENIGMA ]; then
     sleep 2
 else
     set -e
-    echo "Downloading Config BBC Please Wait ......"
+    echo "Downloading And Insallling Config BBC Please Wait ......"
     wget $MY_URL/bbc_pmt_v6.tar.gz -qP $TMPDIR
     tar -xzf $TMPDIR/bbc_pmt_v6.tar.gz -C $TMPDIR
     set +e
@@ -237,7 +273,7 @@ elif [ $OSTYPE = "DreamOS" ]; then
         sleep 2
     else
         set -e
-        echo "Downloading Config $PACKAGE Please Wait ......"
+        echo "Downloading And Insallling Config $PACKAGE Please Wait ......"
         wget $MY_URL/astra-dreamos.tar.gz -qP $TMPDIR
         tar -xzf $TMPDIR/astra-dreamos.tar.gz -C $TMPDIR
         mv $TMPDIR/astra-dreamos $TMPDIR/${PACKAGE}
@@ -276,9 +312,10 @@ elif [ $OSTYPE = "DreamOS" ]; then
         echo "---------------------------------------------"
     fi
 fi
+
 #########################
 # Remove files (if any) #
-rm -rf $TMPDIR/channels_backup_user_${VERSION}.tar.gz astra-* bbc_pmt_v6* > /dev/null 2>&1
+rm -rf ${TMPDIR}/channels_backup_user_${VERSION}* astra-* bbc_pmt_v6*
 
 sync
 echo ""
@@ -294,9 +331,9 @@ echo "*********************************************************"
 sleep 2
 
 if [ $OSTYPE = "Opensource" ]; then
-    killall -9 enigma2
+    sleep 2; init 3
 else
-    systemctl restart enigma2
+    sleep 2; systemctl restart enigma2
 fi
 
 exit 0
