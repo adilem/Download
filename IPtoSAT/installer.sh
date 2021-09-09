@@ -141,7 +141,7 @@ fi
 
 ##################################
 # Remove previous files (if any) #
-rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
+rm -rf $TMPDIR/"${PACKAGE:?}"*
 
 sleep 1; clear
 echo ""
@@ -154,5 +154,11 @@ echo "**  Support    : https://www.tunisia-sat.com/forums/threads/4171372/  *"
 echo "**                                                                    *"
 echo "***********************************************************************"
 echo ""
+
+if [ $OSTYPE = "Opensource" ]; then
+    killall -9 enigma2
+else
+    systemctl restart enigma2
+fi
 
 exit 0
