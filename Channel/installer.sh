@@ -270,7 +270,7 @@ echo "*********************************************************"
 sleep 2
 
 if [ $OSTYPE = "Opensource" ]; then
-    killall -9 enigma2
+    shutdown -r now
 elif [ $OSTYPE = "DreamOS" ]; then
     systemctl restart enigma2
 fi
