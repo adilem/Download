@@ -21,7 +21,6 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 BINPATH=/usr/bin
 ETCPATH=/etc
 ASTRAPATH=${ETCPATH}/astra
-SETTINGS=${ETCPATH}/enigma2/settings
 ######
 BBCPMT=${BINPATH}/bbc_pmt_starter.sh
 BBCPY=${BINPATH}/bbc_pmt_v6.py
@@ -105,43 +104,6 @@ rm -rf ${TMPDIR}/channels_backup_user_${VERSION}* astra-* bbc_pmt_v6*
 
 ###############################
 # Downlaod And Install Plugin #
-echo "   >>>>   Downloading And Insallling Config Tuner - Please Wait   <<<<"
-init 2   # Stops Enigma2
-sleep 2
-sed -i '/Nims/d' ${SETTINGS}
-sleep 2
-{
-    echo config.Nims.0.dvbs.advanced.sat.19.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.30.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.48.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.70.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.90.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.100.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.130.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.160.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.192.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.215.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.235.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.260.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.330.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.392.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.420.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.450.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.460.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.525.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.3300.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.3325.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.3355.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.3380.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.3450.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.3520.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.3530.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.3550.lnb=1
-    echo config.Nims.0.dvbs.advanced.sat.3592.lnb=1
-    echo config.Nims.0.dvbs.configMode=advanced
-    echo config.Nims.1.dvbs.configMode=nothing
-} >> ${SETTINGS}
-
 echo
 set -e
 echo "Downloading And Insallling Channel Please Wait ......"
@@ -308,7 +270,7 @@ echo "*********************************************************"
 sleep 2
 
 if [ $OSTYPE = "Opensource" ]; then
-    init 6    # Reboots the box
+    killall -9 enigma2
 elif [ $OSTYPE = "DreamOS" ]; then
     systemctl restart enigma2
 fi
