@@ -48,12 +48,12 @@ CONFIGt2midecaptmp=${TMPDIR}/${PACKAGE}/t2mi_decap
 CONFIGastrasmtmp=${TMPDIR}/${PACKAGE}/astra-sm
 ####################
 #  Image Checking  #
-if which opkg > /dev/null 2>&1; then
+if [ -f /etc/opkg/opkg.conf ] ; then
     STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
-else
+elif [ -f /etc/apt/apt.conf ] ; then
     STATUS='/var/lib/dpkg/status'
     OSTYPE='DreamOS'
     OPKG='apt-get update'
