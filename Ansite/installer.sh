@@ -16,7 +16,7 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Ansite/'
 ####################
 #  Image Checking  #
 
-if which opkg > /dev/null 2>&1; then
+if [ -f /etc/opkg/opkg.conf ] ; then
     STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
     OPKG='opkg update'

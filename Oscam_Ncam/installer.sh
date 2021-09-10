@@ -22,13 +22,13 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/'
 ####################
 #  Image Checking  #
 
-if which opkg > /dev/null 2>&1; then
+if [ -f /etc/opkg/opkg.conf ] ; then
     STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
     OPKGREMOV='opkg remove --force-depends'
-else
+elif [ -f /etc/apt/apt.conf ] ; then
     STATUS='/var/lib/dpkg/status'
     OSTYPE='DreamOS'
     OPKG='apt-get update'

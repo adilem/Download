@@ -16,7 +16,7 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPtoSAT/'
 
 ####################
 #  Image Checking  #
-if which opkg > /dev/null 2>&1; then
+if [ -f /etc/opkg/opkg.conf ] ; then
     STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
     PKGEXP3='exteplayer3'
@@ -24,7 +24,7 @@ if which opkg > /dev/null 2>&1; then
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
     OPKGREMOV='opkg remove --force-depends'
-else
+elif [ -f /etc/apt/apt.conf ] ; then
     STATUS='/var/lib/dpkg/status'
     OSTYPE='DreamOS'
     PKGBAPP='gstreamer1.0-plugins-base-apps'
