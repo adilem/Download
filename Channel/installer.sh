@@ -58,8 +58,6 @@ elif [ -f /etc/apt/apt.conf ] ; then
     OSTYPE='DreamOS'
     OPKG='apt-get update'
     OPKGINSTAL='apt-get install'
-    LIBAIO1='libaio1'
-    LIBC6='libc6'
 fi
 
 ###########################
@@ -73,6 +71,20 @@ rm -rf /etc/tuxbox/*.xml
 #####################
 #  Checking Package #
 if [ $OSTYPE = "Opensource" ]; then
+    if grep -qs "Package: wget" $STATUS ; then
+        echo
+    else
+        $OPKGINSTAL wget
+    fi
+elif [ $OSTYPE = "DreamOS" ]; then
+    if grep -qs "Package: wget" $STATUS ; then
+        echo
+    else
+        $OPKGINSTAL wget
+    fi
+fi
+
+if [ $OSTYPE = "Opensource" ]; then
     if grep -qs "Package: $PACKAGE" $STATUS ; then
         echo
     else
@@ -81,47 +93,9 @@ if [ $OSTYPE = "Opensource" ]; then
         echo " Downloading $PACKAGE ......"
         $OPKGINSTAL $PACKAGE
     fi
-elif [ $OSTYPE = 'DreamOS' ]; then
-    if grep -qs "Package: $LIBAIO1" $STATUS ; then
-        echo
-    else
-        echo "APT Update ..."
-        $OPKG > /dev/null 2>&1
-        echo " Downloading $LIBAIO1 ......"
-        $OPKGINSTAL $LIBAIO1
-    fi
-elif grep -qs "Package: $LIBC6" $STATUS ; then
-    echo
 else
-    echo "APT Update ..."
-    $OPKG > /dev/null 2>&1
-    echo " Downloading $LIBC6 ......"
-    $OPKGINSTAL $LIBC6
-fi
-
-if [ $OSTYPE = "Opensource" ]; then
-    if grep -qs "Package: $PACKAGE" $STATUS ; then
-        echo
-    else
         echo "   >>>>   Feed Missing $PACKAGE   <<<<"
         echo "   >>>>   Notification Abertis DTT Channel will not work   <<<<"
-    fi
-elif [ $OSTYPE = "DreamOS" ]; then
-    if grep -qs "Package: $LIBAIO1" $STATUS ; then
-        echo
-    else
-        echo "Feed Missing $LIBAIO1"
-        echo "Sorry, the $PACKAGE will not be work"
-        exit 1
-    fi
-    if grep -qs "Package: $LIBC6" $STATUS ; then
-        echo
-    else
-        echo "Feed Missing $LIBC6"
-        echo "Sorry, the $PACKAGE will not be work"
-        exit 1
-    fi
-
 fi
 
 #########################
@@ -335,7 +309,7 @@ sleep 2
 
 if [ $OSTYPE = "Opensource" ]; then
     init 6    # Reboots the box
-else
+elif [ $OSTYPE = "DreamOS" ]; then
     systemctl restart enigma2
 fi
 
