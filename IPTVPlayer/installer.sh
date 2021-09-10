@@ -56,7 +56,11 @@ fi
 
 #########################
 # Remove files (if any) #
-rm -rf $TMPDIR/"${PLUGINPY2:-}" "${PLUGINPY3:-}"
+if python --version 2>&1 | grep -q '^Python 3\.'; then
+    rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
+else
+    rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
+fi
 
 #####################
 # Package Checking  #
@@ -331,7 +335,11 @@ else
     fi
     #########################
     # Remove files (if any) #
-    rm -rf $TMPDIR/"${PLUGINPY2:-}" "${PLUGINPY3:-}"
+    if python --version 2>&1 | grep -q '^Python 3\.'; then
+        rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
+    else
+        rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
+    fi
 
     sync
     echo "#########################################################"
