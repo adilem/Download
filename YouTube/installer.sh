@@ -48,26 +48,147 @@ else
     sleep 1; clear
 fi
 
-echo "Opkg Update ..."
-$OPKG > /dev/null 2>&1
+######################
+#  Checking Depends  #
+
+if python --version 2>&1 | grep -q '^Python 3\.'; then
+    if grep -qs "Package: enigma2" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL enigma2
+    fi
+    if grep -qs "Package: python3-codecs" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python3-codecs
+    fi
+    if grep -qs "Package: python3-core" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python3-core
+    fi
+    if grep -qs "Package: python3-json" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python3-json
+    fi
+    if grep -qs "Package: python3-netclient" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python3-netclient
+    fi
+    if grep -qs "Package: python3-twisted" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python3-twisted
+    fi
+    if grep -qs "Package: python3-twisted-web" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python3-twisted-web
+    fi
+else
+        if grep -qs "Package: python-codecs" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python-codecs
+    fi
+    if grep -qs "Package: python-compression" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python-compression
+    fi
+    if grep -qs "Package: python-core" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python-core
+    fi    
+    if grep -qs "Package: python-json" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python-json
+    fi
+    if grep -qs "Package: python-netclient" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python-netclient
+    fi
+    if grep -qs "Package: python-pyopenssl" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python-pyopenssl
+    fi
+    if grep -qs "Package: python-twisted-web" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python-twisted-web
+    fi
+    if grep -qs "Package: python-zlib" $STATUS ; then
+        echo
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL python-zlib
+    fi
+fi
+
+if [ $OSTYPE = "DreamOS" ]; then
+    if grep -qs "Package: gstreamer1.0-plugins-base-meta" $STATUS ; then
+        echo
+    else
+        echo "APT Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL gstreamer1.0-plugins-base-meta -y
+    fi
+    if grep -qs "Package: gstreamer1.0-plugins-good-spectrum" $STATUS ; then
+        echo
+    else
+        echo "APT Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL gstreamer1.0-plugins-good-spectrum -y
+    fi    
+fi        
 
 ###################
 #  Install Plugin #
-if python --version 2>&1 | grep -q '^Python 3\.'; then
-    echo "Insallling YouTube plugin Please Wait ......"
-    wget $MY_URL/${PACKAGE}_${VERSION}+${GIT}-r0_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}+${GIT}-r0_all.ipk
-else
     if [ $OSTYPE = "Opensource" ]; then
         echo "Insallling YouTube plugin Please Wait ......"
         wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk
     else
         echo "Insallling YouTube plugin Please Wait ......"
-        wget $MY_URL/${PACKAGE}_1+${VERSION}+${GIT}-r0_all.deb -qP $TMPDIR
-        $DPKINSTALL $TMPDIR/${PACKAGE}_1+${VERSION}+${GIT}-r0_all.deb; $OPKGINSTAL -f -y
+        wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.deb -qP $TMPDIR
+        $DPKINSTALL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.deb; $OPKGINSTAL -f -y
     fi
-fi
+
 
 #########################
 # Remove files (if any) #
@@ -96,7 +217,5 @@ if [ $OSTYPE = "Opensource" ]; then
 else
     systemctl restart enigma2
 fi
-
-exit 0
 
 exit 0
