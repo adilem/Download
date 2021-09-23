@@ -13,7 +13,7 @@ TMPDIR='/tmp'
 VERSION='git824'
 GIT='9e892cb'
 PACKAGE='enigma2-plugin-extensions-youtube'
-MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/'
+MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube'
 
 ####################
 #  Image Checking  #
@@ -70,7 +70,7 @@ rm -rf $TMPDIR/"${PACKAGE:?}"*
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"
-echo "**                       Ansite     : $VERSION                           *"
+echo "**                       Ansite     : $VERSION                          *"
 echo "**                       Uploaded by: MOHAMED_OS                      *"
 echo "**                       Develop by : Taapat                          *"
 echo "**  Support    : https://www.tunisia-sat.com/forums/threads/3776759/  *"
