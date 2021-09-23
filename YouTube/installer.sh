@@ -67,6 +67,12 @@ fi
 # Remove files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"*
 
+if [ -f /etc/enigma2/YouTube.key-opkg ]; then
+    rm -rf /etc/enigma2/YouTube.key-opkg
+else
+    echo
+fi
+
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"
