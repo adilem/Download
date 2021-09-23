@@ -55,7 +55,7 @@ $OPKG > /dev/null 2>&1
 #  Install Plugin #
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     echo "Insallling YouTube plugin Please Wait ......"
-    wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0_all.ipk -qP $TMPDIR
+    wget $MY_URL/${PACKAGE}+${VERSION}+${GIT}-r0_all.ipk -qP $TMPDIR
     $OPKGINSTAL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk
 else
     if [ $OSTYPE = "Opensource" ]; then
