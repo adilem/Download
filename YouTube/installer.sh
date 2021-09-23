@@ -53,14 +53,20 @@ $OPKG > /dev/null 2>&1
 
 ###################
 #  Install Plugin #
-if [ $OSTYPE = "Opensource" ]; then
+if python --version 2>&1 | grep -q '^Python 3\.'; then
     echo "Insallling YouTube plugin Please Wait ......"
-wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk -qP $TMPDIR
-$OPKGINSTAL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk
+    wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk
 else
-    echo "Insallling YouTube plugin Please Wait ......"
-    wget $MY_URL/${PACKAGE}_1+${VERSION}+${GIT}-r0_all.deb -qP $TMPDIR
-    $DPKINSTALL $TMPDIR/${PACKAGE}_1+${VERSION}+${GIT}-r0_all.deb; $OPKGINSTAL -f -y
+    if [ $OSTYPE = "Opensource" ]; then
+        echo "Insallling YouTube plugin Please Wait ......"
+        wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk -qP $TMPDIR
+        $OPKGINSTAL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk
+    else
+        echo "Insallling YouTube plugin Please Wait ......"
+        wget $MY_URL/${PACKAGE}_1+${VERSION}+${GIT}-r0_all.deb -qP $TMPDIR
+        $DPKINSTALL $TMPDIR/${PACKAGE}_1+${VERSION}+${GIT}-r0_all.deb; $OPKGINSTAL -f -y
+    fi
 fi
 
 #########################
@@ -71,6 +77,7 @@ if [ -f /etc/enigma2/YouTube.key-opkg ]; then
     rm -rf /etc/enigma2/YouTube.key-opkg
 else
     echo
+
 fi
 
 echo ""
