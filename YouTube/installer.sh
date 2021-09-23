@@ -102,7 +102,7 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
         $OPKGINSTAL python3-twisted-web
     fi
 else
-        if grep -qs "Package: python-codecs" $STATUS ; then
+    if grep -qs "Package: python-codecs" $STATUS ; then
         echo
     else
         echo "Opkg Update ..."
@@ -122,7 +122,7 @@ else
         echo "Opkg Update ..."
         $OPKG > /dev/null 2>&1
         $OPKGINSTAL python-core
-    fi    
+    fi
     if grep -qs "Package: python-json" $STATUS ; then
         echo
     else
@@ -174,20 +174,21 @@ if [ $OSTYPE = "DreamOS" ]; then
         echo "APT Update ..."
         $OPKG > /dev/null 2>&1
         $OPKGINSTAL gstreamer1.0-plugins-good-spectrum -y
-    fi    
-fi        
+    fi
+fi
 
+sleep 1; clear
 ###################
 #  Install Plugin #
-    if [ $OSTYPE = "Opensource" ]; then
-        echo "Insallling YouTube plugin Please Wait ......"
-        wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk -qP $TMPDIR
-        $OPKGINSTAL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk
-    else
-        echo "Insallling YouTube plugin Please Wait ......"
-        wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.deb -qP $TMPDIR
-        $DPKINSTALL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.deb; $OPKGINSTAL -f -y
-    fi
+if [ $OSTYPE = "Opensource" ]; then
+    echo "Insallling YouTube plugin Please Wait ......"
+    wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk
+else
+    echo "Insallling YouTube plugin Please Wait ......"
+    wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.deb -qP $TMPDIR
+    $DPKINSTALL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.deb; $OPKGINSTAL -f -y
+fi
 
 
 #########################
