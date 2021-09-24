@@ -1,6 +1,6 @@
 #!/bin/sh
 # ###########################################
-# SCRIPT : DOWNLOAD AND INSTALL ANSITE
+# SCRIPT : DOWNLOAD AND INSTALL YouTube
 # ###########################################
 #
 # Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube/installer.sh -qO - | /bin/sh
@@ -205,7 +205,7 @@ fi
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"
-echo "**                       Ansite     : $VERSION                          *"
+echo "**                       YouTube    : $VERSION                          *"
 echo "**                       Uploaded by: MOHAMED_OS                      *"
 echo "**                       Develop by : Taapat                          *"
 echo "**  Support    : https://www.tunisia-sat.com/forums/threads/3776759/  *"
