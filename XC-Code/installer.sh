@@ -61,10 +61,11 @@ fi
 # Remove files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"*
 
+sleep 1; clear
 echo ""
 echo "****************************************************************************************"
 echo "**                                                                                     *"
-echo "**                            XcPlugin   : $VERSION                                    *"
+echo "**                            XcPlugin   : $VERSION                                         *"
 echo "**                            Uploaded by: MOHAMED_OS                                  *"
 echo "**                            Develop by : Lululla                                     *"
 echo "**  Support: https://www.linuxsat-support.com/thread/143881-xcplugin-forever-version/  *"
