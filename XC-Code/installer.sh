@@ -10,7 +10,7 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-VERSION='1.7'
+VERSION='1.8'
 PACKAGE='enigma2-plugin-extensions-xcplugin-forever'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/XC-Code'
 
