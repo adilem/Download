@@ -13,7 +13,7 @@
 PACKAGE='libcurl4'
 TMPDIR='/tmp'
 DIR=$(pwd)
-OSC_VERSION='11.696-emu-r798'
+OSC_VERSION='11.697-emu-r798'
 NCM_VERSION='V11.9-r3'
 OSC_PACKAGE='enigma2-plugin-softcams-oscam'
 NCM_PACKAGE='enigma2-plugin-softcams-ncam'
