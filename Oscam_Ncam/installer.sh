@@ -119,7 +119,7 @@ echo
 echo "  x - Exit"
 echo
 echo "- Enter option:"
-read opt
+read -r opt
 case $opt in
     "1") EMU=Oscam removeoscam
         if [ $OSTYPE = "Opensource" ]; then
