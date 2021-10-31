@@ -13,7 +13,7 @@
 TMPDIR='/tmp'
 CHECK='/tmp/check'
 PACKAGE='astra-sm'
-VERSION='2021_10_27'
+VERSION='2021_10_31'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
 ########################
@@ -29,10 +29,6 @@ BBCENIGMA=${BINPATH}/enigma2_pre_start.sh
 SYSCONF=${ETCPATH}/sysctl.conf
 ASTRACONF=${ASTRAPATH}/astra.conf
 ABERTISBIN=${ASTRAPATH}/scripts/abertis
-ASTRABIN=${BINPATH}/astra
-SPAMMERBIN=${BINPATH}/spammer
-T2MBIN=${BINPATH}/t2mi_decap
-ASTRASM=${ETCPATH}/init.d/astra-sm
 ###############################
 # Path of Config Files in Tmp #
 CONFIGpmttmp=${TMPDIR}/bbc_pmt_v6/bbc_pmt_starter.sh
@@ -41,10 +37,6 @@ CONFIGentmp=${TMPDIR}/bbc_pmt_v6/enigma2_pre_start.sh
 CONFIGsysctltmp=${TMPDIR}/${PACKAGE}/sysctl.conf
 CONFIGastratmp=${TMPDIR}/${PACKAGE}/astra.conf
 CONFIGabertistmp=${TMPDIR}/${PACKAGE}/abertis
-CONFIGBINastratmp=${TMPDIR}/${PACKAGE}/astra
-CONFIGspammertmp=${TMPDIR}/${PACKAGE}/spammer
-CONFIGt2midecaptmp=${TMPDIR}/${PACKAGE}/t2mi_decap
-CONFIGastrasmtmp=${TMPDIR}/${PACKAGE}/astra-sm
 ####################
 #  Image Checking  #
 if [ -f /etc/opkg/opkg.conf ] ; then
@@ -69,20 +61,6 @@ rm -rf /etc/tuxbox/*.xml
 
 #####################
 #  Checking Package #
-if [ $OSTYPE = "Opensource" ]; then
-    if grep -qs "Package: wget" $STATUS ; then
-        echo
-    else
-        $OPKGINSTAL wget
-    fi
-elif [ $OSTYPE = "DreamOS" ]; then
-    if grep -qs "Package: wget" $STATUS ; then
-        echo
-    else
-        $OPKGINSTAL wget
-    fi
-fi
-
 if [ $OSTYPE = "Opensource" ]; then
     if grep -qs "Package: $PACKAGE" $STATUS ; then
         echo
@@ -205,50 +183,6 @@ if [ $OSTYPE = "Opensource" ]; then
             fi
             echo "---------------------------------------------"
         fi
-    fi
-elif [ $OSTYPE = "DreamOS" ]; then
-    if [ -f $ASTRACONF ] && [ -f $ABERTISBIN ] && [ -f $SYSCONF ] && [ -f $ASTRABIN ] && [ -f $SPAMMERBIN ] && [ -f $T2MBIN ] && [ -f $ASTRASM ]; then
-        echo "   >>>>   All Config $PACKAGE Files found   <<<<"
-        sleep 2
-    else
-        set -e
-        echo "Downloading And Insallling Config $PACKAGE Please Wait ......"
-        wget $MY_URL/astra-dreamos.tar.gz -qP $TMPDIR
-        tar -xzf $TMPDIR/astra-dreamos.tar.gz -C $TMPDIR
-        mv $TMPDIR/astra-dreamos $TMPDIR/${PACKAGE}
-        set +e
-        chmod -R 755 ${TMPDIR}/${PACKAGE}
-        sleep 1; clear
-        echo "---------------------------------------------"
-        if [ ! -f $ASTRABIN ]; then
-            cp -f $CONFIGBINastratmp $BINPATH > /dev/null 2>&1
-            echo "[send (astra) file]"
-        fi
-        if [ ! -f $SPAMMERBIN ]; then
-            cp -f $CONFIGspammertmp $BINPATH > /dev/null 2>&1
-            echo "[send (spammer) file]"
-        fi
-        if [ ! -f $T2MBIN ]; then
-            cp -f $CONFIGt2midecaptmp $BINPATH > /dev/null 2>&1
-            echo "[send (t2mi_decap) file]"
-        fi
-        if [ ! -f $SYSCONF ]; then
-            cp -f $CONFIGsysctltmp $ETCPATH > /dev/null 2>&1
-            echo "[send (sysctl.conf) file]"
-        fi
-        if [ ! -f $ASTRACONF ]; then
-            cp -f $CONFIGastratmp $ASTRAPATH > /dev/null 2>&1
-            echo "[send (astra.conf) file]"
-        fi
-        if [ ! -f $ABERTISBIN ]; then
-            cp -f $CONFIGabertistmp $ASTRAPATH/scripts > /dev/null 2>&1
-            echo "[send (abertis) file]"
-        fi
-        if [ ! -f $ASTRASM ]; then
-            cp -f $CONFIGastrasmtmp $ETCPATH/init.d > /dev/null 2>&1
-            echo "[send (astra-sm) file]"
-        fi
-        echo "---------------------------------------------"
     fi
 fi
 
