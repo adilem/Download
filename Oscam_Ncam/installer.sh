@@ -13,6 +13,7 @@
 PACKAGE='libcurl4'
 TMPDIR='/tmp'
 DIR=$(pwd)
+SOFTPATH='/etc/tuxbox/config/SoftCam.Key'
 OSC_VERSION='11.703-emu-r798'
 NCM_VERSION='V12.4-r0'
 OSC_PACKAGE='enigma2-plugin-softcams-oscam'
@@ -115,13 +116,14 @@ echo "  1 - Oscam"
 echo "  2 - Ncam"
 echo "  3 - SupTV_Oscam"
 echo "  4 - Revcam_Oscam"
+echo "  5 - SoftCam_Online"
 echo
 echo "  x - Exit"
 echo
 echo "- Enter option:"
 read -r opt
 case $opt in
-    "1") EMU=Oscam removeoscam
+    "1") Oscam removeoscam
         if [ $OSTYPE = "Opensource" ]; then
             echo "Insallling Oscam plugin Please Wait ......"
             wget $MY_URL/${OSC_PACKAGE}_${OSC_VERSION}_all.ipk -qP $TMPDIR
@@ -152,6 +154,12 @@ case $opt in
         echo "Insallling Revcam_Oscam plugin Please Wait ......"
         wget $MY_URL/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk
+        ;;
+    "5") EMU=SoftCam_Online
+        rm -rf $SOFTPATH
+        echo "Downlaod Softcam Please Wait ......"
+        wget -qO $SOFTPATH "https://raw.githubusercontent.com/MOHAMED19OS/SoftCam_Emu/main/Enigma2/SoftCam.Key"
+        chmod 755 $SOFTPATH
         ;;
     x)
         clear
