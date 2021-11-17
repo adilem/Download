@@ -13,7 +13,7 @@
 TMPDIR='/tmp'
 CHECK='/tmp/check'
 PACKAGE='astra-sm'
-VERSION='2021_11_16'
+VERSION='2021_11_17'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
 ########################
