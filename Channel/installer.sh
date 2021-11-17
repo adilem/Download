@@ -91,7 +91,7 @@ sleep 1
 set +e
 echo
 echo "   >>>>   Reloading Services - Please Wait   <<<<"
-wget -qO http://127.0.0.1/web/servicelistreload?mode=0 > /dev/null 2>&1
+wget -qO - http://127.0.0.1/web/servicelistreload?mode=0 > /dev/null 2>&1
 sleep 2
 echo
 
