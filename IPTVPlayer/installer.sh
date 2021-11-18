@@ -9,7 +9,7 @@
 
 ###########################################
 # Configure where we can find things here #
-VERSION='15.11.2021'
+VERSION='18.11.2021'
 DUKTAPE='duktape'
 TMPDIR='/tmp'
 CHECK='/tmp/check'
