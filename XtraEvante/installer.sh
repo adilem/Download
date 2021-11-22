@@ -9,9 +9,11 @@
 
 ###########################################
 # Configure where we can find things here #
+VERSION='v3.0'
 CURL='libcurl4'
 TMPDIR='/tmp'
 PACKAGE='enigma2-plugin-extensions-xtraevent'
+CHECK=$(opkg list-installed "${PACKAGE}" | awk -F"- " '{print $2}')
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/XtraEvante'
 
 ####################
@@ -19,44 +21,25 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/XtraEvante'
 
 if [ -f /etc/opkg/opkg.conf ] ; then
     STATUS='/var/lib/opkg/status'
-    OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
-    OPKGREMOV='opkg remove --force-depends'
 fi
 
 if python --version 2>&1 | grep -q '^Python 3\.'; then
-    echo ":You have Python3 image ..."
-    sleep 1; clear
-    IMAGING=python3-imaging
-    REQUESTS=python3-requests
-    SQLITE=python3-sqlite3
-    BS4=python3-beautifulsoup4
-    VERSION='v3.0'
+    IMAGING='python3-imaging'
+    REQUESTS='python3-requests'
+    SQLITE='python3-sqlite3'
+    BS4='python3-beautifulsoup4'
 else
-    echo ":You have Python2 image ..."
-    sleep 1; clear
-    IMAGING=python-imaging
-    REQUESTS=python-requests
-    SQLITE=python-sqlite3
-    BS4=python-beautifulsoup4
-    VERSION='v2.0'
+    IMAGING='python-imaging'
+    REQUESTS='python-requests'
+    SQLITE='python-sqlite3'
+    BS4='python-beautifulsoup4'
 fi
 
 ##################################
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
-
-######################
-#  Remove Old Plugin #
-if grep -qs "Package: $PACKAGE" $STATUS ; then
-    echo "   >>>>   Remove old version   <<<<"
-    $OPKGREMOV $PACKAGE
-    sleep 1; clear
-else
-    echo "   >>>>   No Older Version Was Found   <<<<"
-    sleep 1; clear
-fi
 
 ##################
 #  Check package #
@@ -137,12 +120,11 @@ else
     fi
 fi
 
+sleep 1; clear
 ###################
 #  Install Plugin #
-if python --version 2>&1 | grep -q '^Python 3\.'; then
-    echo "Insallling xtraEvent plugin Please Wait ......"
-    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
+if [ "$CHECK" = "$VERSION" ]; then
+    echo "You are use the laste Version: ${VERSION}"
 else
     echo "Insallling xtraEvent plugin Please Wait ......"
     wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
@@ -162,8 +144,5 @@ echo "**                       Develop by : digiten                         *"
 echo "**  Support    : https://www.tunisia-sat.com/forums/threads/4247338/  *"
 echo "**                                                                    *"
 echo "***********************************************************************"
-
-sleep 2
-killall -9 enigma2
 
 exit 0
