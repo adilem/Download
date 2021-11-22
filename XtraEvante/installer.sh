@@ -9,6 +9,7 @@
 
 ###########################################
 # Configure where we can find things here #
+CURL='libcurl4'
 TMPDIR='/tmp'
 PACKAGE='enigma2-plugin-extensions-xtraevent'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/XtraEvante'
@@ -29,12 +30,16 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     sleep 1; clear
     IMAGING=python3-imaging
     REQUESTS=python3-requests
+    SQLITE=python3-sqlite3
+    BS4=python3-beautifulsoup4
     VERSION='v3.0'
 else
     echo ":You have Python2 image ..."
     sleep 1; clear
     IMAGING=python-imaging
     REQUESTS=python-requests
+    SQLITE=python-sqlite3
+    BS4=python-beautifulsoup4
     VERSION='v2.0'
 fi
 
@@ -55,6 +60,15 @@ fi
 
 ##################
 #  Check package #
+if grep -qs "Package: $CURL" $STATUS ; then
+    echo
+    sleep 1; clear
+else
+    echo "Opkg Update ..."
+    $OPKG > /dev/null 2>&1
+    $OPKGINSTAL $CURL
+fi
+
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     if grep -qs "Package: $IMAGING" $STATUS ; then
         echo
@@ -72,6 +86,22 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
         $OPKG > /dev/null 2>&1
         $OPKGINSTAL $REQUESTS
     fi
+    if grep -qs "Package: $SQLITE" $STATUS ; then
+        echo
+        sleep 1; clear
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL $SQLITE
+    fi
+    if grep -qs "Package: $BS4" $STATUS ; then
+        echo
+        sleep 1; clear
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL $BS4
+    fi
 else
     if grep -qs "Package: $IMAGING" $STATUS ; then
         echo
@@ -81,13 +111,29 @@ else
         $OPKG > /dev/null 2>&1
         $OPKGINSTAL $IMAGING
     fi
-        if grep -qs "Package: $REQUESTS" $STATUS ; then
+    if grep -qs "Package: $REQUESTS" $STATUS ; then
         echo
         sleep 1; clear
     else
         echo "Opkg Update ..."
         $OPKG > /dev/null 2>&1
         $OPKGINSTAL $REQUESTS
+    fi
+    if grep -qs "Package: $SQLITE" $STATUS ; then
+        echo
+        sleep 1; clear
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL $SQLITE
+    fi
+    if grep -qs "Package: $BS4" $STATUS ; then
+        echo
+        sleep 1; clear
+    else
+        echo "Opkg Update ..."
+        $OPKG > /dev/null 2>&1
+        $OPKGINSTAL $BS4
     fi
 fi
 
