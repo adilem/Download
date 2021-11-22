@@ -10,8 +10,8 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-VERSION='git883'
-GIT='ee0dd59'
+VERSION='git889'
+GIT='b29ef9e'
 PACKAGE='enigma2-plugin-extensions-youtube'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube'
 
