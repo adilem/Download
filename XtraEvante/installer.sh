@@ -156,7 +156,7 @@ rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"
-echo "**                       XtraEvante    : $VERSION                       *"
+echo "**                       XtraEvante    : $VERSION                         *"
 echo "**                       Uploaded by: MOHAMED_OS                      *"
 echo "**                       Develop by : digiten                         *"
 echo "**  Support    : https://www.tunisia-sat.com/forums/threads/4247338/  *"
