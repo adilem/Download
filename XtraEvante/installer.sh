@@ -9,7 +9,7 @@
 
 ###########################################
 # Configure where we can find things here #
-VERSION='v3.0'
+VERSION='v3.1'
 CURL='libcurl4'
 TMPDIR='/tmp'
 PACKAGE='enigma2-plugin-extensions-xtraevent'
@@ -23,6 +23,7 @@ if [ -f /etc/opkg/opkg.conf ] ; then
     STATUS='/var/lib/opkg/status'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
+    OPKGREMOV='opkg remove --force-depends'
 fi
 
 if python --version 2>&1 | grep -q '^Python 3\.'; then
@@ -123,8 +124,14 @@ fi
 sleep 1; clear
 ###################
 #  Install Plugin #
-if [ "$CHECK" = "$VERSION" ]; then
+if [ "$VERSION" = "$CHECK" ]; then
     echo "You are use the laste Version: ${VERSION}"
+elif "$VERSION" > "$CHECK"; then
+    echo "You are use olde version: ${CHECK}"
+    sleep 1
+    OPKGREMOV ${PACKAGE} > /dev/null 2>&1
+    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
 else
     echo "Insallling xtraEvent plugin Please Wait ......"
     wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
