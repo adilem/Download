@@ -155,8 +155,8 @@ fi
 if [ -d $PLUGINPATH ]; then
     echo ":Your Device IS ${CHECK} processor ..."
     echo "Add Setting To ${SETTINGS} ..."
-    init 2
-    sleep 2
+    init 4
+    sleep 5
     sed -e s/config.plugins.iptvplayer.*//g -i ${SETTINGS}
     sleep 2
     {
