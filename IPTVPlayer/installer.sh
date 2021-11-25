@@ -18,21 +18,7 @@ PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
 SETTINGS='/etc/enigma2/settings'
 MY_URL='http://ipkinstall.ath.cx/ipk-install'
 
-#########################
-# Remove files (if any) #
-if python --version 2>&1 | grep -q '^Python 3\.'; then
-    rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
-else
-    rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
-fi
-
-rm -rf ${PLUGINPATH}
-rm -rf /etc/enigma2/iptvplaye*.json
-rm -rf /etc/tsiplayer_xtream.conf
-rm -rf /iptvplayer_rootfs
-
-####################
-#  Image Checking  #
+########################
 
 if [ -f /etc/opkg/opkg.conf ] ; then
     STATUS='/var/lib/opkg/status'
@@ -55,6 +41,20 @@ else
     PY2SQLITE='python-sqlite3'
     PLUGINPY2='E2IPLAYER_TSiplayer.tar.gz'
 fi
+
+#########################
+# Remove files (if any) #
+if python --version 2>&1 | grep -q '^Python 3\.'; then
+    rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
+else
+    rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
+fi
+
+rm -rf ${PLUGINPATH}
+rm -rf /etc/enigma2/iptvplaye*.json
+rm -rf /etc/tsiplayer_xtream.conf
+rm -rf /iptvplayer_rootfs
+############################
 
 $OPKG > /dev/null 2>&1
 #####################
