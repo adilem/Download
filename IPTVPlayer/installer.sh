@@ -145,7 +145,7 @@ fi
 if [ "${CHECK}" = 'armv7l' ]; then
     plarform='armv7'
 elif [ "${CHECK}" = 'mips' ]; then
-    plarform='mips'
+    plarform='mipsel'
 elif [ "${CHECK}" = 'aarch64' ]; then
     plarform='ARCH64'
 elif [ "${CHECK}" = 'sh4' ]; then
