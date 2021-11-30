@@ -31,7 +31,7 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
 else
     echo ":You have Python2 image ..."
     sleep 1; clear
-    VERSION='1.3'
+    VERSION='1.5'
 fi
 
 ##################################
