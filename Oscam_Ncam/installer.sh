@@ -13,7 +13,6 @@
 PACKAGE='libcurl4'
 TMPDIR='/tmp'
 DIR=$(pwd)
-SOFTPATH='/etc/tuxbox/config/SoftCam.Key'
 OSC_VERSION='11.704-emu-r798'
 NCM_VERSION='V12.4-r1'
 OSC_PACKAGE='enigma2-plugin-softcams-oscam'
@@ -78,6 +77,9 @@ removencam() {
         sleep 1; clear
     fi
 }
+##########
+$OPKG > /dev/null 2>&1
+
 #####################
 # Package Checking  #
 if grep -qs "Package: $PACKAGE" $STATUS ; then
@@ -86,15 +88,10 @@ else
     echo "   >>>>   Need to install $PACKAGE   <<<<"
     echo
     if [ $OSTYPE = "Opensource" ]; then
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
-        echo
         echo " Downloading $PACKAGE ......"
         echo
         $OPKGINSTAL $PACKAGE
     elif [ $OSTYPE = "DreamOS" ]; then
-        echo "APT Update ..."
-        $OPKG > /dev/null 2>&1
         echo " Downloading $PACKAGE ......"
         echo
         $OPKGINSTAL $PACKAGE -y
@@ -116,14 +113,13 @@ echo "  1 - Oscam"
 echo "  2 - Ncam"
 echo "  3 - SupTV_Oscam"
 echo "  4 - Revcam_Oscam"
-echo "  5 - SoftCam_Online"
 echo
 echo "  x - Exit"
 echo
 echo "- Enter option:"
 read -r opt
 case $opt in
-    "1") Oscam removeoscam
+    "1") EMU=Oscam removeoscam
         if [ $OSTYPE = "Opensource" ]; then
             echo "Insallling Oscam plugin Please Wait ......"
             wget $MY_URL/${OSC_PACKAGE}_${OSC_VERSION}_all.ipk -qP $TMPDIR
@@ -155,12 +151,6 @@ case $opt in
         wget $MY_URL/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk
         ;;
-    "5") EMU=SoftCam_Online
-        rm -rf $SOFTPATH
-        echo "Downlaod Softcam Please Wait ......"
-        wget -qO $SOFTPATH "https://raw.githubusercontent.com/MOHAMED19OS/SoftCam_Emu/main/Enigma2/SoftCam.Key"
-        chmod 755 $SOFTPATH
-        ;;
     x)
         clear
         echo
@@ -172,7 +162,6 @@ case $opt in
         sleep 2
         ;;
 esac
-
 
 ################################
 # Remove script files (if any) #
