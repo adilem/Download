@@ -23,6 +23,7 @@ if [ -f /etc/opkg/opkg.conf ] ; then
     PKGGPLY='gstplayer'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
+    OPKGLIST='opkg list-installed'
     OPKGREMOV='opkg remove --force-depends'
 elif [ -f /etc/apt/apt.conf ] ; then
     STATUS='/var/lib/dpkg/status'
@@ -30,31 +31,24 @@ elif [ -f /etc/apt/apt.conf ] ; then
     PKGBAPP='gstreamer1.0-plugins-base-apps'
     OPKG='apt-get update'
     OPKGINSTAL='apt-get install'
+    OPKGLIST='apt-get list-installed'
     OPKGREMOV='apt-get purge --auto-remove'
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
+#########
+$OPKG > /dev/null 2>&1
 
 ##################################
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 
-######################
-#  Remove Old Plugin #
-if grep -qs "Package: $PACKAGE" $STATUS ; then
-    echo "   >>>>   Remove old version   <<<<"
-    if [ $OSTYPE = "Opensource" ]; then
-        $OPKGREMOV $PACKAGE
-        echo ""
-        sleep 2; clear
-    else
-        $OPKGREMOV $PACKAGE
-        echo ""
-        sleep 2; clear
-    fi
+if [ "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
+    echo " You are use the laste Version: $VERSION"
+    exit 1
+elif "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')":; then
+    echo; clear
 else
-    echo "   >>>>   No Older Version Was Found   <<<<"
-    sleep 1
-    echo ""; clear
+    $OPKGREMOV $PACKAGE
 fi
 
 #####################
@@ -64,10 +58,6 @@ if [ $OSTYPE = "Opensource" ]; then
         echo "$PKGEXP3 found in device..."
         sleep 1; clear
     else
-        echo "Need to install $PKGEXP3"
-        echo
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         echo " Downloading $PKGEXP3 ......"
         echo
         $OPKGINSTAL $PKGEXP3
@@ -77,10 +67,6 @@ if [ $OSTYPE = "Opensource" ]; then
         echo "$PKGGPLY found in device..."
         sleep 1; clear
     else
-        echo "Need to install $PKGGPLY"
-        echo
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         echo " Downloading $PKGGPLY ......"
         echo
         $OPKGINSTAL $PKGGPLY
@@ -92,10 +78,6 @@ elif [ $OSTYPE = "DreamOS" ]; then
         echo " $PKGBAPP found in device..."
         sleep 1; clear
     else
-        echo "Need to install  $PKGBAPP"
-        echo
-        echo "APT Update ..."
-        $OPKG > /dev/null 2>&1
         echo " Downloading  $PKGBAPP ......"
         echo
         $OPKGINSTAL  $PKGBAPP -y
