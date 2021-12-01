@@ -23,12 +23,14 @@ if [ -f /etc/opkg/opkg.conf ] ; then
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
+    OPKGLIST='opkg list-installed'
     OPKGREMOV='opkg remove --force-depends'
 elif [ -f /etc/apt/apt.conf ] ; then
     STATUS='/var/lib/dpkg/status'
     OSTYPE='DreamOS'
     OPKG='apt-get update'
     OPKGINSTAL='apt-get install'
+    OPKGLIST='apt-get list-installed'
     OPKGREMOV='apt-get purge --auto-remove'
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
@@ -37,17 +39,16 @@ fi
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 
-######################
-#  Remove Old Plugin #
-if grep -qs "Package: $PACKAGE" $STATUS ; then
-    echo "   >>>>   Remove old version   <<<<"
-    $OPKGREMOV $PACKAGE
-    sleep 1; clear
+if [ "$($OPKGLIST $PACKAGE | cut -d'+' -f2 | awk '{ print $1 }')" = $VERSION ]; then
+    echo " You are use the laste Version: $VERSION"
+    exit 1
+elif "$($OPKGLIST $PACKAGE |  cut -d'+' -f2 | awk '{ print $1 }')":; then
+    echo; clear
 else
-    echo "   >>>>   No Older Version Was Found   <<<<"
-    sleep 1; clear
+    $OPKGREMOV $PACKAGE
 fi
 
+$OPKG > /dev/null 2>&1
 ######################
 #  Checking Depends  #
 
@@ -55,107 +56,77 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     if grep -qs "Package: enigma2" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL enigma2
     fi
     if grep -qs "Package: python3-codecs" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python3-codecs
     fi
     if grep -qs "Package: python3-core" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python3-core
     fi
     if grep -qs "Package: python3-json" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python3-json
     fi
     if grep -qs "Package: python3-netclient" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python3-netclient
     fi
     if grep -qs "Package: python3-twisted" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python3-twisted
     fi
     if grep -qs "Package: python3-twisted-web" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python3-twisted-web
     fi
 else
     if grep -qs "Package: python-codecs" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python-codecs
     fi
     if grep -qs "Package: python-compression" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python-compression
     fi
     if grep -qs "Package: python-core" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python-core
     fi
     if grep -qs "Package: python-json" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python-json
     fi
     if grep -qs "Package: python-netclient" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python-netclient
     fi
     if grep -qs "Package: python-pyopenssl" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python-pyopenssl
     fi
     if grep -qs "Package: python-twisted-web" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python-twisted-web
     fi
     if grep -qs "Package: python-zlib" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL python-zlib
     fi
 fi
@@ -164,15 +135,11 @@ if [ $OSTYPE = "DreamOS" ]; then
     if grep -qs "Package: gstreamer1.0-plugins-base-meta" $STATUS ; then
         echo
     else
-        echo "APT Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL gstreamer1.0-plugins-base-meta -y
     fi
     if grep -qs "Package: gstreamer1.0-plugins-good-spectrum" $STATUS ; then
         echo
     else
-        echo "APT Update ..."
-        $OPKG > /dev/null 2>&1
         $OPKGINSTAL gstreamer1.0-plugins-good-spectrum -y
     fi
 fi
