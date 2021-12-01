@@ -18,14 +18,14 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/XC-Code'
 #  Image Checking  #
 
 if [ -f /etc/opkg/opkg.conf ] ; then
-    STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
     OPKGINSTAL='opkg install'
+    OPKGLIST='opkg list-installed'
     OPKGREMOV='opkg remove --force-depends'
 elif [ -f /etc/apt/apt.conf ] ; then
-    STATUS='/var/lib/dpkg/status'
     OSTYPE='DreamOS'
     OPKGINSTAL='apt-get install'
+    OPKGLIST='apt-get list-installed'
     OPKGREMOV='apt-get purge --auto-remove'
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
@@ -36,13 +36,13 @@ rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 
 ######################
 #  Remove Old Plugin #
-if grep -qs "Package: $PACKAGE" $STATUS ; then
-    echo "   >>>>   Remove old version   <<<<"
-    $OPKGREMOV $PACKAGE
-    sleep 1; clear
+if [ "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
+    echo " You are use the laste Version: $VERSION"
+    exit 1
+elif "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')":; then
+    echo; clear
 else
-    echo "   >>>>   No Older Version Was Found   <<<<"
-    sleep 1; clear
+    $OPKGREMOV $PACKAGE
 fi
 
 ###################
