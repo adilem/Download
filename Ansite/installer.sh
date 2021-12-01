@@ -17,7 +17,6 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Ansite/'
 #  Image Checking  #
 
 if [ -f /etc/opkg/opkg.conf ] ; then
-    STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
@@ -38,20 +37,15 @@ fi
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 
-######################
-#  Remove Old Plugin #
-if grep -qs "Package: $PACKAGE" $STATUS ; then
-    echo "   >>>>   Remove old version   <<<<"
-    $OPKGREMOV $PACKAGE
-    sleep 1; clear
+if [ "$(opkg list-installed $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
+    echo " You are use the laste Version: $VERSION"
+    exit 1
+elif "$(opkg list-installed $PACKAGE |  awk '{ print $3 }')":; then
+    echo; clear
 else
-    echo "   >>>>   No Older Version Was Found   <<<<"
-    sleep 1; clear
+    $OPKGREMOV $PACKAGE
 fi
-
-echo "Opkg Update ..."
 $OPKG > /dev/null 2>&1
-
 ###################
 #  Install Plugin #
 if python --version 2>&1 | grep -q '^Python 3\.'; then
