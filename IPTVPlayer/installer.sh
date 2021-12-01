@@ -13,7 +13,6 @@ VERSION='20.11.2021'
 DUKTAPE='duktape'
 PACKAGE='enigma2-plugin-extensions-e2iplayer-deps'
 TMPDIR='/tmp'
-CHECK=$(uname -m)
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
 SETTINGS='/etc/enigma2/settings'
 MY_URL='http://ipkinstall.ath.cx/ipk-install'
@@ -142,18 +141,18 @@ else
     set +e
 fi
 
-if [ "${CHECK}" = 'armv7l' ]; then
+if uname -m | grep -qs armv7l; then
     plarform='armv7'
-elif [ "${CHECK}" = 'mips' ]; then
+elif uname -m | grep -qs mips; then
     plarform='mipsel'
-elif [ "${CHECK}" = 'aarch64' ]; then
+elif uname -m | grep -qs aarch64; then
     plarform='ARCH64'
-elif [ "${CHECK}" = 'sh4' ]; then
+elif uname -m | grep -qs sh4; then
     plarform='sh4'
 fi
 
 if [ -d $PLUGINPATH ]; then
-    echo ":Your Device IS ${CHECK} processor ..."
+    echo ":Your Device IS $(uname -m) processor ..."
     echo "Add Setting To ${SETTINGS} ..."
     init 4
     sleep 5
