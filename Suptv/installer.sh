@@ -16,10 +16,10 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Suptv'
 ####################
 #  Image Checking  #
 if [ -f /etc/opkg/opkg.conf ] ; then
-    STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
+    OPKGLIST='opkg list-installed'
 fi
 
 if python --version 2>&1 | grep -q '^Python 3\.'; then
@@ -36,25 +36,23 @@ fi
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 
+######
+$OPKG > /dev/null 2>&1
 ###################
 #  Install Plugin #
 
-if grep -qs "Package: $PACKAGE" $STATUS ; then
-    echo "   >>>>   SupTV found in device   <<<<"
-    sleep 1; clear
-    echo "Goodbye!"
-elif python --version 2>&1 | grep -q '^Python 3\.'; then
-    echo "Opkg Update ..."
-    $OPKG > /dev/null 2>&1
-    echo "Insallling Suptv plugin Please Wait ......"
-    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
-else
-    echo "Opkg Update ..."
-    $OPKG > /dev/null 2>&1
-    echo "Insallling Suptv plugin Please Wait ......"
-    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
+if [ "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
+    echo " You are use the laste Version: $VERSION"
+elif "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')":; then
+    if python --version 2>&1 | grep -q '^Python 3\.'; then
+        echo "Insallling Suptv plugin Please Wait ......"
+        wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
+        $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
+    else
+        echo "Insallling Suptv plugin Please Wait ......"
+        wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
+        $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
+    fi
 fi
 
 ##################################
