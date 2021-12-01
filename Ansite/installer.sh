@@ -20,6 +20,7 @@ if [ -f /etc/opkg/opkg.conf ] ; then
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
+    OPKGLIST='opkg list-installed'
     OPKGREMOV='opkg remove --force-depends'
 fi
 
@@ -37,10 +38,10 @@ fi
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 
-if [ "$(opkg list-installed $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
+if [ "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
     echo " You are use the laste Version: $VERSION"
     exit 1
-elif "$(opkg list-installed $PACKAGE |  awk '{ print $3 }')":; then
+elif "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')":; then
     echo; clear
 else
     $OPKGREMOV $PACKAGE
