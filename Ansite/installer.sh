@@ -74,5 +74,5 @@ echo "**  Support    : https://www.tunisia-sat.com/forums/threads/4209147/  *"
 echo "**                                                                    *"
 echo "***********************************************************************"
 echo ""
-
+killall -9 enigma2
 exit 0
