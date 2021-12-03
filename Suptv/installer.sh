@@ -43,7 +43,7 @@ $OPKG > /dev/null 2>&1
 
 if [ "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
     echo " You are use the laste Version: $VERSION"
-elif "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')":; then
+elif [ -z "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" ]; then
     if python --version 2>&1 | grep -q '^Python 3\.'; then
         echo "Insallling Suptv plugin Please Wait ......"
         wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR

@@ -42,7 +42,7 @@ rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 if [ "$($OPKGLIST $PACKAGE | cut -d'+' -f2 | awk '{ print $1 }')" = $VERSION ]; then
     echo " You are use the laste Version: $VERSION"
     exit 1
-elif "$($OPKGLIST $PACKAGE |  cut -d'+' -f2 | awk '{ print $1 }')":; then
+elif [ -z "$($OPKGLIST $PACKAGE |  cut -d'+' -f2 | awk '{ print $1 }')" ]; then
     echo; clear
 else
     $OPKGREMOV $PACKAGE
