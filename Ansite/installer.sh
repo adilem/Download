@@ -50,12 +50,12 @@ $OPKG > /dev/null 2>&1
 #  Install Plugin #
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     echo "Insallling Ansite plugin Please Wait ......"
-    wget $MY_URL/${PACKAGE}_${VERSION}.py3_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}.py3_all.ipk
+    wget $MY_URL/${PACKAGE}_${VERSION}_py3_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_py3_all.ipk
 else
     echo "Insallling Ansite plugin Please Wait ......"
-    wget $MY_URL/${PACKAGE}_${VERSION}.py2_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}.py2_all.ipk
+    wget $MY_URL/${PACKAGE}_${VERSION}_py2_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_py2_all.ipk
 fi
 
 #########################
