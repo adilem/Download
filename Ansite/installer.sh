@@ -9,6 +9,7 @@
 
 ###########################################
 # Configure where we can find things here #
+VERSION='1.5'
 TMPDIR='/tmp'
 PACKAGE='enigma2-plugin-extensions-ansite'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Ansite/'
@@ -27,11 +28,9 @@ fi
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     echo ":You have Python3 image ..."
     sleep 1; clear
-    VERSION='1.4'
 else
     echo ":You have Python2 image ..."
     sleep 1; clear
-    VERSION='1.5'
 fi
 
 ##################################
@@ -51,12 +50,12 @@ $OPKG > /dev/null 2>&1
 #  Install Plugin #
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     echo "Insallling Ansite plugin Please Wait ......"
-    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
+    wget $MY_URL/${PACKAGE}_${VERSION}.py3_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}.py3_all.ipk
 else
     echo "Insallling Ansite plugin Please Wait ......"
-    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
+    wget $MY_URL/${PACKAGE}_${VERSION}.py2_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}.py2_all.ipk
 fi
 
 #########################
