@@ -13,7 +13,7 @@
 TMPDIR='/tmp'
 CHECK='/tmp/check'
 PACKAGE='astra-sm'
-VERSION='2021_11_17'
+VERSION='2021_12_05'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
 ########################
@@ -87,7 +87,7 @@ set -e
 echo "Downloading And Insallling Channel Please Wait ......"
 wget $MY_URL/channels_backup_user_${VERSION}.tar.gz -qP $TMPDIR
 tar -zxf $TMPDIR/channels_backup_user_${VERSION}.tar.gz -C /
-sleep 1
+sleep 5
 set +e
 echo
 echo "   >>>>   Reloading Services - Please Wait   <<<<"
