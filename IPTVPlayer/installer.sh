@@ -62,11 +62,7 @@ $OPKG > /dev/null 2>&1
 if grep -qs "Package: $PACKAGE" $STATUS ; then
     echo ""
 else
-    if [ $OSTYPE = "Opensource" ]; then
-        $OPKGINSTAL $PACKAGE
-    else
-        $OPKGINSTAL $PACKAGE
-    fi
+    $OPKGINSTAL $PACKAGE
 fi
 ################
 if python --version 2>&1 | grep -q '^Python 3\.'; then
@@ -85,15 +81,9 @@ else
         echo ""
     else
         echo "   >>>>   Need to install $DUKTAPE   <<<<"
-        if [ $OSTYPE = "Opensource" ]; then
-            echo " Downloading $DUKTAPE ......"
-            $OPKGINSTAL $DUKTAPE
-        elif [ $OSTYPE = "DreamOS" ]; then
             echo " Downloading $DUKTAPE ......"
             $OPKGINSTAL $DUKTAPE -y
-        fi
     fi
-
 fi
 #################
 if python --version 2>&1 | grep -q '^Python 3\.'; then
@@ -154,8 +144,7 @@ fi
 if [ -d $PLUGINPATH ]; then
     echo ":Your Device IS $(uname -m) processor ..."
     echo "Add Setting To ${SETTINGS} ..."
-    init 4
-    sleep 5
+    init 4; sleep 1
     sed -e s/config.plugins.iptvplayer.*//g -i ${SETTINGS}
     sleep 2
     {
@@ -172,6 +161,7 @@ if [ -d $PLUGINPATH ]; then
         echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk"
         echo "config.plugins.iptvplayer.wgetpath=wget"
     } >> ${SETTINGS}
+    sleep 2
 fi
 
 #########################
