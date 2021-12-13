@@ -82,7 +82,7 @@ else
     else
         echo "   >>>>   Need to install $DUKTAPE   <<<<"
             echo " Downloading $DUKTAPE ......"
-            $OPKGINSTAL $DUKTAPE -y
+            $OPKGINSTAL $DUKTAPE
     fi
 fi
 #################
