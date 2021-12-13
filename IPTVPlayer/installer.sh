@@ -9,16 +9,14 @@
 
 ###########################################
 # Configure where we can find things here #
-VERSION='04.12.2021'
+VERSION='11.12.2021'
 DUKTAPE='duktape'
 PACKAGE='enigma2-plugin-extensions-e2iplayer-deps'
 TMPDIR='/tmp'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
 SETTINGS='/etc/enigma2/settings'
 MY_URL='http://ipkinstall.ath.cx/ipk-install'
-
 ########################
-
 if [ -f /etc/opkg/opkg.conf ] ; then
     STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
@@ -30,7 +28,6 @@ elif [ -f /etc/apt/apt.conf ] ; then
     OPKG='apt-get update'
     OPKGINSTAL='apt-get install'
 fi
-
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     echo ":You have Python3 image ..."
     PY3SQLITE='python3-sqlite3'
@@ -40,7 +37,6 @@ else
     PY2SQLITE='python-sqlite3'
     PLUGINPY2='E2IPLAYER_TSiplayer.tar.gz'
 fi
-
 #########################
 # Remove files (if any) #
 if python --version 2>&1 | grep -q '^Python 3\.'; then
@@ -48,21 +44,22 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
 else
     rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
 fi
-
 rm -rf ${PLUGINPATH}
 rm -rf /etc/enigma2/iptvplaye*.json
 rm -rf /etc/tsiplayer_xtream.conf
 rm -rf /iptvplayer_rootfs
 ############################
-
 $OPKG > /dev/null 2>&1
 #####################
 # Package Checking  #
-
 if grep -qs "Package: $PACKAGE" $STATUS ; then
     echo ""
 else
-    $OPKGINSTAL $PACKAGE
+    if [ $OSTYPE = "Opensource" ]; then
+        $OPKGINSTAL $PACKAGE
+    else
+        $OPKGINSTAL $PACKAGE
+    fi
 fi
 ################
 if python --version 2>&1 | grep -q '^Python 3\.'; then
@@ -81,8 +78,13 @@ else
         echo ""
     else
         echo "   >>>>   Need to install $DUKTAPE   <<<<"
+        if [ $OSTYPE = "Opensource" ]; then
             echo " Downloading $DUKTAPE ......"
             $OPKGINSTAL $DUKTAPE
+        elif [ $OSTYPE = "DreamOS" ]; then
+            echo " Downloading $DUKTAPE ......"
+            $OPKGINSTAL $DUKTAPE -y
+        fi
     fi
 fi
 #################
@@ -108,13 +110,11 @@ else
             clear
         fi
     fi
-
 fi
 ################
 sleep 1; clear
 ###############################
 # Downlaod And Install Plugin #
-
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     set -e
     echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
@@ -130,7 +130,6 @@ else
     tar -xzf $TMPDIR/$PLUGINPY2 -C /
     set +e
 fi
-
 if uname -m | grep -qs armv7l; then
     plarform='armv7'
 elif uname -m | grep -qs mips; then
@@ -140,11 +139,11 @@ elif uname -m | grep -qs aarch64; then
 elif uname -m | grep -qs sh4; then
     plarform='sh4'
 fi
-
 if [ -d $PLUGINPATH ]; then
     echo ":Your Device IS $(uname -m) processor ..."
     echo "Add Setting To ${SETTINGS} ..."
-    init 4; sleep 1
+    init 4
+    sleep 5
     sed -e s/config.plugins.iptvplayer.*//g -i ${SETTINGS}
     sleep 2
     {
@@ -161,9 +160,7 @@ if [ -d $PLUGINPATH ]; then
         echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk"
         echo "config.plugins.iptvplayer.wgetpath=wget"
     } >> ${SETTINGS}
-    sleep 2
 fi
-
 #########################
 # Remove files (if any) #
 if python --version 2>&1 | grep -q '^Python 3\.'; then
@@ -171,7 +168,6 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
 else
     rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
 fi
-
 sync
 echo ""
 echo "***********************************************************************"
@@ -184,11 +180,9 @@ echo "**  Support    : https://www.tunisia-sat.com/forums/threads/3951696/  *"
 echo "**                                                                    *"
 echo "***********************************************************************"
 echo ""
-
 if which systemctl > /dev/null 2>&1; then
     sleep 2; systemctl restart enigma2
 else
     init 4; sleep 2; init 3;
 fi
-
 exit 0
