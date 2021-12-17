@@ -9,7 +9,7 @@
 
 ###########################################
 # Configure where we can find things here #
-VERSION='11.12.2021'
+VERSION='17.12.2021'
 DUKTAPE='duktape'
 PACKAGE='enigma2-plugin-extensions-e2iplayer-deps'
 TMPDIR='/tmp'
