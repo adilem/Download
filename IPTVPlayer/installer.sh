@@ -10,8 +10,9 @@
 ###########################################
 # Configure where we can find things here #
 VERSION='17.12.2021'
+PYTHONVERSION=$(python -c"import sys; print(sys.version_info.major)")
 DUKTAPE='duktape'
-PACKAGE='enigma2-plugin-extensions-e2iplayer-deps'
+HLSDL='hlsdl'
 TMPDIR='/tmp'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
 SETTINGS='/etc/enigma2/settings'
@@ -28,7 +29,7 @@ elif [ -f /etc/apt/apt.conf ] ; then
     OPKG='apt-get update'
     OPKGINSTAL='apt-get install'
 fi
-if python --version 2>&1 | grep -q '^Python 3\.'; then
+if [ "$PYTHONVERSION" -eq 3 ] ; then
     echo ":You have Python3 image ..."
     PY3SQLITE='python3-sqlite3'
     PLUGINPY3='E2IPLAYER_TSiplayer-PYTHON3.tar.gz'
@@ -37,9 +38,18 @@ else
     PY2SQLITE='python-sqlite3'
     PLUGINPY2='E2IPLAYER_TSiplayer.tar.gz'
 fi
+if uname -m | grep -qs armv7l; then
+    plarform='armv7'
+elif uname -m | grep -qs mips; then
+    plarform='mipsel'
+elif uname -m | grep -qs aarch64; then
+    plarform='ARCH64'
+elif uname -m | grep -qs sh4; then
+    plarform='sh4'
+fi
 #########################
 # Remove files (if any) #
-if python --version 2>&1 | grep -q '^Python 3\.'; then
+if [ "$PYTHONVERSION" -eq 3 ] ; then
     rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
 else
     rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
@@ -50,54 +60,45 @@ rm -rf /etc/tsiplayer_xtream.conf
 rm -rf /iptvplayer_rootfs
 ############################
 $OPKG > /dev/null 2>&1
+
 #####################
 # Package Checking  #
-if grep -qs "Package: $PACKAGE" $STATUS ; then
-    echo ""
+if grep -qs "Package: $HLSDL" $STATUS ; then
+    echo
 else
     if [ $OSTYPE = "Opensource" ]; then
-        $OPKGINSTAL $PACKAGE
+        $OPKGINSTAL $HLSDL
     else
-        $OPKGINSTAL $PACKAGE
+        $OPKGINSTAL $HLSDL -y
     fi
 fi
 ################
-if python --version 2>&1 | grep -q '^Python 3\.'; then
+if [ "$PYTHONVERSION" -eq 3 ] ; then
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
-        echo ""
+        echo
     else
         echo "   >>>>   Need to install $DUKTAPE   <<<<"
-        if [ $OSTYPE = "Opensource" ]; then
-            echo " Downloading $DUKTAPE ......"
-            $OPKGINSTAL $DUKTAPE
-            clear
-        fi
+        $OPKGINSTAL $DUKTAPE
     fi
 else
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
-        echo ""
+        echo
     else
         echo "   >>>>   Need to install $DUKTAPE   <<<<"
         if [ $OSTYPE = "Opensource" ]; then
-            echo " Downloading $DUKTAPE ......"
             $OPKGINSTAL $DUKTAPE
         elif [ $OSTYPE = "DreamOS" ]; then
-            echo " Downloading $DUKTAPE ......"
             $OPKGINSTAL $DUKTAPE -y
         fi
     fi
 fi
 #################
-if python --version 2>&1 | grep -q '^Python 3\.'; then
+if [ "$PYTHONVERSION" -eq 3 ] ; then
     if grep -qs "Package: $PY3SQLITE" $STATUS ; then
         echo
     else
         echo "   >>>>   Need to install $PY3SQLITE   <<<<"
-        if [ $OSTYPE = "Opensource" ]; then
-            echo " Downloading $PY3SQLITE ......"
-            $OPKGINSTAL $PY3SQLITE
-            clear
-        fi
+        $OPKGINSTAL $PY3SQLITE
     fi
 else
     if grep -qs "Package: $PY2SQLITE" $STATUS ; then
@@ -105,9 +106,7 @@ else
     else
         echo "   >>>>   Need to install $PY2SQLITE   <<<<"
         if [ $OSTYPE = "Opensource" ]; then
-            echo " Downloading $PY2SQLITE ......"
             $OPKGINSTAL $PY2SQLITE
-            clear
         fi
     fi
 fi
@@ -115,7 +114,7 @@ fi
 sleep 1; clear
 ###############################
 # Downlaod And Install Plugin #
-if python --version 2>&1 | grep -q '^Python 3\.'; then
+if [ "$PYTHONVERSION" -eq 3 ] ; then
     set -e
     echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
     echo
@@ -130,15 +129,7 @@ else
     tar -xzf $TMPDIR/$PLUGINPY2 -C /
     set +e
 fi
-if uname -m | grep -qs armv7l; then
-    plarform='armv7'
-elif uname -m | grep -qs mips; then
-    plarform='mipsel'
-elif uname -m | grep -qs aarch64; then
-    plarform='ARCH64'
-elif uname -m | grep -qs sh4; then
-    plarform='sh4'
-fi
+
 if [ -d $PLUGINPATH ]; then
     echo ":Your Device IS $(uname -m) processor ..."
     echo "Add Setting To ${SETTINGS} ..."
@@ -163,7 +154,7 @@ if [ -d $PLUGINPATH ]; then
 fi
 #########################
 # Remove files (if any) #
-if python --version 2>&1 | grep -q '^Python 3\.'; then
+if [ "$PYTHONVERSION" -eq 3 ] ; then
     rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
 else
     rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
@@ -180,7 +171,7 @@ echo "**  Support    : https://www.tunisia-sat.com/forums/threads/3951696/  *"
 echo "**                                                                    *"
 echo "***********************************************************************"
 echo ""
-if which systemctl > /dev/null 2>&1; then
+if [ $OSTYPE = "DreamOS" ] ; then
     sleep 2; systemctl restart enigma2
 else
     init 4; sleep 2; init 3;
