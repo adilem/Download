@@ -12,7 +12,6 @@
 VERSION='17.12.2021'
 PYTHONVERSION=$(python -c"import sys; print(sys.version_info.major)")
 DUKTAPE='duktape'
-HLSDL='hlsdl'
 TMPDIR='/tmp'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
 SETTINGS='/etc/enigma2/settings'
@@ -61,17 +60,6 @@ rm -rf /iptvplayer_rootfs
 ############################
 $OPKG > /dev/null 2>&1
 
-#####################
-# Package Checking  #
-if grep -qs "Package: $HLSDL" $STATUS ; then
-    echo
-else
-    if [ $OSTYPE = "Opensource" ]; then
-        $OPKGINSTAL $HLSDL
-    else
-        $OPKGINSTAL $HLSDL -y
-    fi
-fi
 ################
 if [ "$PYTHONVERSION" -eq 3 ] ; then
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
