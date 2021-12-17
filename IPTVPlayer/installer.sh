@@ -138,6 +138,7 @@ if [ -d $PLUGINPATH ]; then
     sed -e s/config.plugins.iptvplayer.*//g -i ${SETTINGS}
     sleep 2
     {
+        echo "config.plugins.iptvplayer.AktualizacjaWmenu=false"
         echo "config.plugins.iptvplayer.SciezkaCache=/etc/IPTVCache/"
         echo "config.plugins.iptvplayer.alternative${plarform^^}MoviePlayer=extgstplayer"
         echo "config.plugins.iptvplayer.alternative${plarform^^}MoviePlayer0=extgstplayer"
