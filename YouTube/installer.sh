@@ -14,7 +14,8 @@ VERSION='git904'
 GIT='84fe359'
 PACKAGE='enigma2-plugin-extensions-youtube'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube'
-
+CHECK_VERSION=$($OPKGLIST $PACKAGE | cut -d'+' -f2 | awk '{ print $1 }')
+PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 ####################
 #  Image Checking  #
 
@@ -39,10 +40,10 @@ fi
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 
-if [ "$($OPKGLIST $PACKAGE | cut -d'+' -f2 | awk '{ print $1 }')" = $VERSION ]; then
+if [ "$CHECK_VERSION" -eq $VERSION ]; then
     echo " You are use the laste Version: $VERSION"
     exit 1
-elif [ -z "$($OPKGLIST $PACKAGE |  cut -d'+' -f2 | awk '{ print $1 }')" ]; then
+elif [ -z "$CHECK_VERSION" ]; then
     echo; clear
 else
     $OPKGREMOV $PACKAGE
@@ -52,12 +53,7 @@ $OPKG > /dev/null 2>&1
 ######################
 #  Checking Depends  #
 
-if python --version 2>&1 | grep -q '^Python 3\.'; then
-    if grep -qs "Package: enigma2" $STATUS ; then
-        echo
-    else
-        $OPKGINSTAL enigma2
-    fi
+if [ "$PYTHON_VERSION" -eq 3 ] ; then
     if grep -qs "Package: python3-codecs" $STATUS ; then
         echo
     else
@@ -78,11 +74,6 @@ if python --version 2>&1 | grep -q '^Python 3\.'; then
     else
         $OPKGINSTAL python3-netclient
     fi
-    if grep -qs "Package: python3-twisted" $STATUS ; then
-        echo
-    else
-        $OPKGINSTAL python3-twisted
-    fi
     if grep -qs "Package: python3-twisted-web" $STATUS ; then
         echo
     else
@@ -93,11 +84,6 @@ else
         echo
     else
         $OPKGINSTAL python-codecs
-    fi
-    if grep -qs "Package: python-compression" $STATUS ; then
-        echo
-    else
-        $OPKGINSTAL python-compression
     fi
     if grep -qs "Package: python-core" $STATUS ; then
         echo
@@ -114,20 +100,10 @@ else
     else
         $OPKGINSTAL python-netclient
     fi
-    if grep -qs "Package: python-pyopenssl" $STATUS ; then
-        echo
-    else
-        $OPKGINSTAL python-pyopenssl
-    fi
     if grep -qs "Package: python-twisted-web" $STATUS ; then
         echo
     else
         $OPKGINSTAL python-twisted-web
-    fi
-    if grep -qs "Package: python-zlib" $STATUS ; then
-        echo
-    else
-        $OPKGINSTAL python-zlib
     fi
 fi
 

@@ -10,12 +10,12 @@
 ###########################################
 # Configure where we can find things here #
 VERSION='17.12.2021'
-PYTHONVERSION=$(python -c"import sys; print(sys.version_info.major)")
 DUKTAPE='duktape'
 TMPDIR='/tmp'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
 SETTINGS='/etc/enigma2/settings'
 MY_URL='http://ipkinstall.ath.cx/ipk-install'
+PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 ########################
 if [ -f /etc/opkg/opkg.conf ] ; then
     STATUS='/var/lib/opkg/status'
@@ -28,7 +28,7 @@ elif [ -f /etc/apt/apt.conf ] ; then
     OPKG='apt-get update'
     OPKGINSTAL='apt-get install'
 fi
-if [ "$PYTHONVERSION" -eq 3 ] ; then
+if [ "$PYTHON_VERSION" -eq 3 ] ; then
     echo ":You have Python3 image ..."
     PY3SQLITE='python3-sqlite3'
     PLUGINPY3='E2IPLAYER_TSiplayer-PYTHON3.tar.gz'
@@ -48,7 +48,7 @@ elif uname -m | grep -qs sh4; then
 fi
 #########################
 # Remove files (if any) #
-if [ "$PYTHONVERSION" -eq 3 ] ; then
+if [ "$PYTHON_VERSION" -eq 3 ] ; then
     rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
 else
     rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
@@ -61,7 +61,7 @@ rm -rf /iptvplayer_rootfs
 $OPKG > /dev/null 2>&1
 
 ################
-if [ "$PYTHONVERSION" -eq 3 ] ; then
+if [ "$PYTHON_VERSION" -eq 3 ] ; then
     if grep -qs "Package: $DUKTAPE" $STATUS ; then
         echo
     else
@@ -81,7 +81,7 @@ else
     fi
 fi
 #################
-if [ "$PYTHONVERSION" -eq 3 ] ; then
+if [ "$PYTHON_VERSION" -eq 3 ] ; then
     if grep -qs "Package: $PY3SQLITE" $STATUS ; then
         echo
     else
@@ -102,7 +102,7 @@ fi
 sleep 1; clear
 ###############################
 # Downlaod And Install Plugin #
-if [ "$PYTHONVERSION" -eq 3 ] ; then
+if [ "$PYTHON_VERSION" -eq 3 ] ; then
     set -e
     echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
     echo
@@ -143,7 +143,7 @@ if [ -d $PLUGINPATH ]; then
 fi
 #########################
 # Remove files (if any) #
-if [ "$PYTHONVERSION" -eq 3 ] ; then
+if [ "$PYTHON_VERSION" -eq 3 ] ; then
     rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
 else
     rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
