@@ -35,15 +35,14 @@ elif [ -f /etc/apt/apt.conf ] ; then
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
 
-CHECK_VERSION=$($OPKGLIST $PACKAGE | cut -d'+' -f2 | awk '{ print $1 }')
 ##################################
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 
-if [ "$CHECK_VERSION" -eq $VERSION ]; then
+if [ "$($OPKGLIST $PACKAGE | cut -d'+' -f2 | awk '{ print $1 }')" -eq $VERSION ]; then
     echo " You are use the laste Version: $VERSION"
     exit 1
-elif [ -z "$CHECK_VERSION" ]; then
+elif [ -z "$($OPKGLIST $PACKAGE | cut -d'+' -f2 | awk '{ print $1 }')" ]; then
     echo; clear
 else
     $OPKGREMOV $PACKAGE
