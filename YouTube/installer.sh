@@ -14,7 +14,6 @@ VERSION='git904'
 GIT='84fe359'
 PACKAGE='enigma2-plugin-extensions-youtube'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube'
-CHECK_VERSION=$($OPKGLIST $PACKAGE | cut -d'+' -f2 | awk '{ print $1 }')
 PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 ####################
 #  Image Checking  #
@@ -36,6 +35,7 @@ elif [ -f /etc/apt/apt.conf ] ; then
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
 
+CHECK_VERSION=$($OPKGLIST $PACKAGE | cut -d'+' -f2 | awk '{ print $1 }')
 ##################################
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
