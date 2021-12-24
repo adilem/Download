@@ -11,7 +11,6 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-CHECK='/tmp/check'
 PACKAGE='astra-sm'
 VERSION='2021_12_22'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
@@ -44,11 +43,6 @@ if [ -f /etc/opkg/opkg.conf ] ; then
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
-elif [ -f /etc/apt/apt.conf ] ; then
-    STATUS='/var/lib/dpkg/status'
-    OSTYPE='DreamOS'
-    OPKG='apt-get update'
-    OPKGINSTAL='apt-get install'
 fi
 
 ###########################
@@ -65,14 +59,13 @@ if [ $OSTYPE = "Opensource" ]; then
     if grep -qs "Package: $PACKAGE" $STATUS ; then
         echo
     else
-        echo "Opkg Update ..."
         $OPKG > /dev/null 2>&1
-        echo " Downloading $PACKAGE ......"
+        echo " Downloading And Insallling $PACKAGE ......"
         $OPKGINSTAL $PACKAGE
     fi
 else
-        echo "   >>>>   Feed Missing $PACKAGE   <<<<"
-        echo "   >>>>   Notification Abertis DTT Channel will not work   <<<<"
+    echo "   >>>>   Feed Missing $PACKAGE   <<<<"
+    echo "   >>>>   Notification Abertis DTT Channel will not work   <<<<"
 fi
 
 #########################
@@ -123,10 +116,7 @@ else
 fi
 
 if [ $OSTYPE = "Opensource" ]; then
-    uname -m > "$CHECK"
-    sleep 1
-
-    if grep -qs -i 'armv7l' cat "$CHECK" ; then
+    if uname -m | grep -qs armv7l; then
         if [ -f $ASTRACONF ] && [ -f $ABERTISBIN ] && [ -f $SYSCONF ]; then
             echo "   >>>>   All Config $PACKAGE Files found   <<<<"
             sleep 2
@@ -155,7 +145,7 @@ if [ $OSTYPE = "Opensource" ]; then
             echo "---------------------------------------------"
         fi
 
-    elif grep -qs -i 'mips' cat "$CHECK" ; then
+    elif uname -m | grep -qs mips; then
         if [ -f $ASTRACONF ] && [ -f $ABERTISBIN ] && [ -f $SYSCONF ]; then
             echo "   >>>>   All Config $PACKAGE Files found   <<<<"
             sleep 2
@@ -205,7 +195,7 @@ sleep 2
 
 if [ $OSTYPE = "Opensource" ]; then
     init 6
-elif [ $OSTYPE = "DreamOS" ]; then
+else
     systemctl restart enigma2
 fi
 
