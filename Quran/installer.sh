@@ -9,7 +9,7 @@
 
 ###########################################
 # Configure where we can find things here #
-VERSION='2.0'
+VERSION='2.1'
 TMPDIR='/tmp'
 PACKAGE='enigma2-plugin-extensions-quran-karim'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Quran/'
