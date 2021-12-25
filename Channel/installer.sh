@@ -12,7 +12,7 @@
 # Configure where we can find things here #
 TMPDIR='/tmp'
 PACKAGE='astra-sm'
-VERSION='2021_12_22'
+VERSION='2021_12_25'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
 ########################
