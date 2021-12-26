@@ -111,12 +111,12 @@ elif [ $OSTYPE = "DreamOS" ]; then
 fi
 ###################
 #  Install Plugin #
+
+echo "Insallling IPtoSAT plugin Please Wait ......"
 if [ $OSTYPE = "Opensource" ]; then
-    echo "Insallling IPtoSAT plugin Please Wait ......"
     wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
     $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
 else
-    echo "Insallling IPtoSAT plugin Please Wait ......"
     wget $MY_URL/${PACKAGE}_${VERSION}.deb -qP $TMPDIR
     $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}.deb; $OPKGINSTAL -f -y
 fi

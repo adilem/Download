@@ -13,6 +13,7 @@ VERSION='1.5'
 TMPDIR='/tmp'
 PACKAGE='enigma2-plugin-extensions-ansite'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Ansite/'
+PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 
 ####################
 #  Image Checking  #
@@ -25,7 +26,7 @@ if [ -f /etc/opkg/opkg.conf ] ; then
     OPKGREMOV='opkg remove --force-depends'
 fi
 
-if python --version 2>&1 | grep -q '^Python 3\.'; then
+if [ "$PYTHON_VERSION" -eq 3 ] ; then
     echo ":You have Python3 image ..."
     sleep 1; clear
 else
@@ -48,12 +49,12 @@ fi
 $OPKG > /dev/null 2>&1
 ###################
 #  Install Plugin #
-if python --version 2>&1 | grep -q '^Python 3\.'; then
-    echo "Insallling Ansite plugin Please Wait ......"
+
+echo "Insallling Ansite plugin Please Wait ......"
+if [ "$PYTHON_VERSION" -eq 3 ] ; then
     wget $MY_URL/${PACKAGE}_${VERSION}_py3_all.ipk -qP $TMPDIR
     $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_py3_all.ipk
 else
-    echo "Insallling Ansite plugin Please Wait ......"
     wget $MY_URL/${PACKAGE}_${VERSION}_py2_all.ipk -qP $TMPDIR
     $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_py2_all.ipk
 fi

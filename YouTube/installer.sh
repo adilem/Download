@@ -123,12 +123,12 @@ fi
 sleep 1; clear
 ###################
 #  Install Plugin #
+
+echo "Insallling YouTube plugin Please Wait ......"
 if [ $OSTYPE = "Opensource" ]; then
-    echo "Insallling YouTube plugin Please Wait ......"
     wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk -qP $TMPDIR
     $OPKGINSTAL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk
 else
-    echo "Insallling YouTube plugin Please Wait ......"
     wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.deb -qP $TMPDIR
     $DPKINSTALL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.deb; $OPKGINSTAL -f -y
 fi
