@@ -47,12 +47,11 @@ fi
 
 ###################
 #  Install Plugin #
+echo "Insallling XcPlugin Forever plugin Please Wait ......"
 if [ $OSTYPE = "Opensource" ]; then
-    echo "Insallling XcPlugin Forever plugin Please Wait ......"
     wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
     $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
 else
-    echo "Insallling XcPlugin Forever plugin Please Wait ......"
     wget $MY_URL/${PACKAGE}_${VERSION}_all.deb -qP $TMPDIR
     $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}_all.deb; $OPKGINSTAL -f -y
 fi
