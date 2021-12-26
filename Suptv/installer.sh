@@ -12,6 +12,7 @@
 TMPDIR='/tmp'
 PACKAGE='enigma2-plugin-extensions-suptv'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Suptv'
+PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 
 ####################
 #  Image Checking  #
@@ -22,37 +23,39 @@ if [ -f /etc/opkg/opkg.conf ] ; then
     OPKGLIST='opkg list-installed'
 fi
 
-if python --version 2>&1 | grep -q '^Python 3\.'; then
+if [ "$PYTHON_VERSION" -eq 3 ] ; then
     echo ":You have Python3 image ..."
     sleep 1; clear
     VERSION='3.1'
 else
     echo ":You have Python2 image ..."
     sleep 1; clear
-    VERSION='2.0.1'
+    VERSION='2.1'
 fi
 
 ##################################
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
 
-######
+if [ "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
+    echo " You are use the laste Version: $VERSION"
+    exit 1
+elif [ -z "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" ]; then
+    echo; clear
+else
+    $OPKGREMOV $PACKAGE
+fi
 $OPKG > /dev/null 2>&1
 ###################
 #  Install Plugin #
 
-if [ "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
-    echo " You are use the laste Version: $VERSION"
-elif [ -z "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" ]; then
-    if python --version 2>&1 | grep -q '^Python 3\.'; then
-        echo "Insallling Suptv plugin Please Wait ......"
-        wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-        $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
-    else
-        echo "Insallling Suptv plugin Please Wait ......"
-        wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-        $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
-    fi
+echo "Insallling Suptv plugin Please Wait ......"
+if [ "$PYTHON_VERSION" -eq 3 ] ; then
+    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
+else
+    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
 fi
 
 ##################################
