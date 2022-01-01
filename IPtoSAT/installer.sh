@@ -3,7 +3,7 @@
 # SCRIPT : DOWNLOAD AND INSTALL IPtoSAT
 # ###########################################
 #
-# Command: wget wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPtoSAT/installer.sh -qO - | /bin/sh
+# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPtoSAT/installer.sh -qO - | /bin/sh
 #
 # ###########################################
 
