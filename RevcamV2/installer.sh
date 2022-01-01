@@ -1,9 +1,9 @@
 #!/bin/sh
 # ###########################################
-# SCRIPT : DOWNLOAD AND INSTALL IPtoSAT
+# SCRIPT : DOWNLOAD AND INSTALL RevcamV2
 # ###########################################
 #
-# Command: wget wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/RevcamV2/installer.sh -qO - | /bin/sh
+# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/RevcamV2/installer.sh -qO - | /bin/sh
 #
 # ###########################################
 
@@ -55,7 +55,7 @@ if [ $OSTYPE = "Opensource" ]; then
     $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
 else
     wget $MY_URL/${PACKAGE}_${VERSION}.deb -qP $TMPDIR
-    $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}.deb; $OPKGINSTAL -f -y
+    $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}_all.deb; $OPKGINSTAL -f -y
 fi
 
 ##################################
