@@ -10,7 +10,7 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-VERSION='v2'
+VERSION='2'
 PACKAGE='enigma2-plugin-softcams-revcam'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/RevcamV2/'
 
