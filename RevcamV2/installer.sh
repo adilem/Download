@@ -66,7 +66,7 @@ sleep 1; clear
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"
-echo "**                       RevcamV2   : $VERSION                             *"
+echo "**                       RevcamV2   : $VERSION                                *"
 echo "**                       Uploaded by: MOHAMED_OS                      *"
 echo "**                       Develop by : OTEX                            *"
 echo "** Support    : https://www.facebook.com/groups/298510744799488/about *"
