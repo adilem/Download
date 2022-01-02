@@ -30,8 +30,6 @@ elif [ -f /etc/apt/apt.conf ] ; then
     OPKGREMOV='apt-get purge --auto-remove'
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
-#########
-$OPKG > /dev/null 2>&1
 
 ##################################
 # Remove previous files (if any) #
@@ -45,6 +43,9 @@ elif [ -z "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" ]; then
 else
     $OPKGREMOV $PACKAGE
 fi
+
+#########
+$OPKG > /dev/null 2>&1
 
 ###################
 #  Install Plugin #
