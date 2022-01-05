@@ -7,12 +7,11 @@
 #
 # ###########################################
 
-
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
 PACKAGE='astra-sm'
-VERSION='2022_01_03'
+VERSION='2022_01_05'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
 ########################
@@ -38,7 +37,7 @@ CONFIGastratmp=${TMPDIR}/${PACKAGE}/astra.conf
 CONFIGabertistmp=${TMPDIR}/${PACKAGE}/abertis
 ####################
 #  Image Checking  #
-if [ -f /etc/opkg/opkg.conf ] ; then
+if [ -f /etc/opkg/opkg.conf ]; then
     STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
     OPKG='opkg update'
@@ -56,10 +55,10 @@ rm -rf /etc/tuxbox/*.xml
 #####################
 #  Checking Package #
 if [ $OSTYPE = "Opensource" ]; then
-    if grep -qs "Package: $PACKAGE" $STATUS ; then
+    if grep -qs "Package: $PACKAGE" $STATUS; then
         echo
     else
-        $OPKG > /dev/null 2>&1
+        $OPKG >/dev/null 2>&1
         echo " Downloading And Insallling $PACKAGE ......"
         $OPKGINSTAL $PACKAGE
     fi
@@ -84,7 +83,7 @@ sleep 5
 set +e
 echo
 echo "   >>>>   Reloading Services - Please Wait   <<<<"
-wget -qO - http://127.0.0.1/web/servicelistreload?mode=0 > /dev/null 2>&1
+wget -qO - http://127.0.0.1/web/servicelistreload?mode=0 >/dev/null 2>&1
 sleep 2
 echo
 
@@ -101,15 +100,15 @@ else
     sleep 1
     echo "---------------------------------------------"
     if [ ! -f $BBCPMT ]; then
-        cp -f $CONFIGpmttmp $BINPATH > /dev/null 2>&1
+        cp -f $CONFIGpmttmp $BINPATH >/dev/null 2>&1
         echo "[send (bbc_pmt_starter.sh) file]"
     fi
     if [ ! -f $BBCPY ]; then
-        cp -f $CONFIGpytmp $BINPATH > /dev/null 2>&1
+        cp -f $CONFIGpytmp $BINPATH >/dev/null 2>&1
         echo "[send (bbc_pmt_v6.py) file]"
     fi
     if [ ! -f $BBCENIGMA ]; then
-        cp -f $CONFIGentmp $BINPATH > /dev/null 2>&1
+        cp -f $CONFIGentmp $BINPATH >/dev/null 2>&1
         echo "[send (enigma2_pre_start.sh) file]"
     fi
     echo "---------------------------------------------"
@@ -131,15 +130,15 @@ if [ $OSTYPE = "Opensource" ]; then
             sleep 1
             echo "---------------------------------------------"
             if [ ! -f $SYSCONF ]; then
-                cp -f $CONFIGsysctltmp $ETCPATH > /dev/null 2>&1
+                cp -f $CONFIGsysctltmp $ETCPATH >/dev/null 2>&1
                 echo "[send (sysctl.conf) file]"
             fi
             if [ ! -f $ASTRACONF ]; then
-                cp -f $CONFIGastratmp $ASTRAPATH > /dev/null 2>&1
+                cp -f $CONFIGastratmp $ASTRAPATH >/dev/null 2>&1
                 echo "[send (astra.conf) file]"
             fi
             if [ ! -f $ABERTISBIN ]; then
-                cp -f $CONFIGabertistmp $ASTRAPATH/scripts > /dev/null 2>&1
+                cp -f $CONFIGabertistmp $ASTRAPATH/scripts >/dev/null 2>&1
                 echo "[send (abertis) file]"
             fi
             echo "---------------------------------------------"
@@ -160,15 +159,15 @@ if [ $OSTYPE = "Opensource" ]; then
             sleep 1
             echo "---------------------------------------------"
             if [ ! -f $SYSCONF ]; then
-                cp -f $CONFIGsysctltmp $ETCPATH > /dev/null 2>&1
+                cp -f $CONFIGsysctltmp $ETCPATH >/dev/null 2>&1
                 echo "[send (sysctl.conf) file]"
             fi
             if [ ! -f $ASTRACONF ]; then
-                cp -f $CONFIGastratmp $ASTRAPATH > /dev/null 2>&1
+                cp -f $CONFIGastratmp $ASTRAPATH >/dev/null 2>&1
                 echo "[send (astra.conf) file]"
             fi
             if [ ! -f $ABERTISBIN ]; then
-                cp -f $CONFIGabertistmp $ASTRAPATH/scripts > /dev/null 2>&1
+                cp -f $CONFIGabertistmp $ASTRAPATH/scripts >/dev/null 2>&1
                 echo "[send (abertis) file]"
             fi
             echo "---------------------------------------------"
