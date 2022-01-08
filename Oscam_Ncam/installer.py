@@ -98,7 +98,7 @@ def Install_Menu():
             try:
                 choice = str(input("Please make a choice: "))
             except EOFError:
-                continue
+                pass
 
             if choice == "1":
                 Remove_Oscam()
@@ -142,7 +142,7 @@ def Install_Menu():
             try:
                 choice = str(input("Please make a choice: "))
             except EOFError:
-                continue
+                pass
 
             if choice == "1":
                 Remove_Oscam()
