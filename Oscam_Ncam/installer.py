@@ -93,10 +93,12 @@ def Install_Menu():
             2 - Ncam
             3 - SupTV_Oscam
             4 - Revcam_Oscam\n
-            5 - Exit\n
+            x - Exit\n
             """)
-
-            choice = input("Please make a choice: ")
+            try:
+                choice = str(input("Please make a choice: "))
+            except EOFError:
+                break
 
             if choice == "1":
                 Remove_Oscam()
@@ -118,13 +120,13 @@ def Install_Menu():
                 print("Insallling Revcam_Oscam plugin Please Wait ......")
                 os.system(
                     '{:s} install {:s}/{:s}-revcamv2_{:s}_all.ipk'.format(install(), path_site, oscam_Package, oscam_Ver))
-            elif choice == "5":
+            elif choice == "x":
                 os.system('clear')
                 print("Goodbye ;)")
                 break
             else:
                 print("I don't understand your choice.".title())
-            break
+                break
 
     elif DreamOS():
 
@@ -135,10 +137,12 @@ def Install_Menu():
             1 - Oscam
             2 - Ncam
             3 - Revcam_Oscam\n
-            5 - Exit\n
+            x - Exit\n
             """)
-
-            choice = input("Please make a choice: ")
+            try:
+                choice = str(input("Please make a choice: "))
+            except EOFError:
+                break
 
             if choice == "1":
                 Remove_Oscam()
@@ -155,7 +159,7 @@ def Install_Menu():
                 print("Insallling Revcam_Oscam plugin Please Wait ......")
                 os.system(
                     'dpkg -i --force-overwrite install {:s}/{:s}-revcamv2_{:s}_all.deb'.format(path_site, oscam_Package, oscam_Ver))
-            elif choice == "5":
+            elif choice == "x":
                 os.system('clear')
                 print("Goodbye ;)")
                 break
