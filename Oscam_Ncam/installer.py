@@ -84,19 +84,19 @@ def Remove_Ncam():
 
 def Install_Menu():
     if Opensource():
-        choice = '0'
-        while choice == '0':
-            print("> Oscam EMU MENU")
-            print()
-            print("1 - Oscam")
-            print("2 - Ncam")
-            print("3 - SupTV_Oscam")
-            print("4 - Revcam_Oscam")
-            print()
-            print("x - Exit")
-            print()
 
-            choice = map(str, input("Please make a choice: ").title)
+        choice = True
+        while choice:
+            print("""
+            > Oscam EMU MENU\n
+            1 - Oscam
+            2 - Ncam
+            3 - SupTV_Oscam
+            4 - Revcam_Oscam\n
+            5 - Exit\n
+            """)
+
+            choice = input("Please make a choice: ")
 
             if choice == "1":
                 Remove_Oscam()
@@ -118,25 +118,27 @@ def Install_Menu():
                 print("Insallling Revcam_Oscam plugin Please Wait ......")
                 os.system(
                     '{:s} install {:s}/{:s}-revcamv2_{:s}_all.ipk'.format(install(), path_site, oscam_Package, oscam_Ver))
-            elif choice == "x":
+            elif choice == "5":
                 os.system('clear')
                 print("Goodbye ;)")
                 break
             else:
                 print("I don't understand your choice.".title())
-    elif DreamOS():
-        choice = '0'
-        while choice == '0':
-            print("> Oscam EMU MENU")
-            print()
-            print("1 - Oscam")
-            print("2 - Ncam")
-            print("3 - Revcam_Oscam")
-            print()
-            print("x - Exit")
-            print()
+            break
 
-            choice = map(str, input("Please make a choice: ").title)
+    elif DreamOS():
+
+        choice = True
+        while choice:
+            print("""
+            > Oscam EMU MENU\n
+            1 - Oscam
+            2 - Ncam
+            3 - Revcam_Oscam\n
+            5 - Exit\n
+            """)
+
+            choice = input("Please make a choice: ")
 
             if choice == "1":
                 Remove_Oscam()
@@ -153,12 +155,13 @@ def Install_Menu():
                 print("Insallling Revcam_Oscam plugin Please Wait ......")
                 os.system(
                     'dpkg -i --force-overwrite install {:s}/{:s}-revcamv2_{:s}_all.deb'.format(path_site, oscam_Package, oscam_Ver))
-            elif choice == "x":
+            elif choice == "5":
                 os.system('clear')
                 print("Goodbye ;)")
                 break
             else:
                 print("I don't understand your choice.".title())
+                break
 
 
 if __name__ == '__main__':
