@@ -1,12 +1,166 @@
 #!/usr/bin/python
-# -*- coding; utf-8 -*-
-# ###########################################
-# SCRIPT : DOWNLOAD AND INSTALL Oscam_Ncam
-# ###########################################
-#
-# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/installer.py -qO - | python
-#
-# ###########################################
-import zlib
-import base64
-exec(zlib.decompress(base64.b64decode('eNrtWG1v2zYQ/q5fcVOHyS4mqXYDtHXXABvibf1gu2jaDAOGCrRE24QlUuBLHCPLf9+Rlm3ZkYNkc7N2GD/Y1vF4fO654x2tJ9/ERsl4zHhcLvVMcO8JhE9DSEXG+LQHRk/Cl1aC8uSTFVP46fceDEa//jjonyWjc/iUeN5EigKSZGK0kTRJgBWlkBpKybhGKU81Q9NeJRbK03LZ8wBHJVJmXEqRUqWAKFClR69SWmp466b7Ugq5o5+KoiA8W2t7JUnnZErhDQQ5G6dG5ieBJ1RKiuSCSivudKIXz05CWphQvnj1cj37bruQcjYtSDcsczNlPFRiolFDhU4x8HjN2EWnG52EslNJ72GEOxsl0bNEMe1UZ1qXqhfHkiyiKdMzMzaKylRwTbmO0MO4YrnzanQen4kFzwXJ4oJgsEYO/NAZ9byMTmBUUq6EkSlttSuqJsh0ZLeM6BVTWrWC+JLIGAmKRTmfxkoTbVRQqdshKQaQ12xVxs8kJcXo/D6WszstV4Yqs4yjYp7XzO5tZIeFaukipQ6nVAf7Ju28k9GcNdFQt2G/mw2sAL1dAVoHdG0indF0jutVGSECYXRpdGtjxr/uqRvIkYewcohm4GR/AlnMIbi+dgcBvu3c3AR+NBGyILq1cf57qLK33V7TUG34Zj2z9aQkSlXeqpr4oOfOexWppdK0aO2I7QgcTlNmBHPyNM7oZcxNnkP39LvO65UTFU73EDSAP+jHJiYNQT0uLAiXfwNZnT9HrQ1Sy8dfpzjw62eKgRwwpbAUrvYB+AHHH3yrMxSaTVhKbIGDfmFgwRAUFxoWQs7xCYuq0fXVmwS45XUFso52lZbvaSEuaeIO/U5OIr6HZeXN03sn5U593KbmWIi8VW3eBqbggzRHS0TpHIUwRDgpDTOKprDIH0q9NYwj5Vtp5NRuTowWYQXlflvvJpM7ozuRG/7jwD2knPAvPnANCB81eg37HwzhuicMKDe1TtVMVjoTLHXd/dm2zyxmLKebKTfXWHlOwZ1w6A8+wqA//Oi3G7SaZH4HwtXaxiV+F6eHB2ef4+y5KT9cJHeYOEGl9/TS8nZYq3HlFa7sXzF9YMWOcENfQUqMl7Y13B4O/11OiaIonlMglVoP/Pbeetc61zT7Hb93K1d2S+ntErzCjDHHkOe27q9CsrrOQQXjN8I0RG74t23ckanbbK23r9h+JO4DRREr50HjJaG6O+6V5vUjXk3bu2Dccarx0T3Mx/C+dAy/PDb4Dhn8flw8P0Zu1E7NI3ASKlNa5z5/opwcg5x6tXgMdqTb77L7CPxcNfCzRR2k6KUMDnL0ixDZeEnhdbvB+TF2v/ne5vsX1TrfkAkeaDA8oxI95BkssSlVYCM/0kzn2KHa3l399WvtWv83pKMcKPuXHUK2ub0hHrmQ9i3FHXU5o+PN4fqPtqZj8vLvNanPVocfQE9DcT5u/nyNFdnz0Ick4aSwr0xthU0S+3IvSapCe+tt1I509X/E+wsAoBCz')))
+# -*- coding: utf-8 -*-
+# _^ code BY: MOHAMED_OS ^_
+
+from __future__ import print_function
+
+import os
+try:
+    import subprocess as sp
+except ImportError:
+    import commands as sp
+
+package = 'libcurl4'
+oscam_Ver = '11.704-emu-r798'
+oscam_Package = 'enigma2-plugin-softcams-oscam'
+ncam_Ver = 'V12.4-r1'
+ncam_Package = 'enigma2-plugin-softcams-ncam'
+path_site = 'https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam'
+
+
+def Opensource():
+    if os.path.exists('/var/lib/opkg/status'):
+        return Opensource
+
+
+def DreamOS():
+    if os.path.exists('/var/lib/dpkg/status'):
+        return DreamOS
+
+
+def install():
+    if DreamOS():
+        opkg = 'apt-get'
+        return opkg
+    elif Opensource():
+        opkg = 'opkg'
+        return opkg
+
+
+def Install_Package():
+    check = sp.getoutput(
+        "{:s} list-installed {:s} | awk '{{print $1}}'".format(install(), package))
+    if check == package:
+        pass
+    else:
+        if Opensource():
+            os.system(
+                '{:s} update >/dev/null 2>&1; {:s} install {:s}'.format(install(), install(), package))
+        elif DreamOS():
+            os.system(
+                '{:s} update >/dev/null 2>&1; {:s} install {:s} -y'.format(install(), install(), package))
+        else:
+            print("   >>>>   Feed Missing {:s}   <<<<\n   >>>>   Notification Emu will not work without {:s}   <<<<".format(
+                package, package))
+
+
+def Remove_Oscam():
+    checked = sp.getoutput(
+        "{:s} list-installed {}* | awk '{{print $1}}'".format(install(), oscam_Package))
+    if bool(checked) is True:
+        if Opensource():
+            os.system(
+                '{:s} remove --force-depends {:s}'.format(install(), checked))
+        elif DreamOS():
+            os.system(
+                '{:s} purge --auto-remove {:s}'.format(install(), checked))
+    else:
+        pass
+
+
+def Remove_Ncam():
+    checked = sp.getoutput(
+        "{:s} list-installed {:s} | awk '{{print $1}}'".format(install(), ncam_Package))
+    if bool(checked) is True:
+        if Opensource():
+            os.system(
+                '{:s} remove --force-depends {:s}'.format(install(), ncam_Package))
+        elif DreamOS():
+            os.system(
+                '{:s} purge --auto-remove {:s}'.format(install(), ncam_Package))
+    else:
+        pass
+
+
+def Install_Menu():
+    if Opensource():
+        choice = '0'
+        while choice == '0':
+            print("> Oscam EMU MENU")
+            print()
+            print("1 - Oscam")
+            print("2 - Ncam")
+            print("3 - SupTV_Oscam")
+            print("4 - Revcam_Oscam")
+            print()
+            print("x - Exit")
+            print()
+
+            choice = map(str, input("Please make a choice: ").title)
+
+            if choice == "1":
+                Remove_Oscam()
+                print("Insallling Oscam plugin Please Wait ......")
+                os.system(
+                    '{:s} install {:s}/{:s}_{:s}_all.ipk'.format(install(), path_site, oscam_Package, oscam_Ver))
+            elif choice == "2":
+                Remove_Ncam()
+                print("Insallling Ncam plugin Please Wait ......")
+                os.system(
+                    '{:s} install {:s}/{:s}_{:s}_all.ipk'.format(install(), path_site, ncam_Package, ncam_Ver))
+            elif choice == "3":
+                Remove_Oscam()
+                print("Insallling SupTV_Oscam plugin Please Wait ......")
+                os.system(
+                    '{:s} install {:s}/{:s}-supcam_{:s}_all.ipk'.format(install(), path_site, oscam_Package, oscam_Ver))
+            elif choice == "4":
+                Remove_Oscam()
+                print("Insallling Revcam_Oscam plugin Please Wait ......")
+                os.system(
+                    '{:s} install {:s}/{:s}-revcamv2_{:s}_all.ipk'.format(install(), path_site, oscam_Package, oscam_Ver))
+            elif choice == "x":
+                os.system('clear')
+                print("Goodbye ;)")
+                break
+            else:
+                print("I don't understand your choice.".title())
+    elif DreamOS():
+        choice = '0'
+        while choice == '0':
+            print("> Oscam EMU MENU")
+            print()
+            print("1 - Oscam")
+            print("2 - Ncam")
+            print("3 - Revcam_Oscam")
+            print()
+            print("x - Exit")
+            print()
+
+            choice = map(str, input("Please make a choice: ").title)
+
+            if choice == "1":
+                Remove_Oscam()
+                print("Insallling Oscam plugin Please Wait ......")
+                os.system(
+                    'dpkg -i --force-overwrite install {:s}/{:s}_{:s}_all.deb'.format(path_site, oscam_Package, oscam_Ver))
+            elif choice == "2":
+                Remove_Ncam()
+                print("Insallling Ncam plugin Please Wait ......")
+                os.system(
+                    'dpkg -i --force-overwrite install {:s}/{:s}_{:s}_all.deb'.format(path_site, ncam_Package, ncam_Ver))
+            elif choice == "3":
+                Remove_Oscam()
+                print("Insallling Revcam_Oscam plugin Please Wait ......")
+                os.system(
+                    'dpkg -i --force-overwrite install {:s}/{:s}-revcamv2_{:s}_all.deb'.format(path_site, oscam_Package, oscam_Ver))
+            elif choice == "x":
+                os.system('clear')
+                print("Goodbye ;)")
+                break
+            else:
+                print("I don't understand your choice.".title())
+
+
+if __name__ == '__main__':
+    Install_Package()
+    Install_Menu()
