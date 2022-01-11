@@ -16,41 +16,44 @@ PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 
 ####################
 #  Image Checking  #
-if [ -f /etc/opkg/opkg.conf ] ; then
+if [ -f /etc/opkg/opkg.conf ]; then
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
     OPKGLIST='opkg list-installed'
 fi
 
-if [ "$PYTHON_VERSION" -eq 3 ] ; then
+if [ "$PYTHON_VERSION" -eq 3 ]; then
     echo ":You have Python3 image ..."
-    sleep 1; clear
+    sleep 1
+    clear
     VERSION='3.1'
 else
     echo ":You have Python2 image ..."
-    sleep 1; clear
+    sleep 1
+    clear
     VERSION='2.1'
 fi
 
 ##################################
 # Remove previous files (if any) #
-rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
+rm -rf $TMPDIR/"${PACKAGE:?}"* >/dev/null 2>&1
 
-if [ "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
+if [ "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" = $VERSION ]; then
     echo " You are use the laste Version: $VERSION"
     exit 1
 elif [ -z "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" ]; then
-    echo; clear
+    echo
+    clear
 else
     $OPKGREMOV $PACKAGE
 fi
-$OPKG > /dev/null 2>&1
+$OPKG >/dev/null 2>&1
 ###################
 #  Install Plugin #
 
 echo "Insallling Suptv plugin Please Wait ......"
-if [ "$PYTHON_VERSION" -eq 3 ] ; then
+if [ "$PYTHON_VERSION" -eq 3 ]; then
     wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
     $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
 else
@@ -60,9 +63,10 @@ fi
 
 ##################################
 # Remove previous files (if any) #
-rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
+rm -rf $TMPDIR/"${PACKAGE:?}"* >/dev/null 2>&1
 
-sleep 2; clear
+sleep 2
+clear
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"

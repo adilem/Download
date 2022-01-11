@@ -17,7 +17,7 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Quran/'
 ####################
 #  Image Checking  #
 
-if [ -f /etc/opkg/opkg.conf ] ; then
+if [ -f /etc/opkg/opkg.conf ]; then
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
@@ -27,17 +27,18 @@ fi
 
 ##################################
 # Remove previous files (if any) #
-rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
+rm -rf $TMPDIR/"${PACKAGE:?}"* >/dev/null 2>&1
 
-if [ "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
+if [ "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" = $VERSION ]; then
     echo " You are use the laste Version: $VERSION"
     exit 1
 elif [ -z "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" ]; then
-    echo; clear
+    echo
+    clear
 else
     $OPKGREMOV $PACKAGE
 fi
-$OPKG > /dev/null 2>&1
+$OPKG >/dev/null 2>&1
 ###################
 #  Install Plugin #
 echo "Insallling Quran Karim plugin Please Wait ......"
@@ -46,10 +47,10 @@ $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
 
 #########################
 # Remove files (if any) #
-rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
+rm -rf $TMPDIR/"${PACKAGE:?}"* >/dev/null 2>&1
 
-
-sleep 2; clear
+sleep 2
+clear
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"

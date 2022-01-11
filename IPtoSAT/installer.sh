@@ -16,7 +16,7 @@ MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPtoSAT/'
 
 ####################
 #  Image Checking  #
-if [ -f /etc/opkg/opkg.conf ] ; then
+if [ -f /etc/opkg/opkg.conf ]; then
     STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
     PKGEXP3='exteplayer3'
@@ -25,7 +25,7 @@ if [ -f /etc/opkg/opkg.conf ] ; then
     OPKGINSTAL='opkg install'
     OPKGLIST='opkg list-installed'
     OPKGREMOV='opkg remove --force-depends'
-elif [ -f /etc/apt/apt.conf ] ; then
+elif [ -f /etc/apt/apt.conf ]; then
     STATUS='/var/lib/dpkg/status'
     OSTYPE='DreamOS'
     PKGBAPP='gstreamer1.0-plugins-base-apps'
@@ -36,17 +36,18 @@ elif [ -f /etc/apt/apt.conf ] ; then
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
 #########
-$OPKG > /dev/null 2>&1
+$OPKG >/dev/null 2>&1
 
 ##################################
 # Remove previous files (if any) #
-rm -rf $TMPDIR/"${PACKAGE:?}"* > /dev/null 2>&1
+rm -rf $TMPDIR/"${PACKAGE:?}"* >/dev/null 2>&1
 
-if [ "$($OPKGLIST $PACKAGE |  awk '{ print $3 }')" = $VERSION ]; then
+if [ "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" = $VERSION ]; then
     echo " You are use the laste Version: $VERSION"
     exit 1
 elif [ -z "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" ]; then
-    echo; clear
+    echo
+    clear
 else
     $OPKGREMOV $PACKAGE
 fi
@@ -54,46 +55,52 @@ fi
 #####################
 # Package Checking  #
 if [ $OSTYPE = "Opensource" ]; then
-    if grep -qs "Package: $PKGEXP3" $STATUS ; then
+    if grep -qs "Package: $PKGEXP3" $STATUS; then
         echo "$PKGEXP3 found in device..."
-        sleep 1; clear
+        sleep 1
+        clear
     else
         echo " Downloading $PKGEXP3 ......"
         echo
         $OPKGINSTAL $PKGEXP3
-        sleep 1; clear
+        sleep 1
+        clear
     fi
-    if grep -qs "Package: $PKGGPLY" $STATUS ; then
+    if grep -qs "Package: $PKGGPLY" $STATUS; then
         echo "$PKGGPLY found in device..."
-        sleep 1; clear
+        sleep 1
+        clear
     else
         echo " Downloading $PKGGPLY ......"
         echo
         $OPKGINSTAL $PKGGPLY
-        sleep 1; clear
+        sleep 1
+        clear
     fi
 
 elif [ $OSTYPE = "DreamOS" ]; then
-    if grep -qs "Package: $PKGBAPP" $STATUS ; then
+    if grep -qs "Package: $PKGBAPP" $STATUS; then
         echo " $PKGBAPP found in device..."
-        sleep 1; clear
+        sleep 1
+        clear
     else
         echo " Downloading  $PKGBAPP ......"
         echo
-        $OPKGINSTAL  $PKGBAPP -y
-        sleep 1; clear
+        $OPKGINSTAL $PKGBAPP -y
+        sleep 1
+        clear
     fi
 fi
 
 if [ $OSTYPE = "Opensource" ]; then
-    if grep -qs "Package: $PKGEXP3" $STATUS ; then
+    if grep -qs "Package: $PKGEXP3" $STATUS; then
         echo
     else
         echo "Feed Missing $PKGEXP3"
         echo "Sorry, the plugin will not be install"
         exit 1
     fi
-    if grep -qs "Package: $PKGGPLY" $STATUS ; then
+    if grep -qs "Package: $PKGGPLY" $STATUS; then
         echo
     else
         echo "Feed Missing $PKGGPLY"
@@ -101,7 +108,7 @@ if [ $OSTYPE = "Opensource" ]; then
         exit 1
     fi
 elif [ $OSTYPE = "DreamOS" ]; then
-    if grep -qs "Package: $PKGBAPP" $STATUS ; then
+    if grep -qs "Package: $PKGBAPP" $STATUS; then
         echo
     else
         echo "Feed Missing $PKGBAPP"
@@ -118,14 +125,16 @@ if [ $OSTYPE = "Opensource" ]; then
     $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
 else
     wget $MY_URL/${PACKAGE}_${VERSION}.deb -qP $TMPDIR
-    $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}.deb; $OPKGINSTAL -f -y
+    $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}.deb
+    $OPKGINSTAL -f -y
 fi
 
 ##################################
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"*
 
-sleep 1; clear
+sleep 1
+clear
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"
