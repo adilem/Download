@@ -11,6 +11,7 @@
 # Configure where we can find things here #
 TMPDIR='/tmp'
 PACKAGE='astra-sm'
+DVBSNOOP='dvbsnoop'
 VERSION='2022_01_12'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
@@ -62,9 +63,24 @@ if [ $OSTYPE = "Opensource" ]; then
         echo " Downloading And Insallling $PACKAGE ......"
         $OPKGINSTAL $PACKAGE
     fi
-else
-    echo "   >>>>   Feed Missing $PACKAGE   <<<<"
-    echo "   >>>>   Notification Abertis DTT Channel will not work   <<<<"
+    if grep -qs "Package: $DVBSNOOP" $STATUS; then
+        echo
+    else
+        $OPKG >/dev/null 2>&1
+        echo " Downloading And Insallling $DVBSNOOP ......"
+        $OPKGINSTAL $DVBSNOOP
+    fi
+    if grep -qs "Package: $PACKAGE" $STATUS; then
+        echo
+    else
+        echo "   >>>>   Feed Missing $PACKAGE   <<<<"
+        echo "   >>>>   Notification Abertis DTT Channel will not work   <<<<"
+    fi
+    if grep -qs "Package: $DVBSNOOP" $STATUS; then
+        echo
+    else
+        echo "   >>>>   Feed Missing $DVBSNOOP   <<<<"
+    fi
 fi
 
 #########################
