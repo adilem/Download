@@ -45,6 +45,8 @@ elif uname -m | grep -qs aarch64; then
     plarform='ARCH64'
 elif uname -m | grep -qs sh4; then
     plarform='sh4'
+else
+    echo 'Sorry, your Device does not have the proper Arch'
 fi
 #########################
 # Remove files (if any) #
