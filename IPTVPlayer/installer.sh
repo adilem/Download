@@ -9,7 +9,7 @@
 
 ###########################################
 # Configure where we can find things here #
-VERSION='17.01.2022'
+VERSION='19.01.2022'
 DUKTAPE='duktape'
 TMPDIR='/tmp'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
