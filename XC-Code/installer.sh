@@ -10,7 +10,7 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-VERSION='2.0'
+VERSION='2.1'
 PACKAGE='enigma2-plugin-extensions-xcplugin-forever'
 MY_URL='https://patbuweb.com/xcplugin/'
 
