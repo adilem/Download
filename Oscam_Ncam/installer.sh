@@ -3,7 +3,7 @@
 # SCRIPT : DOWNLOAD AND INSTALL Oscam_Ncam
 # ###########################################
 #
-# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/installer.sh -q; sh installer.sh
+# Command: sh -c "$(wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/installer.sh -qO -)"
 #
 # ###########################################
 
@@ -12,7 +12,6 @@
 
 PACKAGE='libcurl4'
 TMPDIR='/tmp'
-DIR=$(pwd)
 OSC_VERSION='11.704-emu-r798'
 NCM_VERSION='V12.4-r1'
 OSC_PACKAGE='enigma2-plugin-softcams-oscam'
@@ -56,10 +55,6 @@ removeoscam() {
             sleep 2
             clear
         fi
-    else
-        echo "   >>>>   No Older Version Was Found   <<<<"
-        sleep 1
-        clear
     fi
 }
 ################
@@ -77,10 +72,6 @@ removencam() {
             sleep 2
             clear
         fi
-    else
-        echo "   >>>>   No Older Version Was Found   <<<<"
-        sleep 1
-        clear
     fi
 }
 ##########
@@ -102,8 +93,6 @@ else
         echo
         $OPKGINSTAL $PACKAGE -y
     else
-        echo ""
-        echo ""
         echo "   >>>>   Feed Missing $PACKAGE   <<<<"
         echo "   >>>>   Notification Emu will not work without $PACKAGE   <<<<"
         sleep 3
@@ -201,6 +190,6 @@ fi
 
 ################################
 # Remove script files (if any) #
-rm -rf $TMPDIR/"${OSC_PACKAGE:?}"* $TMPDIR/"${NCM_PACKAGE:?}"* "$DIR"/installer.sh >/dev/null 2>&1
+rm -rf $TMPDIR/"${OSC_PACKAGE:?}"* $TMPDIR/"${NCM_PACKAGE:?}"*
 
-exit 1
+exit 0
