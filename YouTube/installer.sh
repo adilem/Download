@@ -10,8 +10,8 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-VERSION='git983'
-GIT='141efd7'
+VERSION='git989'
+GIT='59bbd52'
 PACKAGE='enigma2-plugin-extensions-youtube'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube'
 PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
@@ -75,11 +75,6 @@ if [ "$PYTHON_VERSION" -eq 3 ]; then
     else
         $OPKGINSTAL python3-netclient
     fi
-    if grep -qs "Package: python3-twisted-web" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL python3-twisted-web
-    fi
 else
     if grep -qs "Package: python-codecs" $STATUS; then
         echo
@@ -100,11 +95,6 @@ else
         echo
     else
         $OPKGINSTAL python-netclient
-    fi
-    if grep -qs "Package: python-twisted-web" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL python-twisted-web
     fi
 fi
 
