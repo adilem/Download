@@ -74,6 +74,17 @@ removencam() {
         fi
     fi
 }
+################
+# TNTSAT Remove #
+removetntsat() {
+    if grep -qs "Package: $OSC_PACKAGE-tnt" $STATUS; then
+        echo "   >>>>   Remove Old Version   <<<<"
+        echo
+        $OPKGREMOV $OSC_PACKAGE-tnt
+        sleep 2
+        clear
+    fi
+}
 ##########
 $OPKG >/dev/null 2>&1
 
@@ -109,6 +120,7 @@ if [ $OSTYPE = "Opensource" ]; then
     echo "  2 - Ncam"
     echo "  3 - SupTV_Oscam"
     echo "  4 - Revcam_Oscam"
+    echo "  5 - TNTSAT"
     echo
     echo "  x - Exit"
     echo
@@ -138,6 +150,12 @@ if [ $OSTYPE = "Opensource" ]; then
         echo "Insallling Revcam_Oscam plugin Please Wait ......"
         wget $MY_URL/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk
+        ;;
+    "5")
+        EMU=TNTSAN removeoscam
+        echo "Insallling TNTSAN plugin Please Wait ......"
+        wget $MY_URL/${OSC_PACKAGE}-tnt_11.678-tnt_all.ipk -qP $TMPDIR
+        $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-tnt_11.678-tnt_all.ipk
         ;;
     x)
         clear
