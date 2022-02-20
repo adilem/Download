@@ -48,7 +48,7 @@ fi
 
 ###################
 #  Install Plugin #
-echo "Insallling XcPlugin Forever plugin Please Wait ......"
+echo "Insallling HasBahCa plugin Please Wait ......"
 if [ $OSTYPE = "Opensource" ]; then
     wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
     $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
