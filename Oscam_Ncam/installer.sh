@@ -152,7 +152,7 @@ if [ $OSTYPE = "Opensource" ]; then
         $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-revcamv2_${OSC_VERSION}_all.ipk
         ;;
     "5")
-        EMU=TNTSAN removeoscam
+        EMU=TNTSAN removetntsat
         echo "Insallling TNTSAN plugin Please Wait ......"
         wget $MY_URL/${OSC_PACKAGE}-tnt_11.678-tnt_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-tnt_11.678-tnt_all.ipk
