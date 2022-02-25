@@ -10,7 +10,7 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-VERSION='1.1'
+VERSION='1.2'
 PACKAGE='enigma2-plugin-extensions-hasbahca'
 MY_URL='https://patbuweb.com/HasBahCa/'
 
