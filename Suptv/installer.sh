@@ -20,19 +20,23 @@ if [ -f /etc/opkg/opkg.conf ]; then
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
-    OPKGLIST='opkg list-installed'
+elif [ -f /etc/apt/apt.conf ]; then
+    OSTYPE='DreamOS'
+    OPKG='apt-get update'
+    OPKGINSTAL='apt-get install'
+    DPKINSTALL='dpkg -i --force-overwrite'
 fi
 
 if [ "$PYTHON_VERSION" -eq 3 ]; then
     echo ":You have Python3 image ..."
-    sleep 1
-    clear
     VERSION='3.1'
 else
     echo ":You have Python2 image ..."
-    sleep 1
-    clear
-    VERSION='2.1'
+    if [ $OSTYPE = "Opensource" ]; then
+        VERSION='2.1'
+    elif [ $OSTYPE = "DreamOS" ]; then
+        VERSION='3.8'
+    fi
 fi
 
 ##################################
@@ -52,15 +56,21 @@ $OPKG >/dev/null 2>&1
 ###################
 #  Install Plugin #
 
-echo "Insallling Suptv plugin Please Wait ......"
-if [ "$PYTHON_VERSION" -eq 3 ]; then
-    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
-else
-    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
-fi
+if [ $OSTYPE = "Opensource" ]; then
+    echo "Insallling Suptv plugin Please Wait ......"
+    if [ "$PYTHON_VERSION" -eq 3 ]; then
+        wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
+        $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
+    else
+        wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
+        $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
+    fi
+elif [ $OSTYPE = "DreamOS" ]; then
+    wget $MY_URL/${PACKAGE}_${VERSION}_all.deb -qP $TMPDIR
+    $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}.deb
+    $OPKGINSTAL -f -y
 
+fi
 ##################################
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* >/dev/null 2>&1
