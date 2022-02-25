@@ -20,10 +20,12 @@ if [ -f /etc/opkg/opkg.conf ]; then
     OSTYPE='Opensource'
     OPKG='opkg update'
     OPKGINSTAL='opkg install'
+    OPKGLIST='opkg list-installed'
 elif [ -f /etc/apt/apt.conf ]; then
     OSTYPE='DreamOS'
     OPKG='apt-get update'
     OPKGINSTAL='apt-get install'
+    OPKGLIST='apt-get list-installed'
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
 
