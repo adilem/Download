@@ -12,7 +12,7 @@
 TMPDIR='/tmp'
 PACKAGE='astra-sm'
 DVBSNOOP='dvbsnoop'
-VERSION='2022_02_24'
+VERSION='2022_02_28'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
 ########################
