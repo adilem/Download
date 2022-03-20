@@ -10,8 +10,8 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-VERSION='git1010'
-GIT='2822a33'
+VERSION='git1011'
+GIT='e5ba4eb'
 PACKAGE='enigma2-plugin-extensions-youtube'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube'
 PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
