@@ -15,7 +15,7 @@ DVBSNOOP='dvbsnoop'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
 
 ###########
-# Version #
+# Check Version #
 VERSION=$(wget $MY_URL/version -qO- | cut -d "=" -f2-)
 
 ########################
@@ -203,7 +203,7 @@ echo ""
 echo ""
 echo "*********************************************************"
 echo "#       Channel And Config INSTALLED SUCCESSFULLY       #"
-echo "#                 ${VERSION}                            #"
+echo "#                    ${VERSION}                            #"
 echo "#                    MOHAMED_OS                         #"
 echo "#                     support                           #"
 echo "#  https://www.tunisia-sat.com/forums/threads/4208717   #"
