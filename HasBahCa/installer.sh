@@ -12,10 +12,11 @@
 TMPDIR='/tmp'
 PACKAGE='enigma2-plugin-extensions-hasbahca'
 MY_URL='https://patbuweb.com/HasBahCa/'
+URL_VER='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/HasBahCa'
 
 #################
 # Check Version #
-VERSION=$(wget $MY_URL/version -qO- | cut -d "=" -f2-)
+VERSION=$(wget $URL_VER/version -qO- | cut -d "=" -f2-)
 
 ####################
 #  Image Checking  #
