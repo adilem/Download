@@ -12,8 +12,11 @@
 TMPDIR='/tmp'
 PACKAGE='astra-sm'
 DVBSNOOP='dvbsnoop'
-VERSION='2022_03_23'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Channel'
+
+###########
+# Version #
+VERSION=$(wget $MY_URL/version -qO- | cut -d "=" -f2-)
 
 ########################
 # Path of Config Files #
@@ -86,15 +89,15 @@ fi
 #########################
 # Remove files (if any) #
 rm -rf ${ASTRACONF} ${SYSCONF}
-rm -rf ${TMPDIR}/channels_backup_user_${VERSION}* astra-* bbc_pmt_v6*
+rm -rf ${TMPDIR}/channels_backup_user_"${VERSION}"* astra-* bbc_pmt_v6*
 
 ###############################
 # Downlaod And Install Plugin #
 echo
 set -e
 echo "Downloading And Insallling Channel Please Wait ......"
-wget $MY_URL/channels_backup_user_${VERSION}.tar.gz -qP $TMPDIR
-tar -zxf $TMPDIR/channels_backup_user_${VERSION}.tar.gz -C /
+wget $MY_URL/channels_backup_user_"${VERSION}".tar.gz -qP $TMPDIR
+tar -zxf $TMPDIR/channels_backup_user_"${VERSION}".tar.gz -C /
 sleep 5
 set +e
 echo
@@ -193,13 +196,14 @@ fi
 
 #########################
 # Remove files (if any) #
-rm -rf ${TMPDIR}/channels_backup_user_${VERSION}* astra-* bbc_pmt_v6*
+rm -rf ${TMPDIR}/channels_backup_user_"${VERSION}"* astra-* bbc_pmt_v6*
 
 sync
 echo ""
 echo ""
 echo "*********************************************************"
 echo "#       Channel And Config INSTALLED SUCCESSFULLY       #"
+echo "#                 ${VERSION}                            #"
 echo "#                    MOHAMED_OS                         #"
 echo "#                     support                           #"
 echo "#  https://www.tunisia-sat.com/forums/threads/4208717   #"
