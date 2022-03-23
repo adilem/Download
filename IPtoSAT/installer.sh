@@ -11,7 +11,7 @@
 # Configure where we can find things here #
 TMPDIR='/tmp'
 PACKAGE='enigma2-plugin-extensions-iptosat'
-MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPtoSAT/'
+MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPtoSAT'
 
 #################
 # Check Version #

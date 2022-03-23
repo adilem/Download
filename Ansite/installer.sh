@@ -11,7 +11,7 @@
 # Configure where we can find things here #
 TMPDIR='/tmp'
 PACKAGE='enigma2-plugin-extensions-ansite'
-MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Ansite/'
+MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Ansite'
 PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 
 #################

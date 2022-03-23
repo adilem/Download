@@ -10,9 +10,12 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-VERSION='2'
 PACKAGE='enigma2-plugin-softcams-revcam'
-MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/RevcamV2/'
+MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/RevcamV2'
+
+#################
+# Check Version #
+VERSION=$(wget $MY_URL/version -qO- | cut -d "=" -f2-)
 
 ####################
 #  Image Checking  #
@@ -35,7 +38,7 @@ fi
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* >/dev/null 2>&1
 
-if [ "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" = $VERSION ]; then
+if [ "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" = "$VERSION" ]; then
     echo " You are use the laste Version: $VERSION"
     exit 1
 elif [ -z "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" ]; then
@@ -53,11 +56,11 @@ $OPKG >/dev/null 2>&1
 
 echo "Insallling RevcamV2 plugin Please Wait ......"
 if [ $OSTYPE = "Opensource" ]; then
-    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
+    wget $MY_URL/${PACKAGE}_"${VERSION}"_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_"${VERSION}"_all.ipk
 else
-    wget $MY_URL/${PACKAGE}_${VERSION}.deb -qP $TMPDIR
-    $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}_all.deb
+    wget $MY_URL/${PACKAGE}_"${VERSION}".deb -qP $TMPDIR
+    $DPKINSTALL $TMPDIR/${PACKAGE}_"${VERSION}"_all.deb
     $OPKGINSTAL -f -y
 fi
 
