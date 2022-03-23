@@ -144,7 +144,7 @@ fi
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"
-echo "**                       YouTube    : $VERSION                          *"
+echo "**                       YouTube    : $VERSION                            *"
 echo "**                       Uploaded by: MOHAMED_OS                      *"
 echo "**                       Develop by : Taapat                          *"
 echo "**  Support    : https://www.tunisia-sat.com/forums/threads/3776759/  *"
