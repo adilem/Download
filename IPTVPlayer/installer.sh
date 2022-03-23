@@ -9,13 +9,18 @@
 
 ###########################################
 # Configure where we can find things here #
-VERSION='19.03.2022'
 DUKTAPE='duktape'
 TMPDIR='/tmp'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
 SETTINGS='/etc/enigma2/settings'
 MY_URL='http://ipkinstall.ath.cx/ipk-install'
+URL_VER='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPTVPlayer'
 PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
+
+#################
+# Check Version #
+VERSION=$(wget $URL_VER/version -qO- | cut -d "=" -f2-)
+
 ########################
 if [ -f /etc/opkg/opkg.conf ]; then
     STATUS='/var/lib/opkg/status'
