@@ -10,9 +10,12 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-VERSION='1.3'
 PACKAGE='enigma2-plugin-extensions-hasbahca'
 MY_URL='https://patbuweb.com/HasBahCa/'
+
+#################
+# Check Version #
+VERSION=$(wget $MY_URL/version -qO- | cut -d "=" -f2-)
 
 ####################
 #  Image Checking  #
@@ -36,7 +39,7 @@ rm -rf $TMPDIR/"${PACKAGE:?}"* >/dev/null 2>&1
 
 ######################
 #  Remove Old Plugin #
-if [ "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" = $VERSION ]; then
+if [ "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" = "$VERSION" ]; then
     echo " You are use the laste Version: $VERSION"
     exit 1
 elif [ -z "$($OPKGLIST $PACKAGE | awk '{ print $3 }')" ]; then
@@ -50,11 +53,11 @@ fi
 #  Install Plugin #
 echo "Insallling HasBahCa plugin Please Wait ......"
 if [ $OSTYPE = "Opensource" ]; then
-    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
+    wget $MY_URL/${PACKAGE}_"${VERSION}"_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_"${VERSION}"_all.ipk
 else
-    wget $MY_URL/${PACKAGE}_${VERSION}_all.deb -qP $TMPDIR
-    $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}_all.deb
+    wget $MY_URL/${PACKAGE}_"${VERSION}"_all.deb -qP $TMPDIR
+    $DPKINSTALL $TMPDIR/${PACKAGE}_"${VERSION}"_all.deb
     $OPKGINSTAL -f -y
 fi
 
