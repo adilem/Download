@@ -16,7 +16,7 @@ PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 
 ###########
 # Version #
-VERSION=$(cat $MY_URL/version | cut -d "=" -f2-)
+VERSION=$(wget $MY_URL/version -qO- | cut -d "=" -f2-)
 
 ####################
 #  Image Checking  #
