@@ -17,7 +17,7 @@ PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 #################
 # Check Version #
 VERSION=$(wget $MY_URL/version -qO- | cut -d "=" -f2-)
-GIT=$(wget $MY_URL/version -qO- | grep 'git=' | cut -d "=" -f2-)
+GIT=$(wget $MY_URL/version -qO- | grep 'git' | cut -d "=" -f2-)
 
 ####################
 #  Image Checking  #
@@ -44,7 +44,7 @@ CHECK_VERSION=$($OPKGLIST $PACKAGE | cut -d'+' -f2 | awk '{ print $1 }')
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* >/dev/null 2>&1
 
-if [ "$CHECK_VERSION" = $VERSION ]; then
+if [ "$CHECK_VERSION" = "$VERSION" ]; then
     echo " You are use the laste Version: $VERSION"
     exit 1
 elif [ -z "$CHECK_VERSION" ]; then
@@ -122,11 +122,11 @@ clear
 
 echo "Insallling YouTube plugin Please Wait ......"
 if [ $OSTYPE = "Opensource" ]; then
-    wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk -qP $TMPDIR
-    $OPKGINSTAL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.ipk
+    wget $MY_URL/${PACKAGE}_h1+git"${VERSION}"+"${GIT}"-r0.0_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_h1+git"${VERSION}"+"${GIT}"-r0.0_all.ipk
 else
-    wget $MY_URL/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.deb -qP $TMPDIR
-    $DPKINSTALL $TMPDIR/${PACKAGE}_h1+${VERSION}+${GIT}-r0.0_all.deb
+    wget $MY_URL/${PACKAGE}_h1+git"${VERSION}"+"${GIT}"-r0.0_all.deb -qP $TMPDIR
+    $DPKINSTALL $TMPDIR/${PACKAGE}_h1+git"${VERSION}"+"${GIT}"-r0.0_all.deb
     $OPKGINSTAL -f -y
 fi
 
