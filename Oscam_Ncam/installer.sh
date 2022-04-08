@@ -16,14 +16,11 @@ OSC_PACKAGE='enigma2-plugin-softcams-oscam'
 NCM_PACKAGE='enigma2-plugin-softcams-ncam'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Oscam_Ncam/'
 
-#################
-# Check Version #
+########################
 OSC_VERSION=$(wget $MY_URL/version -qO- | grep 'oscam' | cut -d "=" -f2-)
 NCM_VERSION=$(wget $MY_URL/version -qO- | grep 'ncam' | cut -d "=" -f2-)
 
-####################
-#  Image Checking  #
-
+########################
 if [ -f /etc/opkg/opkg.conf ]; then
     STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
@@ -39,12 +36,10 @@ elif [ -f /etc/apt/apt.conf ]; then
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
 
-##################################
-# Remove previous files (if any) #
+########################
 rm -rf $TMPDIR/"${OSC_PACKAGE:?}"* $TMPDIR/"${NCM_PACKAGE:?}"* >/dev/null 2>&1
 
-##########
-# Remove #
+########################
 remove() {
     if grep -qs "Package: $1" $STATUS; then
         echo "   >>>>   Remove Old Version   <<<<"
@@ -60,14 +55,12 @@ remove() {
         fi
     fi
 }
-##########
-$OPKG >/dev/null 2>&1
 
-#####################
-# Package Checking  #
+########################
 if grep -qs "Package: $PACKAGE" $STATUS; then
     echo
 else
+    $OPKG >/dev/null 2>&1
     echo "   >>>>   Need to install $PACKAGE   <<<<"
     echo
     if [ $OSTYPE = "Opensource" ]; then
@@ -86,7 +79,7 @@ else
     fi
 fi
 
-#####################
+########################
 clear
 if [ $OSTYPE = "Opensource" ]; then
     echo "> Oscam EMU MENU"
@@ -181,8 +174,7 @@ elif [ $OSTYPE = "DreamOS" ]; then
     esac
 fi
 
-################################
-# Remove script files (if any) #
+########################
 rm -rf $TMPDIR/"${OSC_PACKAGE:?}"* $TMPDIR/"${NCM_PACKAGE:?}"*
 
 exit 0
