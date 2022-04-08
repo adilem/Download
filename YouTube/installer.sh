@@ -14,14 +14,7 @@ PACKAGE='enigma2-plugin-extensions-youtube'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube'
 PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 
-#################
-# Check Version #
-VERSION=$(wget $MY_URL/version -qO- | grep 'version' | cut -d "=" -f2-)
-GIT=$(wget $MY_URL/version -qO- | grep 'commit' | cut -d "=" -f2-)
-
-####################
-#  Image Checking  #
-
+#########################
 if [ -f /etc/opkg/opkg.conf ]; then
     STATUS='/var/lib/opkg/status'
     OSTYPE='Opensource'
@@ -39,11 +32,13 @@ elif [ -f /etc/apt/apt.conf ]; then
     DPKINSTALL='dpkg -i --force-overwrite'
 fi
 
+#########################
+VERSION=$(wget $MY_URL/version -qO- | grep 'version' | cut -d "=" -f2-)
+GIT=$(wget $MY_URL/version -qO- | grep 'commit' | cut -d "=" -f2-)
 CHECK_VERSION=$($OPKGLIST $PACKAGE | cut -d'+' -f2 | awk '{ print $1 }')
-##################################
-# Remove previous files (if any) #
 rm -rf $TMPDIR/"${PACKAGE:?}"* >/dev/null 2>&1
 
+#########################
 if [ "$CHECK_VERSION" = "$VERSION" ]; then
     echo " You are use the laste Version: $VERSION"
     exit 1
@@ -54,72 +49,37 @@ else
     $OPKGREMOV $PACKAGE
 fi
 
-$OPKG >/dev/null 2>&1
-######################
-#  Checking Depends  #
+########################
+install() {
+    if grep -qs "Package: $1" $STATUS; then
+        echo
+    else
+        $OPKG >/dev/null 2>&1
+        echo "   >>>>   Need to install $1   <<<<"
+        echo
+        $OPKGINSTAL "$1"
+        sleep 1
+        clear
+    fi
+}
 
+########################
 if [ "$PYTHON_VERSION" -eq 3 ]; then
-    if grep -qs "Package: python3-codecs" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL python3-codecs
-    fi
-    if grep -qs "Package: python3-core" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL python3-core
-    fi
-    if grep -qs "Package: python3-json" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL python3-json
-    fi
-    if grep -qs "Package: python3-netclient" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL python3-netclient
-    fi
+    for i in python3-codecs python3-core python3-json python3-netclient; do
+        install $i
+    done
 else
-    if grep -qs "Package: python-codecs" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL python-codecs
-    fi
-    if grep -qs "Package: python-core" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL python-core
-    fi
-    if grep -qs "Package: python-json" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL python-json
-    fi
-    if grep -qs "Package: python-netclient" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL python-netclient
+    for i in python-codecs python-core python-json python-netclient; do
+        install $i
+    done
+    if [ $OSTYPE = "DreamOS" ]; then
+        for d in gstreamer1.0-plugins-base-meta gstreamer1.0-plugins-good-spectrum; do
+            install $d
+        done
     fi
 fi
 
-if [ $OSTYPE = "DreamOS" ]; then
-    if grep -qs "Package: gstreamer1.0-plugins-base-meta" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL gstreamer1.0-plugins-base-meta -y
-    fi
-    if grep -qs "Package: gstreamer1.0-plugins-good-spectrum" $STATUS; then
-        echo
-    else
-        $OPKGINSTAL gstreamer1.0-plugins-good-spectrum -y
-    fi
-fi
-
-sleep 1
-clear
-###################
-#  Install Plugin #
-
+########################
 echo "Insallling YouTube plugin Please Wait ......"
 if [ $OSTYPE = "Opensource" ]; then
     wget $MY_URL/${PACKAGE}_h1+"${VERSION}"+"${GIT}"-r0.0_all.ipk -qP $TMPDIR
@@ -130,8 +90,7 @@ else
     $OPKGINSTAL -f -y
 fi
 
-#########################
-# Remove files (if any) #
+########################
 rm -rf $TMPDIR/"${PACKAGE:?}"*
 
 if [ -f /etc/enigma2/YouTube.key-opkg ]; then
