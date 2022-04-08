@@ -43,49 +43,21 @@ fi
 # Remove previous files (if any) #
 rm -rf $TMPDIR/"${OSC_PACKAGE:?}"* $TMPDIR/"${NCM_PACKAGE:?}"* >/dev/null 2>&1
 
-################
-# Oscam Remove #
-removeoscam() {
-    if grep -qs "Package: $OSC_PACKAGE*" $STATUS; then
+##########
+# Remove #
+remove() {
+    if grep -qs "Package: $1" $STATUS; then
         echo "   >>>>   Remove Old Version   <<<<"
         echo
         if [ $OSTYPE = "Opensource" ]; then
-            $OPKGREMOV $OSC_PACKAGE*
+            $OPKGREMOV "$1"
             sleep 2
             clear
         else
-            $OPKGREMOV $OSC_PACKAGE
+            $OPKGREMOV "$1"
             sleep 2
             clear
         fi
-    fi
-}
-################
-# Ncam Remove  #
-removencam() {
-    if grep -qs "Package: $NCM_PACKAGE" $STATUS; then
-        echo "   >>>>   Remove Old Version   <<<<"
-        echo
-        if [ $OSTYPE = "Opensource" ]; then
-            $OPKGREMOV $NCM_PACKAGE
-            sleep 2
-            clear
-        else
-            $OPKGREMOV $NCM_PACKAGE
-            sleep 2
-            clear
-        fi
-    fi
-}
-################
-# TNTSAT Remove #
-removetntsat() {
-    if grep -qs "Package: $OSC_PACKAGE-tnt" $STATUS; then
-        echo "   >>>>   Remove Old Version   <<<<"
-        echo
-        $OPKGREMOV $OSC_PACKAGE-tnt
-        sleep 2
-        clear
     fi
 }
 ##########
@@ -131,31 +103,31 @@ if [ $OSTYPE = "Opensource" ]; then
     read -r opt
     case $opt in
     "1")
-        EMU=Oscam removeoscam
+        EMU=Oscam remove "$OSC_PACKAGE"
         echo "Insallling Oscam plugin Please Wait ......"
         wget $MY_URL/${OSC_PACKAGE}_"${OSC_VERSION}"_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}_"${OSC_VERSION}"_all.ipk
         ;;
     "2")
-        EMU=Ncam removencam
+        EMU=Ncam remove "$NCM_PACKAGE"
         echo "Insallling Ncam plugin Please Wait ......"
         wget $MY_URL/${NCM_PACKAGE}_"${NCM_VERSION}"_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${NCM_PACKAGE}_"${NCM_VERSION}"_all.ipk
         ;;
     "3")
-        EMU=SupTV_Oscam removeoscam
+        EMU=SupTV_Oscam remove "${OSC_PACKAGE}-supcam"
         echo "Insallling SupTV_Oscam plugin Please Wait ......"
         wget $MY_URL/${OSC_PACKAGE}-supcam_"${OSC_VERSION}"_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-supcam_"${OSC_VERSION}"_all.ipk
         ;;
     "4")
-        EMU=Revcam_Oscam removeoscam
+        EMU=Revcam_Oscam remove "${OSC_PACKAGE}-revcamv2"
         echo "Insallling Revcam_Oscam plugin Please Wait ......"
         wget $MY_URL/${OSC_PACKAGE}-revcamv2_"${OSC_VERSION}"_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-revcamv2_"${OSC_VERSION}"_all.ipk
         ;;
     "5")
-        EMU=TNTSAN removetntsat
+        EMU=TNTSAN remove "$OSC_PACKAGE-tnt"
         echo "Insallling TNTSAN plugin Please Wait ......"
         wget $MY_URL/${OSC_PACKAGE}-tnt_11.678-tnt_all.ipk -qP $TMPDIR
         $OPKGINSTAL $TMPDIR/${OSC_PACKAGE}-tnt_11.678-tnt_all.ipk
@@ -183,14 +155,14 @@ elif [ $OSTYPE = "DreamOS" ]; then
     read -r opt
     case $opt in
     "1")
-        EMU=Oscam removeoscam
+        EMU=Oscam remove "$OSC_PACKAGE"
         echo "Insallling Oscam plugin Please Wait ......"
         wget $MY_URL/${OSC_PACKAGE}_"${OSC_VERSION}"_all.deb -qP $TMPDIR
         $DPKINSTALL $TMPDIR/${OSC_PACKAGE}_"${OSC_VERSION}"_all.deb
         $OPKGINSTAL -f -y
         ;;
     "2")
-        EMU=Ncam removencam
+        EMU=Ncam remove "$NCM_PACKAGE"
         echo "Insallling Ncam plugin Please Wait ......"
         wget $MY_URL/${NCM_PACKAGE}_"${NCM_VERSION}"_all.deb -qP $TMPDIR
         $DPKINSTALL $TMPDIR/${NCM_PACKAGE}_"${NCM_VERSION}"_all.deb
