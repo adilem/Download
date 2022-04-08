@@ -1,6 +1,6 @@
 #!/bin/bash
 # ###########################################
-# SCRIPT : DOWNLOAD AND INSTALL TSIPlayer
+# SCRIPT : DOWNLOAD AND INSTALL E2IPLAYER_TSiplayer
 # ###########################################
 #
 # Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPTVPlayer/installer.sh -qO - | /bin/sh
@@ -9,7 +9,6 @@
 
 ###########################################
 # Configure where we can find things here #
-DUKTAPE='duktape'
 TMPDIR='/tmp'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
 SETTINGS='/etc/enigma2/settings'
@@ -17,8 +16,7 @@ MY_URL='http://ipkinstall.ath.cx/ipk-install'
 URL_VER='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPTVPlayer'
 PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 
-#################
-# Check Version #
+#########################
 VERSION=$(wget $URL_VER/version -qO- | cut -d "=" -f2-)
 
 ########################
@@ -33,83 +31,66 @@ elif [ -f /etc/apt/apt.conf ]; then
     OPKG='apt-get update'
     OPKGINSTAL='apt-get install'
 fi
+
+#########################
 if [ "$PYTHON_VERSION" -eq 3 ]; then
     echo ":You have Python3 image ..."
-    PY3SQLITE='python3-sqlite3'
     PLUGINPY3='E2IPLAYER_TSiplayer-PYTHON3.tar.gz'
-else
-    echo ":You have Python2 image ..."
-    PY2SQLITE='python-sqlite3'
-    PLUGINPY2='E2IPLAYER_TSiplayer.tar.gz'
-fi
-if uname -m | grep -qs armv7l; then
-    plarform='armv7'
-elif uname -m | grep -qs mips; then
-    plarform='mipsel'
-elif uname -m | grep -qs aarch64; then
-    plarform='ARCH64'
-elif uname -m | grep -qs sh4; then
-    plarform='sh4'
-else
-    echo 'Sorry, your Device does not have the proper Arch'
-fi
-#########################
-# Remove files (if any) #
-if [ "$PYTHON_VERSION" -eq 3 ]; then
     rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
 else
+    echo ":You have Python2 image ..."
+    PLUGINPY2='E2IPLAYER_TSiplayer.tar.gz'
     rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
 fi
+
+#########################
+case $(uname -m) in
+armv7l*) plarform="armv7" ;;
+mips*) plarform="mipsel" ;;
+aarch64*) plarform="ARCH64" ;;
+sh4*) plarform="sh4" ;;
+esac
+
+#########################
 rm -rf ${PLUGINPATH}
 rm -rf /etc/enigma2/iptvplaye*.json
 rm -rf /etc/tsiplayer_xtream.conf
 rm -rf /iptvplayer_rootfs
-############################
-$OPKG >/dev/null 2>&1
 
-################
-if [ "$PYTHON_VERSION" -eq 3 ]; then
-    if grep -qs "Package: $DUKTAPE" $STATUS; then
+#########################
+install() {
+    if grep -qs "Package: $1" $STATUS; then
         echo
     else
-        echo "   >>>>   Need to install $DUKTAPE   <<<<"
-        $OPKGINSTAL $DUKTAPE
-    fi
-else
-    if grep -qs "Package: $DUKTAPE" $STATUS; then
+        $OPKG >/dev/null 2>&1
+        echo "   >>>>   Need to install $1   <<<<"
         echo
-    else
-        echo "   >>>>   Need to install $DUKTAPE   <<<<"
         if [ $OSTYPE = "Opensource" ]; then
-            $OPKGINSTAL $DUKTAPE
+            $OPKGINSTAL "$1"
+            sleep 1
+            clear
         elif [ $OSTYPE = "DreamOS" ]; then
-            $OPKGINSTAL $DUKTAPE -y
+            $OPKGINSTAL "$1" -y
+            sleep 1
+            clear
         fi
     fi
-fi
-#################
+}
+
+#########################
 if [ "$PYTHON_VERSION" -eq 3 ]; then
-    if grep -qs "Package: $PY3SQLITE" $STATUS; then
-        echo
-    else
-        echo "   >>>>   Need to install $PY3SQLITE   <<<<"
-        $OPKGINSTAL $PY3SQLITE
-    fi
+    for i in duktape python3-sqlite3; do
+        install $i
+    done
 else
-    if grep -qs "Package: $PY2SQLITE" $STATUS; then
-        echo
-    else
-        echo "   >>>>   Need to install $PY2SQLITE   <<<<"
-        if [ $OSTYPE = "Opensource" ]; then
-            $OPKGINSTAL $PY2SQLITE
-        fi
-    fi
+    for i in duktape python-sqlite3; do
+        install $i
+    done
 fi
-################
-sleep 1
+
+#########################
 clear
-###############################
-# Downlaod And Install Plugin #
+
 if [ "$PYTHON_VERSION" -eq 3 ]; then
     set -e
     echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
@@ -126,6 +107,7 @@ else
     set +e
 fi
 
+#########################
 if [ -d $PLUGINPATH ]; then
     echo ":Your Device IS $(uname -m) processor ..."
     echo "Add Setting To ${SETTINGS} ..."
@@ -149,8 +131,8 @@ if [ -d $PLUGINPATH ]; then
         echo "config.plugins.iptvplayer.wgetpath=wget"
     } >>${SETTINGS}
 fi
+
 #########################
-# Remove files (if any) #
 if [ "$PYTHON_VERSION" -eq 3 ]; then
     rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
 else
