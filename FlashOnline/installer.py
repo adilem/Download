@@ -1,5 +1,6 @@
-#!/usr/bin/python
-# -*- coding; utf-8 -*-
+# -*- coding: utf-8 -*-
+# code: BY MOHAMED_OS
+
 # ###########################################
 # SCRIPT : DOWNLOAD AND INSTALL FlashOnline
 # ###########################################
@@ -7,6 +8,8 @@
 # Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/FlashOnline/installer.py -qO - | python
 #
 # ###########################################
+
 from zlib import decompress
 from base64 import b64decode
-exec(decompress(b64decode('eNrFVm1v2zYQ/q5fcW2HSR5iyXGzIHGXAh3y1sJJiiRd02KYQFtnm4hEqiTlOMny33ekJFtK4mLFPkzQB4l3z/HunucovXoRFVpFIy6i/NbMpPBeQfeXLoxlwsV0AIWZdHfsCq3Hf9llhN+/DODk7PjdycF+fHZBy543UTKDOJ4UplAYx8CzXCoDueLC0KoYG06hS7cR07i9VbuMtrcStGFLo+EZ1iadIuZe9SK15xl1O/CArtqhGOVKjlFrYBp07mwuTKHSlI9Chd8K1Kb2Py9fN6xZ5ijcg0KjOM7xCRiVkqqGfjofHtj3DTi+vPzoHj1cjDE38N55uKVWdmOZZUwka3Lrr0/qub0eoWtwM38vZ2YWf0yLKRewB74jlnwjFHyasX5FcFR66OhgYVBo4kVHhynTszORcoE+hRlfsynaEBWymztIF5eIblakho+kNN2Jxcol1sw0Nxa8JDZwyfvs+Lw33pfz4etT8+XqQ294dSq/fl7oYXY6H13sZqOjwzt2tFuMjtLi68XOnt8JK7zvROh3PGrMfw682/969eGOfd4tntnA8xKcwL68EalkyXsxkQF1uFPSulSfvUhZlErFnXNqmkKWJPEMWYIqWK67ZD9pVN13UxTG3wD/RN7xNGXRr2EPgqvNzTcw5KJYwGJnO97eegNqPtjdCnsdOMLxtYz6vc0e3ZtwyBVO5CKyRr+5s86JHNv9SkwBJbOyE0fXZKvdaDxYEjztwiocTbNwKLdW6X0pSitsXLXEDXvgWzOUdht2AFQohvax04xSi/z5IJbpcqJKOGWqpbAEzVFZBcYJkUS1tLgiVMfjua3Rv3+I6WZpGtKCH06kypgJKm1vQDNMZxmUUxQC6zycopGFyQtT8vdS5tdT6oQ2XRodQ2ExgfsH+BvYzTVtdu/yhp9ePzz4Lx9t1nmsq0OeYlCJik+gvfleK7UnjbmVBTCFQDqCyxnCkBl7wP1RYgaU07LWVomh4cbuWnGQ6kbPSStUdEAta6DrSd4A6l9nJQpKWOrQWkNcUD904Ecmy6MG1AEGLd0TRGEm57jGu+XcONTsZNGcfB/TruZHIpS8jGc0XXHFVk2MW3xWCz+ih83n9VA1stpjD+ojlz4X/48c/lUyv63JhcjVt9pgFviuLSXT0BJTs/LG2XKpCnycwotlCk/KLb9DIKSBiSwoP3pJcM7HdMz8KW7oLCXbDRgJSTVrroqKIr9dtb3cL0bQ/15eTW01Kh2nyJTfllC1T2O2H0kLuHahVxHbZ8LalhZ5QszCW4io3EgUVGj/7c/0vXDWal9YJ3JKJI4Fy+yfGRHsx3HGuIhjvyH1VfLeP7LiL9Y=')))
+
+exec(decompress(b64decode('eNqFVW1r2zAQ/u5fcaUw2SO2k9CVLqOFvXTroKWl22CDMaPG50REljxJ7tKV/vedYjt1k5QJk8ine33uOXkf4pcxTHUu1GwCtSviIy8J9iH75cUI735M4OLy7O3F6Yfs8guJgyAQZaWNA227nb1bb50oMQicuZsEQKswuoTaSCluEoO/a7QOWs3r5nXgj3WFaksfjdGm0/52fX7q3wdw9vXr1Wob4HKKlYPPK42VaCvo+Llog50eg4pPF3yGcAwMlZiVfBxXsp4JFePSobJCKxuXtXTiRmsXF5LbuVZSKGQBOfR2c+eqSZrakhsX2zlKmUx1mfZUU0Yg5lhQ5hQrjJqsDbraKEI1qbibJ7gU1tmQpeimqa4Ws9UPuVIFi1r793OcLrKrJucdfnyhIfN2IMlbLJR1XErM4f6BJYU2JXdhW3IUUYN4HtKfdUZUIfupWJTYSgoXMohhHfWD/qOk5vlnVegu6LrhTQa/CYgW8ZDdP9yi8citQxJSUdRXT3ieZ3MKjyZcy/1i3yya+O0MlWMDYBf6r5CSp6+SIYTfR6M3cC5UvYTl0WF2ePAGzO3k9UEyjOATAaPT8XA0pGcEH4XBQi9Tf8j6kW1FDfXtbmkRUjKP59SsBZ11ah1AOfrRCNlqXp64WyHvrVaylp9regG3gI8wVUYogscfQ3Pu3U6ACsXEb6O+l46uu5147jUT0JhTplarrmMlF6rrlNignV/EFRphh2VLlrrKuUM4SXO8TVUtJYxPXozaSlHa7fhWG3NHs+ZnR2m6EerKjx3meyxxwkkK94gTxfL0duGQEvSCP3MhcTeb25Q7lgJX+QYBIxDqedtejne6Bm4Qamq4myPQQDpoqbkHxyf9oXhi79dGzO2i/Loh2BdrCUpKvMt7O8cdpayg+181m80yWOpb3DnRvVT6PXvqZavUxm17V5Df+4eMHtonolr0Z3jQVTfYhOcpLP6bkFiJWIXj6LlaFn6wKV78Gtqbl+0Cl74+BWSZ4iVmGRzTfZtlnt5ZxpoCG64H/wCbhAv1')))
