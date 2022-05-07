@@ -1,5 +1,6 @@
-#!/usr/bin/python
-# -*- coding; utf-8 -*-
+# -*- coding: utf-8 -*-
+# code: BY MOHAMED_OS
+
 # ###########################################
 # SCRIPT : DOWNLOAD AND INSTALL NovalerTV
 # ###########################################
@@ -7,6 +8,8 @@
 # Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/NovalerTV/installer.py -qO - | python
 #
 # ###########################################
+
+
 from zlib import decompress
 from base64 import b64decode
-exec(decompress(b64decode('eNqdVt+P4zQQfu9f4dNJOIEmue6+QKWuBDoQDxyLOEBCSxV5k2nrW8c2ttO9arX/O+M4v7ddAX5o47Fn5ptvZjJZvCXJlwkpVMnlfk1qt0u+9pLFWy+DNfnuT/Lh9sdvP3z/Pr/9uFgseKWVcUTZ7sme+kfHK8Ar+uQOSuZHMJYrSTb+Struci53Kq3YJ2Xw5u+//oTH9OCctussM+wx3XN3qO9rC6ZQ0oF0aaGqrIWw+ub2Y/ZePUqhWJlVjMvsZ3VkAsxvf1B0zIoHtgdvEiTfV+wq0aLec5nAZzTl/dtEBgV3pAsDaLsCWVpUuZvrIGoHVdjYBAEdeQFMa7pckMmi3roW7ATmmi4J3VsXdnSLfO3InI8NuV43JkrQvfNw6TrRXAj16M10El5hTGPBJ6vkCxDDcVULx7VRBViLSR1rGvi7BussAgNh4RKKpFBm5HGO4HUAl/0P7qem/SVkashG2qSrjFpkMVZKCTtSHKB48DRGcUC+F+qeCdIS24gesXyIQrWIPj1n7QlNd8pUzEVYb3FMmCW7dY9ecOkrZpcaYKXfRHF/hsnzktQ6Zpz1tiPa2YzXEwKGavcad40alyV8juiGxl+t1tvm+i4thLLeR4ipobaLB90pm2rmDsgAR6IimoErMqUf9s0P9oLcjT0bcLWRwUojHNL64nhEYoS2lh7y5geGCoN7FA3aLb2+YXqZ32CMHmZg2cPCkK1LsEscEwJK8vTcM46n8bxQ+hU3nEf4Z53hOqJ/Ia2p1YK7iJKE0HgeSY9lGuc54o7MZILfB/IQmavtPGejYjl/fVYq3cLYiGQVEC5HdWOjeH02VETnb0+q6Ol5PeHogqpfyGneeNs0Zu4aW21pIUXrbRrYa5lroVw058GDgMqDH1rusvs2gk6lQ/O6QkhZ388GKnWEyNuI/4Vek+pBfaIxbyA/BEb9M+knv7Auwou8LdVal8wBuclKOGayFoJc3XyxaittWlXacImFaJUxp2AY6w8HXq39tIPyDU0d8o3uEEzrP7QX/SVMonHB+XcJVtoQVkxuyLspjT433LN82cyluNruG/cej1+S7Ud0agWAjlbD6TTuJnZmbUtJH1U7Xpfdu24aXDd8mSz7lyEPHTszHWg9qZowAwRHPXEHIILhQ6v4Jh3H0bmLO7on5vzHBTa9i8bhjPDguPUY7t5tJ9BugnS1nYJ7bVyfp/9sPc9zkj095/p0neMfClKuH8YzaUleUDuN8WV+/jeGq/+Cofl8yZt+z3PPBM1z33B5TgOc0H2LfwCnD/Zg')))
+exec(decompress(b64decode('eNrNVm1v2zYQ/q5fwaLAKG2WFDtd0bhIgG5t1wLNUrTpsCErBMU626wlUiEpx16Q/76jSFmyLG/APo0IYkm81+eOz/EpCb8PyUxkjC+mpNLz8IX54j0132BKfvqDXF69e3X55nVy9dnzPFaUQmoiVPOktrtHzQrwPC23U4/gmktRkErmObuNJNxVoDRxkp/s68hsixL4gTxIKWQj/eXThzfmfUTeXV9/rB892Myg1OR9LVF/OnA6OeZtNGjRK7d6KXiyBqmY4OTcpBa5t4TxuYiK9JsR9FAdt+lS61JN41im99GC6WV1WymQM8E1cB3NRBE76MZnV5/j1+Ke5yLN4iJlPP5VrNMc5PVvFB2ns1W6AGMSOFsU6SQs82rBeAgbNGX8q5BbBb2mngS0XQDPFKrc9HUwag2FfVEhBrRmM0jLko5qgNpFjfUyT7cgT+mI0IXS9o1+xTrPSR+Pc3JqMc6g3Dm3QqdhyfJc3BszzRdWYE7dD9+U4AdBtNtFlWtWSjEDpbAZu5quexQGBrmCY1GEMyE7HvsR/HMAx/237vdNGyFEystgjn2IrvzARiZBV5LjGYnKVC8j2DBU9mkMehaLcrWo/2F/8DkNnP7PS5itko+2EQbsmLb1qdEjOVoLsbQ6zXPIyMMjjeZCFqn2XR8FAR63NPPxR2nJSp/+yWkQqTJn2qckJD2vry2Qrdemu6K6/TLfIR3U29gYB4mtUxnjgbPJYWC6UtRZM+sezwaxGQyLklSR+XSvMHNz/LGPFWGczOuEcsZhF2V3YUi1aIT2pFbGnU8dllM6oGAWopdYB+dW+8baYDyDDcKEel8ji5/DzvkftGbChRwKE20L4LBnF3IjvgvkuHSvLBIKsQbfGAi6jWI6w1eg/VY2aErdsM975LEGwx1TWxt3iISjSp8+PMbu4O/aC1kvCLryUZplyRIrA9Lfi51+QdoJXy2QBs2ZuRR/ITuk8Y/RCfF/H49fkg+MVxuyefE8ef7sJZHr6dmz6CQgv2A7inhyMj7BvzF5yyTMxSY2m7TrWZXIiIYvHaFjwnftPtZphXuNWHMYMjATzaf1jOuYw1IYjb3maVLv9c4OZ766qXVcs5zT4Idx2y61jhtQu/liehxac6VkHGE228Tu23mLeEFkHvesNPNq2IgZR3YEWnVMGJmuqbwZN03FWY+pzMLTbEeG45eqzFIN5CLOYB3zKs/J5OK7sQOspd+OfyWk3JKabQkXeCWoSjN3IXtCI43nBt21cJuhisSh/RMM0MU0yEM7FjCH5KjEUAaOHLvUyIL9c2uuKpHKAUp/MphZqpQN737JchjmZxd9w7sk5VnvnAVt7AO6HQi3oiKpBIIXCKKXQPIUL0uuC5+Q84tuLgc00fN5iLlZt9gVq90XyM2Ad3EfxjiQSl3Zf8umXwnLVIMzqhNKF3iH6dG7x7C3QebsN0P88JiU29MEf/BDxMpVl9pGDRyjPp6HjH/YPUdAWBneQ+fhGXG3NLovf5j8f05s8r9KzLZbfY9MEp4WkCSmijRJDB8lCbVZW3Ly/gYHkbLi')))
