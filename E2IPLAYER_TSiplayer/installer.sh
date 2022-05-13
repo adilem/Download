@@ -3,7 +3,7 @@
 # SCRIPT : DOWNLOAD AND INSTALL E2IPLAYER_TSiplayer
 # ###########################################
 #
-# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/IPTVPlayer/installer.sh -qO - | /bin/sh
+# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/E2IPLAYER_TSiplayer/installer.sh -qO - | /bin/sh
 #
 # ###########################################
 
