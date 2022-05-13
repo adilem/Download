@@ -81,7 +81,7 @@ install() {
 }
 
 #########################
-if [ "$PYTHON_VERSION" == "50923504" ] || [ "$PYTHON_VERSION" == "50923504" ]; then
+if [ "$PYTHON_VERSION" == "50923504" ] || [ "$PYTHON_VERSION" == "50988272" ]; then
     for i in duktape python3-sqlite3; do
         install $i
     done
