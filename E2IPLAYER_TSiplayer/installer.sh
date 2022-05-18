@@ -16,7 +16,7 @@ URL='http://ipkinstall.ath.cx/ipk-install'
 PYTHON_VERSION=$(python -c"import sys; print(sys.hexversion)")
 
 #########################
-VERSION=$(wget $URL/E2IPLAYER-PY3-DREAMSATPANEL/e2iplayer-py3.sh -qO- | grep 'version=' | cut -d "=" -f2- | sed 's/^"\(.*\)".*/\1/')
+VERSION=$(wget $URL/E2IPLAYER-PY3-DREAMSATPANEL/e2iplayer-py3.sh -qO- | grep 'versions=' | cut -d "=" -f2- | sed 's/^"\(.*\)".*/\1/')
 
 ########################
 if [ -f /etc/opkg/opkg.conf ]; then
