@@ -16,7 +16,7 @@ URL='http://ipkinstall.ath.cx/ipk-install'
 PYTHON_VERSION=$(python -c"import sys; print(sys.hexversion)")
 
 #########################
-VERSION=$(wget $URL/E2IPLAYER-PY3-DREAMSATPANEL/e2iplayer-py3.sh -qO- | grep 'versions=' | cut -d "=" -f2- | sed 's/^"\(.*\)".*/\1/')
+VERSION=$(wget $URL/E2IPLAYER-DREAMSATPANEL/e2iplayer-py3.sh -qO- | grep 'versions=' | cut -d "=" -f2- | sed 's/^"\(.*\)".*/\1/')
 
 ########################
 if [ -f /etc/opkg/opkg.conf ]; then
@@ -98,7 +98,7 @@ if [ "$PYTHON_VERSION" -eq 50923504 ]; then
     set -e
     echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
     echo
-    wget --show-progress $URL/E2IPLAYER-PY3-DREAMSATPANEL/$PLUGINPY3 -qP $TMPDIR
+    wget --show-progress $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY3 -qP $TMPDIR
     tar -xzf $TMPDIR/$PLUGINPY3 -C /
     set +e
 elif [ "$PYTHON_VERSION" -eq 50988272 ]; then
