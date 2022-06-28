@@ -105,7 +105,7 @@ elif [ "$PYTHON_VERSION" -eq 50988272 ]; then
     set -e
     echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
     echo
-    wget --show-progress $URL/E2IPLAYER_TSiplayer-PYTHON3.10/$PLUGINPY4 -qP $TMPDIR
+    wget --show-progress $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY4 -qP $TMPDIR
     tar -xzf $TMPDIR/$PLUGINPY4 -C /
     set +e
 else
