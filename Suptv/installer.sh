@@ -79,7 +79,7 @@ clear
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"
-echo "**                       Suptv      : $VERSION                             *"
+echo "**                       Suptv      : $VERSION                        *"
 echo "**                       Uploaded by: MOHAMED_OS                      *"
 echo "**                       Develop by : Suptv                           *"
 echo "**  Support    : https://script-enigma2.club/suptv/                   *"
