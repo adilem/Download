@@ -10,7 +10,7 @@
 ###########################################
 # Configure where we can find things here #
 TMPDIR='/tmp'
-PACKAGE='enigma2-plugin-extensions-suptv'
+VERSION='4.3.1-r0'
 MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Suptv'
 PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 
@@ -31,13 +31,14 @@ fi
 
 if [ "$PYTHON_VERSION" -eq 3 ]; then
     echo ":You have Python3 image ..."
-    VERSION='3.1'
+    PACKAGE='enigma2-plugin-extensions-suptv-python3'
 else
     echo ":You have Python2 image ..."
     if [ $OSTYPE = "Opensource" ]; then
-        VERSION='2.1'
+        PACKAGE='enigma2-plugin-extensions-suptv-python2'
     elif [ $OSTYPE = "DreamOS" ]; then
         VERSION='3.8'
+        PACKAGE='enigma2-plugin-extensions-suptv'
     fi
 fi
 
@@ -58,15 +59,11 @@ $OPKG >/dev/null 2>&1
 ###################
 #  Install Plugin #
 
+echo "Insallling Suptv plugin Please Wait ......"
+
 if [ $OSTYPE = "Opensource" ]; then
-    echo "Insallling Suptv plugin Please Wait ......"
-    if [ "$PYTHON_VERSION" -eq 3 ]; then
-        wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-        $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
-    else
-        wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
-        $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
-    fi
+    wget $MY_URL/${PACKAGE}_${VERSION}_all.ipk -qP $TMPDIR
+    $OPKGINSTAL $TMPDIR/${PACKAGE}_${VERSION}_all.ipk
 elif [ $OSTYPE = "DreamOS" ]; then
     wget $MY_URL/${PACKAGE}_${VERSION}_all.deb -qP $TMPDIR
     $DPKINSTALL $TMPDIR/${PACKAGE}_${VERSION}.deb
