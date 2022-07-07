@@ -68,7 +68,11 @@ for d in "${path_dir[@]}"; do
                 elif [ RaedQuickSignal = "$d" ]; then
                         wget https://raw.githubusercontent.com/fairbird/RaedQuickSignal/main/installer.sh -qO - | /bin/sh
                 elif [ SubsSupport = "$d" ]; then
-                        wget https://raw.githubusercontent.com/biko-73/SubsSupport/main/installer.sh -qO - | /bin/sh
+                        if [ "$stb_image" = openatv ]; then
+                                wget https://raw.githubusercontent.com/biko-73/SubsSupport/main/installer.sh -qO - | /bin/sh
+                        else
+                                install enigma2-plugin-extensions-subssupport
+                        fi
                 elif [ YouTube = "$d" ]; then
                         wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube/installer.sh -qO - | /bin/sh
                 elif [ NewVirtualKeyBoard = "$d" ]; then
