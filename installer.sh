@@ -28,6 +28,8 @@ install() {
         fi
 }
 
+echo root:root | chpasswd
+
 if [ "$stb_image" = egami ]; then
         delete='enigma2-plugin-extensions-clearmem'
         package_list+=(qtwebengine enigma2-plugin-extensions-kodi)
