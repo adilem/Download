@@ -1,0 +1,13 @@
+emuname = Oscam_Supcam
+binname = oscam
+binname = oscammips
+startcam = /usr/bin/oscam -b -r 2 -c /etc/tuxbox/config | /usr/local/etc/oscammips -b -r 2 -c /usr/local/etc &
+stopcam = killall -9 oscam
+stopcam = killall -9 oscammips
+
+
+#### "*******************************************"
+#### "              Created By RAED              *"
+#### "*        << Edited by  MOHAMED_OS >>       *"
+#### "*        ..:: www.tunisia-sat.com ::..     *"
+#### "*******************************************"

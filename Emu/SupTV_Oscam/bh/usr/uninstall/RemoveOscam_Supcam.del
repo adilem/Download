@@ -1,0 +1,12 @@
+#!/bin/sh
+#### "*******************************************"
+#### "              Created By RAED              *"
+#### "*        << Edited by  MOHAMED_OS >>       *"
+#### "*        ..:: www.tunisia-sat.com ::..     *"
+#### "*******************************************"
+
+rm -rf /usr/bin/oscam
+rm -rf /usr/camscript/Ncam_Oscam_Supcam.sh
+rm -rf /usr/uninstall/RemoveOscam_Supcam.del
+
+exit 0
