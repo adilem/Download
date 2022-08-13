@@ -62,11 +62,9 @@ rm -rf /iptvplayer_rootfs
 
 #########################
 install() {
-    if grep -qs "Package: $1" $STATUS; then
-        echo
-    else
+    if ! grep -qs "Package: $1" $STATUS; then
         $OPKG >/dev/null 2>&1
-        echo "   >>>>   Need to install $1   <<<<"
+        echo "   >>>>   Please Wait to install $1   <<<<"
         echo
         if [ $OSTYPE = "Opensource" ]; then
             $OPKGINSTAL "$1"
@@ -94,23 +92,22 @@ fi
 #########################
 clear
 
+echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
+
 if [ "$PYTHON_VERSION" -eq 50923504 ]; then
     set -e
-    echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
     echo
     wget --show-progress $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY3 -qP $TMPDIR
     tar -xzf $TMPDIR/$PLUGINPY3 -C /
     set +e
 elif [ "$PYTHON_VERSION" -eq 50988272 ]; then
     set -e
-    echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
     echo
     wget --show-progress $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY4 -qP $TMPDIR
     tar -xzf $TMPDIR/$PLUGINPY4 -C /
     set +e
 else
     set -e
-    echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
     echo
     wget --show-progress $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY2 -qP $TMPDIR
     tar -xzf $TMPDIR/$PLUGINPY2 -C /
