@@ -1,6 +1,7 @@
 {
   "oscam": "11.711-emu-r798",
-  "ncam": "V12.9-r0",
-  "powercam": "1",
-  "revcam": "2"
+  "ncam": "V13.0-r0",
+  "powercam": "1.0",
+  "revcam": "2.0",
+  "gosatplus": "2.0"
 }
