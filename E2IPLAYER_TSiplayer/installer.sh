@@ -97,19 +97,19 @@ echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
 if [ "$PYTHON_VERSION" -eq 50923504 ]; then
     set -e
     echo
-    wget --show-progress $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY3 -qP $TMPDIR
+    wget $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY3 -qP $TMPDIR
     tar -xzf $TMPDIR/$PLUGINPY3 -C /
     set +e
 elif [ "$PYTHON_VERSION" -eq 50988272 ]; then
     set -e
     echo
-    wget --show-progress $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY4 -qP $TMPDIR
+    wget $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY4 -qP $TMPDIR
     tar -xzf $TMPDIR/$PLUGINPY4 -C /
     set +e
 else
     set -e
     echo
-    wget --show-progress $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY2 -qP $TMPDIR
+    wget $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY2 -qP $TMPDIR
     tar -xzf $TMPDIR/$PLUGINPY2 -C /
     set +e
 fi
