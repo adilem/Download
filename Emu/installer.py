@@ -1,15 +1,223 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
-# code: BY MOHAMED_OS
+# coding BY: MOHAMED_OS
 
-# ###########################################
-# SCRIPT : DOWNLOAD AND INSTALL Emu
-# ###########################################
-#
-# Command: python -c "$(wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Emu/installer.py -qO -)"
-#
-# ###########################################
+from __future__ import print_function
 
-from zlib import decompress
-from base64 import b64decode
+from os import path, system, remove, chdir
+from re import findall, match, MULTILINE
+from datetime import datetime
+from sys import version_info
+from time import sleep
+from json import loads
 
-exec(decompress(b64decode('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')))
+if version_info.major == 3:
+    from urllib.request import Request, urlopen, urlretrieve
+    from urllib.error import URLError, HTTPError
+else:
+    from urllib2 import Request, urlopen, URLError, HTTPError
+    from urllib import urlretrieve
+
+package = 'enigma2-plugin-softcams-'
+URL = 'https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Emu/'
+
+# colors
+C = "\033[0m"     # clear (end)
+R = "\033[0;31m"  # red (error)
+G = "\033[0;32m"  # green (process)
+B = "\033[0;36m"  # blue (choice)
+Y = "\033[0;33m"  # yellow (info)
+
+if hasattr(__builtins__, 'raw_input'):
+    input = raw_input
+
+
+def info(item):
+    try:
+        req = Request('{}version.json'.format(URL))
+        req.add_header(
+            'User-Agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0')
+        response = urlopen(req)
+        link = loads(response.read())
+        return link.get(item)
+    except HTTPError as e:
+        print('HTTP Error code: ', e.code)
+    except URLError as e:
+        print('URL Error: ', e.reason)
+
+
+def banner():
+    ncam_ver = info('ncam')
+    oscam_ver = info('oscam')
+    system('clear')
+    print(B)
+    print(r"""
+___________        ____ ___
+\_   _____/ _____ |    |   \
+ |    __)_ /     \|    |   /
+ |        \  Y Y  \    |  /
+/_______  /__|_|  /______/
+        \/      \/ """, end='')
+    print("{} Install\n".format(C))
+    print("    {}Oscam{} : {}".format(Y, C, oscam_ver))
+    print("    {}Ncam{}  : {}\n".format(Y, C, ncam_ver))
+
+
+def image():
+    global status, update, install, uninstall, extension
+    if path.exists('/etc/opkg/opkg.conf'):
+        status = '/var/lib/opkg/status'
+        update = 'opkg update >/dev/null 2>&1'
+        install = 'opkg install'
+        uninstall = 'opkg remove --force-depends'
+        extension = 'ipk'
+    else:
+        status = '/var/lib/dpkg/status'
+        update = 'apt-get update >/dev/null 2>&1'
+        install = 'apt-get install'
+        uninstall = 'apt-get purge --auto-remove'
+        extension = 'deb'
+    return path.exists('/etc/opkg/opkg.conf')
+
+
+def check(package):
+    with open(status) as f:
+        for items in f.readlines():
+            if items.startswith('Package:'):
+                if findall(package, items[items.index(' '):].strip(), MULTILINE):
+                    return package
+
+
+def stb_image():
+    try:
+        if path.isfile('/etc/issue'):
+            distro = open('/etc/issue').readlines()[-2].strip()[:-6].split()[0]
+            return distro.lower()
+        elif path.isfile('/usr/lib/enigma.info'):
+            distro = open('/usr/lib/enigma.info').readlines()
+            for c in distro:
+                if match('distro', c):
+                    return c.split('=')[-1].strip().lower()
+    except:
+        return 'undefined'
+
+
+def prompt(choices):
+
+    options = list(choices)
+    while True:
+        print(
+            "{}(?){} Choose an option [{}-{}] : ".format(B, C, options[0], options[-1]), end='')
+        choice = [str(x) for x in input().split()]
+
+        for name in choice:
+            if name not in options:
+                print("\n{}(!){} Select one of the available options !!\n".format(R, C))
+                continue
+        return choice
+
+
+def stb_image():
+    try:
+        if path.isfile('/etc/issue'):
+            image_type = open("/etc/issue").readlines()[-2].strip()[:-6]
+            return image_type.split()[0].lower()
+        elif path.isfile('/usr/lib/enigma.info'):
+            distro = open('/usr/lib/enigma.info').readlines()
+            for c in distro:
+                if match('distro', c):
+                    return c.split('=')[-1].strip().lower()
+    except:
+        return 'undefined'
+
+
+def main():
+    image()
+
+    if not check('libcurl4'):
+        system('clear')
+        print("   >>>>   {}Please Wait{} while we Install {}libcurl4{} ...".format(
+            G, C, Y, C))
+        system('{};{} libcurl4'.format(update, install))
+
+    if stb_image() == 'teamblue':
+        if image():
+            if not check('enigma2-plugin-systemplugins-softcamstartup'):
+                system('clear')
+                print("   >>>>   {}Please Wait{} while we Install {}SoftCam Startup{} ...".format(
+                    G, C, Y, C))
+                system(
+                    '{};{} enigma2-plugin-systemplugins-softcamstartup'.format(update, install))
+
+        cam = {
+            "1": "{}oscam".format(package),
+            "2": "{}ncam".format(package),
+            "3": "{}powercam".format(package),
+            "4": "{}revcam".format(package),
+            "5": "{}gosatplus".format(package),
+            "6": "{}supcam-oscam".format(package),
+            "7": "{}revcam-oscam".format(package),
+            "8": "{}gosatplus-oscam".format(package),
+            "9": "{}powercam-oscam".format(package),
+            "10": "{}supcam-ncam".format(package),
+            "11": "{}powercam-ncam".format(package),
+            "12": "{}revcam-ncam".format(package),
+            "13": "{}gosatplus-ncam".format(package),
+        }
+        menu = """
+        (1) Oscam       (6)  SupTV_Oscam        (11) PowerCam_Ncam
+        (2) Ncam        (7)  Revcam_Oscam       (12) Revcam_Ncam
+        (3) PowerCam    (8)  GosatPlus_Oscam    (13) GosatPlus_Ncam
+        (4) Revcam      (9)  PowerCam_Oscam
+        (5) GosatPlus   (10) SupTV_Ncam
+        """
+    else:
+        cam = {
+            "1": "{}oscam".format(package),
+            "2": "{}ncam".format(package),
+            "3": "{}revcam".format(package),
+            "4": "{}powercam".format(package),
+            "5": "{}gosatplus".format(package)
+        }
+        menu = """
+        (1) Oscam          (2) Ncam          (3) Revcam
+        (4) PowerCam       (5) GosatPlus
+        """
+
+    banner()
+
+    print(menu)
+
+    choice = prompt(cam.keys())
+
+    for number in choice:
+        value = cam.get(number)
+        file = "{}_{}_all.{}".format(
+            value, info(value.split('-')[-1]), extension)
+
+        if check(value):
+            system('{} {} '.format(uninstall, value))
+            sleep(2)
+
+        if path.isfile(file):
+            remove(file)
+            sleep(0.8)
+
+        chdir('/tmp')
+
+        print("{}Please Wait{} while we Download And Install {}{}{} ...".format(
+            G, C, Y, value, C))
+
+        urlretrieve("".join([URL, file]), filename=file)
+        sleep(0.8)
+
+        system(" ".join([install, file]))
+        sleep(1)
+
+
+if __name__ == '__main__':
+    main()
+    banner()
+    print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)".format(R, C))
+    print((datetime.now().strftime("%d-%m-%Y %X")).rjust(25))
+    print()
