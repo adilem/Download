@@ -1,0 +1,14 @@
+{
+    "version": "6.0-r0",
+    "depends": [
+        "python-core",
+        "python-image",
+        "python-json",
+        "python-multiprocessing",
+        "python-requests",
+        "python-imaging",
+        "enigma2-plugin-systemplugins-serviceapp",
+        "exteplayer3",
+        "gstplayer"
+    ]
+}
