@@ -65,7 +65,7 @@ ___________        ____ ___
 
 def image():
     global status, update, install, uninstall, extension
-    if path.exists('/etc/opkg/opkg.conf'):
+    if path.isfile('/etc/opkg/opkg.conf'):
         status = '/var/lib/opkg/status'
         update = 'opkg update >/dev/null 2>&1'
         install = 'opkg install'
@@ -77,7 +77,7 @@ def image():
         install = 'apt-get install'
         uninstall = 'apt-get purge --auto-remove'
         extension = 'deb'
-    return path.exists('/etc/opkg/opkg.conf')
+    return path.isfile('/etc/opkg/opkg.conf')
 
 
 def check(package):
@@ -141,14 +141,14 @@ def main():
         system('{};{} libcurl4'.format(update, install))
 
     if stb_image() == 'teamblue':
-        if image():
-            if not check('enigma2-plugin-systemplugins-softcamstartup'):
-                system('clear')
-                print("   >>>>   {}Please Wait{} while we Install {}SoftCam Startup{} ...".format(
-                    G, C, Y, C))
-                system(
-                    '{};{} enigma2-plugin-systemplugins-softcamstartup'.format(update, install))
+        if not check('enigma2-plugin-systemplugins-softcamstartup'):
+            system('clear')
+            print("   >>>>   {}Please Wait{} while we Install {}SoftCam Startup{} ...".format(
+                G, C, Y, C))
+            system(
+                '{};{} enigma2-plugin-systemplugins-softcamstartup'.format(update, install))
 
+    if image():
         cam = {
             "1": "{}oscam".format(package),
             "2": "{}ncam".format(package),
