@@ -105,6 +105,8 @@ def stb_image():
 def prompt(choices):
 
     options = list(choices)
+    options.sort(key=int)
+
     while True:
         print(
             "{}(?){} Choose an option [{}-{}] : ".format(B, C, options[0], options[-1]), end='')
@@ -205,6 +207,7 @@ def main():
 
         chdir('/tmp')
 
+        system('clear')
         print("{}Please Wait{} while we Download And Install {}{}{} ...".format(
             G, C, Y, value, C))
 
