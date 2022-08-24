@@ -9,6 +9,7 @@
         "python-imaging",
         "enigma2-plugin-systemplugins-serviceapp",
         "exteplayer3",
-        "gstplayer"
+        "gstplayer",
+        "ffmpeg"
     ]
 }
