@@ -1,15 +1,125 @@
 # -*- coding: utf-8 -*-
 # code: BY MOHAMED_OS
 
-# ###########################################
-# SCRIPT : DOWNLOAD AND INSTALL NovalerTV
-# ###########################################
-#
-# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/NovalerTV/installer.py -qO - | python
-#
-# ###########################################
+
+from os import path, system, chdir, remove, popen
+from sys import version_info
+from json import loads
+from time import sleep
+
+if version_info.major == 3:
+    from urllib.request import Request, urlopen, urlretrieve
+    from urllib.error import URLError, HTTPError
+else:
+    from urllib2 import Request, urlopen, URLError, HTTPError
+    from urllib import urlretrieve
 
 
-from zlib import decompress
-from base64 import b64decode
-exec(decompress(b64decode('eNrNVm1v2zYQ/q5fwaLAKG2WFDtd0bhIgG5t1wLNUrTpsCErBMU626wlUiEpx16Q/76jSFmyLG/APo0IYkm81+eOz/EpCb8PyUxkjC+mpNLz8IX54j0132BKfvqDXF69e3X55nVy9dnzPFaUQmoiVPOktrtHzQrwPC23U4/gmktRkErmObuNJNxVoDRxkp/s68hsixL4gTxIKWQj/eXThzfmfUTeXV9/rB892Myg1OR9LVF/OnA6OeZtNGjRK7d6KXiyBqmY4OTcpBa5t4TxuYiK9JsR9FAdt+lS61JN41im99GC6WV1WymQM8E1cB3NRBE76MZnV5/j1+Ke5yLN4iJlPP5VrNMc5PVvFB2ns1W6AGMSOFsU6SQs82rBeAgbNGX8q5BbBb2mngS0XQDPFKrc9HUwag2FfVEhBrRmM0jLko5qgNpFjfUyT7cgT+mI0IXS9o1+xTrPSR+Pc3JqMc6g3Dm3QqdhyfJc3BszzRdWYE7dD9+U4AdBtNtFlWtWSjEDpbAZu5quexQGBrmCY1GEMyE7HvsR/HMAx/237vdNGyFEystgjn2IrvzARiZBV5LjGYnKVC8j2DBU9mkMehaLcrWo/2F/8DkNnP7PS5itko+2EQbsmLb1qdEjOVoLsbQ6zXPIyMMjjeZCFqn2XR8FAR63NPPxR2nJSp/+yWkQqTJn2qckJD2vry2Qrdemu6K6/TLfIR3U29gYB4mtUxnjgbPJYWC6UtRZM+sezwaxGQyLklSR+XSvMHNz/LGPFWGczOuEcsZhF2V3YUi1aIT2pFbGnU8dllM6oGAWopdYB+dW+8baYDyDDcKEel8ji5/DzvkftGbChRwKE20L4LBnF3IjvgvkuHSvLBIKsQbfGAi6jWI6w1eg/VY2aErdsM975LEGwx1TWxt3iISjSp8+PMbu4O/aC1kvCLryUZplyRIrA9Lfi51+QdoJXy2QBs2ZuRR/ITuk8Y/RCfF/H49fkg+MVxuyefE8ef7sJZHr6dmz6CQgv2A7inhyMj7BvzF5yyTMxSY2m7TrWZXIiIYvHaFjwnftPtZphXuNWHMYMjATzaf1jOuYw1IYjb3maVLv9c4OZ766qXVcs5zT4Idx2y61jhtQu/liehxac6VkHGE228Tu23mLeEFkHvesNPNq2IgZR3YEWnVMGJmuqbwZN03FWY+pzMLTbEeG45eqzFIN5CLOYB3zKs/J5OK7sQOspd+OfyWk3JKabQkXeCWoSjN3IXtCI43nBt21cJuhisSh/RMM0MU0yEM7FjCH5KjEUAaOHLvUyIL9c2uuKpHKAUp/MphZqpQN737JchjmZxd9w7sk5VnvnAVt7AO6HQi3oiKpBIIXCKKXQPIUL0uuC5+Q84tuLgc00fN5iLlZt9gVq90XyM2Ad3EfxjiQSl3Zf8umXwnLVIMzqhNKF3iH6dG7x7C3QebsN0P88JiU29MEf/BDxMpVl9pGDRyjPp6HjH/YPUdAWBneQ+fhGXG3NLovf5j8f05s8r9KzLZbfY9MEp4WkCSmijRJDB8lCbVZW3Ly/gYHkbLi')))
+# colors
+C = "\033[0m"     # clear (end)
+R = "\033[0;31m"  # red (error)
+G = "\033[0;32m"  # green (process)
+B = "\033[0;36m"  # blue (choice)
+Y = "\033[0;33m"  # yellow (info)
+
+URL = 'https://raw.githubusercontent.com/MOHAMED19OS/Download/main/NovalerTV/'
+
+package = 'enigma2-plugin-extensions-novalertv'
+
+
+def Image():
+    global status, update, install, uninstall
+    if path.isfile('/etc/opkg/opkg.conf'):
+        status = '/var/lib/opkg/status'
+        update = 'opkg update >/dev/null 2>&1'
+        install = 'opkg install'
+        uninstall = 'opkg remove --force-depends'
+    return path.isfile('/etc/opkg/opkg.conf')
+
+
+def info(item):
+    try:
+        req = Request('{}version.json'.format(URL))
+        req.add_header(
+            'User-Agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0')
+        response = urlopen(req)
+        link = loads(response.read()).get(item)
+        if item == 'depends':
+            if version_info.major == 3:
+                return list(map(lambda x: x.replace('python', 'python3').replace('python3-imaging', 'python3-pillow'), link))
+        return link
+    except HTTPError as e:
+        print('HTTP Error code: ', e.code)
+    except URLError as e:
+        print('URL Error: ', e.reason)
+
+
+def check():
+    package_list = info('depends')
+    with open(status) as f:
+        for c in f.readlines():
+            if c.startswith('Package:'):
+                pkg = c[c.index(' '):].strip()
+                while (package_list.count(pkg)):
+                    package_list.remove(pkg)
+    return package_list
+
+
+def version():
+    return popen("opkg info {} | grep Version | awk '{{print $2}}'".format(package)).read().strip()
+
+
+def main():
+    if not Image():
+        print('\n{}(!){}sorry image not supported!!\n'.format(R, C).capitalize())
+        sleep(0.8)
+        print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
+        exit(0)
+
+    if check():
+        system(update)
+        for name in check():
+            system('clear')
+            print("   >>>>   {}Please Wait{} while we Install {}{}{} ...".format(
+                G, C, Y, name, C))
+            system(" ".join([install, name]))
+            sleep(1)
+
+    if version_info.major == 3:
+        file = "".join([package, "_py3_{}_all.ipk".format(info('version'))])
+    else:
+        file = "".join([package, "_py2_{}_all.ipk".format(info('version'))])
+
+    chdir('/tmp')
+
+    if path.isfile(file):
+        remove(file)
+        sleep(0.8)
+
+    if version() == info('version'):
+        system('clear')
+        print('you are use the latest version: {}{}{}\n'.format(
+            Y, info('version'), C).capitalize())
+        sleep(0.8)
+        print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
+        exit()
+    else:
+        system("".join([uninstall, package]))
+
+    system('clear')
+    print("{}Please Wait{} while we Download And Install {}Novaler TV{} ...".format(
+        G, C, Y, C))
+
+    urlretrieve("".join([URL, file]), filename=file)
+    sleep(0.8)
+
+    system(" ".join([install, file]))
+    sleep(1)
+
+    system('killall -9 enigma2')
+
+
+if __name__ == '__main__':
+    Image()
+    main()
+    print("\n   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
