@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # code: BY MOHAMED_OS
 
 
