@@ -86,6 +86,7 @@ def delete():
 
 def main():
 
+    PathAbertis = '/etc/astra/scripts/abertis'
     PathAstra = '/etc/astra/astra.conf'
     Setting = 'channels_backup_user_{}.tar.gz'.format(info())
 
@@ -144,6 +145,15 @@ net.ipv4.tcp_tw_recycle = 0""")
 
         urlretrieve("".join([URL, 'astra.conf']), PathAstra)
         chmod(PathAstra, 0o755)
+
+        if path.exists(PathAbertis):
+            remove(PathAbertis)
+
+        for name in ['armv7l', 'mips']:
+            if uname()[4] == name:
+                urlretrieve(
+                    "".join([URL, 'astra-sm/{}/abertis'.format(name)]), PathAbertis)
+        chmod(PathAbertis, 0o755)
 
         system('sleep 3;init 6')
     else:
