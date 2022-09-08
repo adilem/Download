@@ -1,5 +1,7 @@
 #!/usr/bin/python
-# coding BY: MOHAMED_OS
+# -*- coding: utf-8 -*-
+# code: BY MOHAMED_OS
+
 
 from __future__ import print_function
 

@@ -1,5 +1,7 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # code: BY MOHAMED_OS
+
 
 # ###########################################
 # SCRIPT : DOWNLOAD AND INSTALL FlashOnline
