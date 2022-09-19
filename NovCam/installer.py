@@ -1,7 +1,7 @@
 # code: BY MOHAMED_OS
 
 
-from os import path, system, chdir, remove, popen
+from os import path as os_path, system, chdir, remove, popen
 from sys import version_info
 from json import loads
 from time import sleep
@@ -31,12 +31,12 @@ else:
 
 def Image():
     global status, update, install, uninstall
-    if path.isfile('/etc/opkg/opkg.conf'):
+    if os_path.isfile('/etc/opkg/opkg.conf'):
         status = '/var/lib/opkg/status'
         update = 'opkg update >/dev/null 2>&1'
         install = 'opkg install'
         uninstall = 'opkg remove --force-depends'
-    return path.isfile('/etc/opkg/opkg.conf')
+    return os_path.isfile('/etc/opkg/opkg.conf')
 
 
 def info(item):
@@ -94,7 +94,7 @@ def main():
 
     chdir('/tmp')
 
-    if path.isfile(file):
+    if os_path.isfile(file):
         remove(file)
         sleep(0.8)
 

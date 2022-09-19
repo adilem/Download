@@ -3,7 +3,7 @@
 
 from __future__ import print_function
 
-from os import path, system, remove, chdir
+from os import system, remove, chdir, path as os_path
 from re import findall, match, MULTILINE
 from datetime import datetime
 from sys import version_info
@@ -64,7 +64,7 @@ ___________        ____ ___
 
 def image():
     global status, update, install, uninstall, extension
-    if path.isfile('/etc/opkg/opkg.conf'):
+    if os_path.isfile('/etc/opkg/opkg.conf'):
         status = '/var/lib/opkg/status'
         update = 'opkg update >/dev/null 2>&1'
         install = 'opkg install'
@@ -76,7 +76,7 @@ def image():
         install = 'apt-get install'
         uninstall = 'apt-get purge --auto-remove'
         extension = 'deb'
-    return path.isfile('/etc/opkg/opkg.conf')
+    return os_path.isfile('/etc/opkg/opkg.conf')
 
 
 def check(package):
@@ -89,10 +89,10 @@ def check(package):
 
 def stb_image():
     try:
-        if path.isfile('/etc/issue'):
+        if os_path.isfile('/etc/issue'):
             distro = open('/etc/issue').readlines()[-2].strip()[:-6].split()[0]
             return distro.lower()
-        elif path.isfile('/usr/lib/enigma.info'):
+        elif os_path.isfile('/usr/lib/enigma.info'):
             distro = open('/usr/lib/enigma.info').readlines()
             for c in distro:
                 if match('distro', c):
@@ -120,10 +120,10 @@ def prompt(choices):
 
 def stb_image():
     try:
-        if path.isfile('/etc/issue'):
+        if os_path.isfile('/etc/issue'):
             image_type = open("/etc/issue").readlines()[-2].strip()[:-6]
             return image_type.split()[0].lower()
-        elif path.isfile('/usr/lib/enigma.info'):
+        elif os_path.isfile('/usr/lib/enigma.info'):
             distro = open('/usr/lib/enigma.info').readlines()
             for c in distro:
                 if match('distro', c):
@@ -200,7 +200,7 @@ def main():
             system('{} {} '.format(uninstall, value))
             sleep(2)
 
-        if path.isfile(file):
+        if os_path.isfile(file):
             remove(file)
             sleep(0.8)
 

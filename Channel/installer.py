@@ -6,7 +6,7 @@ from __future__ import print_function
 
 from datetime import datetime
 from sys import version_info
-from os import system, path, remove, chdir, chmod, uname
+from os import system, remove, chdir, chmod, uname, path as os_path
 from re import findall, MULTILINE
 import tarfile
 
@@ -46,7 +46,7 @@ def banner():
 
 
 def image():
-    return path.exists('/etc/opkg/opkg.conf')
+    return os_path.exists('/etc/opkg/opkg.conf')
 
 
 def check(package):
@@ -72,15 +72,15 @@ def info():
 
 
 def delete():
-    if path.isfile('/etc/enigma2/lamedb'):
+    if os_path.isfile('/etc/enigma2/lamedb'):
         remove('/etc/enigma2/lamedb')
-    elif path.isfile('/etc/enigma2/*list'):
+    elif os_path.isfile('/etc/enigma2/*list'):
         remove('/etc/enigma2/*list')
-    elif path.isfile('/etc/enigma2/*.tv'):
+    elif os_path.isfile('/etc/enigma2/*.tv'):
         remove('/etc/enigma2/*.tv')
-    elif path.isfile('/etc/enigma2/*.radio'):
+    elif os_path.isfile('/etc/enigma2/*.radio'):
         remove('/etc/enigma2/*.radio')
-    elif path.isfile('/etc/tuxbox/*.xml'):
+    elif os_path.isfile('/etc/tuxbox/*.xml'):
         remove('/etc/tuxbox/*.xml')
 
 
@@ -103,7 +103,7 @@ def main():
 
     chdir('/tmp')
 
-    if path.isfile(Setting):
+    if os_path.isfile(Setting):
         remove(Setting)
 
     delete()
@@ -118,7 +118,7 @@ def main():
         f.extractall('/')
         f.close()
 
-    if path.isfile(Setting):
+    if os_path.isfile(Setting):
         remove(Setting)
 
     urlretrieve('http://127.0.0.1/web/servicelistreload?mode=0')
@@ -140,13 +140,13 @@ net.ipv4.tcp_wmem = 4096 65536 8388608
 net.ipv4.tcp_tw_recycle = 0""")
         f.close()
 
-        if path.isfile(PathAstra):
+        if os_path.isfile(PathAstra):
             remove(PathAstra)
 
         urlretrieve("".join([URL, 'astra.conf']), PathAstra)
         chmod(PathAstra, 0o755)
 
-        if path.exists(PathAbertis):
+        if os_path.exists(PathAbertis):
             remove(PathAbertis)
 
         for name in ['armv7l', 'mips']:
