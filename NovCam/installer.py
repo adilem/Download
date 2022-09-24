@@ -1,17 +1,20 @@
 # code: BY MOHAMED_OS
 
 
-from os import path as os_path, system, chdir, remove, popen
-from sys import version_info
 from json import loads
+from os import chdir
+from os import path as os_path
+from os import popen, remove, system
+from sys import version_info
 from time import sleep
 
 if version_info.major == 3:
+    from urllib.error import HTTPError, URLError
     from urllib.request import Request, urlopen, urlretrieve
-    from urllib.error import URLError, HTTPError
 else:
-    from urllib2 import Request, urlopen, URLError, HTTPError
     from urllib import urlretrieve
+
+    from urllib2 import HTTPError, Request, URLError, urlopen
 
 
 # colors
