@@ -74,3 +74,9 @@ wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/XC-Code/install
 ```fish
 wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube/installer.sh -qO - | /bin/sh
 ```
+
+### ✔️ Installation NovCam
+
+```fish
+wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/NovCam/installer.py -qO - | python
+```
