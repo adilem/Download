@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 # code: BY MOHAMED_OS
 
 
 from json import loads
-from os import chdir
-from os import path as os_path
-from os import popen, remove, system
+from os import chdir, popen, remove, system
+from os.path import isfile
 from sys import version_info
 from time import sleep
 
@@ -34,12 +34,12 @@ else:
 
 def Image():
     global status, update, install, uninstall
-    if os_path.isfile('/etc/opkg/opkg.conf'):
+    if isfile('/etc/opkg/opkg.conf'):
         status = '/var/lib/opkg/status'
         update = 'opkg update >/dev/null 2>&1'
         install = 'opkg install'
         uninstall = 'opkg remove --force-depends'
-    return os_path.isfile('/etc/opkg/opkg.conf')
+    return isfile('/etc/opkg/opkg.conf')
 
 
 def info(item):
@@ -97,7 +97,7 @@ def main():
 
     chdir('/tmp')
 
-    if os_path.isfile(file):
+    if isfile(file):
         remove(file)
         sleep(0.8)
 

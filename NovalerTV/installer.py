@@ -1,17 +1,20 @@
+# -*- coding: utf-8 -*-
 # code: BY MOHAMED_OS
 
 
-from os import path as os_path, system, chdir, remove, popen
-from sys import version_info
 from json import loads
+from os import chdir, popen, remove, system
+from os.path import isfile
+from sys import version_info
 from time import sleep
 
 if version_info.major == 3:
+    from urllib.error import HTTPError, URLError
     from urllib.request import Request, urlopen, urlretrieve
-    from urllib.error import URLError, HTTPError
 else:
-    from urllib2 import Request, urlopen, URLError, HTTPError
     from urllib import urlretrieve
+
+    from urllib2 import HTTPError, Request, URLError, urlopen
 
 
 # colors
@@ -28,12 +31,12 @@ package = 'enigma2-plugin-extensions-novalertv'
 
 def Image():
     global status, update, install, uninstall
-    if os_path.isfile('/etc/opkg/opkg.conf'):
+    if isfile('/etc/opkg/opkg.conf'):
         status = '/var/lib/opkg/status'
         update = 'opkg update >/dev/null 2>&1'
         install = 'opkg install'
         uninstall = 'opkg remove --force-depends'
-    return os_path.isfile('/etc/opkg/opkg.conf')
+    return isfile('/etc/opkg/opkg.conf')
 
 
 def info(item):
@@ -91,7 +94,7 @@ def main():
 
     chdir('/tmp')
 
-    if os_path.isfile(file):
+    if isfile(file):
         remove(file)
         sleep(0.8)
 

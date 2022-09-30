@@ -1,21 +1,24 @@
+# -*- coding: utf-8 -*-
 # code: BY MOHAMED_OS
 
 
 from __future__ import print_function
 
-from os import system, remove, chdir, path as os_path
-from re import findall, match, MULTILINE
 from datetime import datetime
+from json import loads
+from os import chdir, remove, system
+from os.path import isfile
+from re import MULTILINE, findall, match
 from sys import version_info
 from time import sleep
-from json import loads
 
 if version_info.major == 3:
+    from urllib.error import HTTPError, URLError
     from urllib.request import Request, urlopen, urlretrieve
-    from urllib.error import URLError, HTTPError
 else:
-    from urllib2 import Request, urlopen, URLError, HTTPError
     from urllib import urlretrieve
+
+    from urllib2 import HTTPError, Request, URLError, urlopen
 
 package = 'enigma2-plugin-softcams-'
 URL = 'https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Emu/'
@@ -64,7 +67,7 @@ ___________        ____ ___
 
 def image():
     global status, update, install, uninstall, extension
-    if os_path.isfile('/etc/opkg/opkg.conf'):
+    if isfile('/etc/opkg/opkg.conf'):
         status = '/var/lib/opkg/status'
         update = 'opkg update >/dev/null 2>&1'
         install = 'opkg install'
@@ -76,7 +79,7 @@ def image():
         install = 'apt-get install'
         uninstall = 'apt-get purge --auto-remove'
         extension = 'deb'
-    return os_path.isfile('/etc/opkg/opkg.conf')
+    return isfile('/etc/opkg/opkg.conf')
 
 
 def check(package):
@@ -89,10 +92,10 @@ def check(package):
 
 def stb_image():
     try:
-        if os_path.isfile('/etc/issue'):
+        if isfile('/etc/issue'):
             distro = open('/etc/issue').readlines()[-2].strip()[:-6].split()[0]
             return distro.lower()
-        elif os_path.isfile('/usr/lib/enigma.info'):
+        elif isfile('/usr/lib/enigma.info'):
             distro = open('/usr/lib/enigma.info').readlines()
             for c in distro:
                 if match('distro', c):
@@ -120,10 +123,10 @@ def prompt(choices):
 
 def stb_image():
     try:
-        if os_path.isfile('/etc/issue'):
+        if isfile('/etc/issue'):
             image_type = open("/etc/issue").readlines()[-2].strip()[:-6]
             return image_type.split()[0].lower()
-        elif os_path.isfile('/usr/lib/enigma.info'):
+        elif isfile('/usr/lib/enigma.info'):
             distro = open('/usr/lib/enigma.info').readlines()
             for c in distro:
                 if match('distro', c):
@@ -200,7 +203,7 @@ def main():
             system('{} {} '.format(uninstall, value))
             sleep(2)
 
-        if os_path.isfile(file):
+        if isfile(file):
             remove(file)
             sleep(0.8)
 
