@@ -1,7 +1,9 @@
+# coding: utf-8
+
 # code: BY MOHAMED_OS
 
 
-from __future__ import print_function, unicode_literals
+from __future__ import print_function
 
 import tarfile
 from datetime import datetime
