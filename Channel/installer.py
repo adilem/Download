@@ -3,19 +3,20 @@
 
 from __future__ import print_function
 
-
-from datetime import datetime
-from sys import version_info
-from os import system, remove, chdir, chmod, uname, path as os_path
-from re import findall, MULTILINE
 import tarfile
+from datetime import datetime
+from os import chdir, chmod, remove, system, uname
+from os.path import exists, isfile
+from re import MULTILINE, findall
+from sys import version_info
 
 if version_info.major == 3:
+    from urllib.error import HTTPError, URLError
     from urllib.request import Request, urlopen, urlretrieve
-    from urllib.error import URLError, HTTPError
 else:
-    from urllib2 import Request, urlopen, URLError, HTTPError
     from urllib import urlretrieve
+
+    from urllib2 import HTTPError, Request, URLError, urlopen
 
 
 # colors
@@ -46,7 +47,7 @@ def banner():
 
 
 def image():
-    return os_path.exists('/etc/opkg/opkg.conf')
+    return exists('/etc/opkg/opkg.conf')
 
 
 def check(package):
@@ -72,15 +73,15 @@ def info():
 
 
 def delete():
-    if os_path.isfile('/etc/enigma2/lamedb'):
+    if isfile('/etc/enigma2/lamedb'):
         remove('/etc/enigma2/lamedb')
-    elif os_path.isfile('/etc/enigma2/*list'):
+    elif isfile('/etc/enigma2/*list'):
         remove('/etc/enigma2/*list')
-    elif os_path.isfile('/etc/enigma2/*.tv'):
+    elif isfile('/etc/enigma2/*.tv'):
         remove('/etc/enigma2/*.tv')
-    elif os_path.isfile('/etc/enigma2/*.radio'):
+    elif isfile('/etc/enigma2/*.radio'):
         remove('/etc/enigma2/*.radio')
-    elif os_path.isfile('/etc/tuxbox/*.xml'):
+    elif isfile('/etc/tuxbox/*.xml'):
         remove('/etc/tuxbox/*.xml')
 
 
@@ -103,7 +104,7 @@ def main():
 
     chdir('/tmp')
 
-    if os_path.isfile(Setting):
+    if isfile(Setting):
         remove(Setting)
 
     delete()
@@ -118,16 +119,14 @@ def main():
         f.extractall('/')
         f.close()
 
-    if os_path.isfile(Setting):
+    if isfile(Setting):
         remove(Setting)
 
     urlretrieve('http://127.0.0.1/web/servicelistreload?mode=0')
 
     if image():
         with open('/etc/sysctl.conf', 'r+') as f:
-            if findall('net.core.rmem_default', f.read(), MULTILINE):
-                pass
-            else:
+            if not findall('net.core.rmem_default', f.read(), MULTILINE):
                 f.writelines("""\n
 ## added for Abertis ###
 net.core.rmem_default = 16777216
@@ -140,13 +139,18 @@ net.ipv4.tcp_wmem = 4096 65536 8388608
 net.ipv4.tcp_tw_recycle = 0""")
         f.close()
 
-        if os_path.isfile(PathAstra):
+        with open('/etc/enigma2/settings', 'r+') as s:
+            if not findall('config.streaming.stream_ecm', f.read(), MULTILINE):
+                s.write('config.streaming.stream_ecm=True')
+                s.close()
+
+        if isfile(PathAstra):
             remove(PathAstra)
 
         urlretrieve("".join([URL, 'astra.conf']), PathAstra)
         chmod(PathAstra, 0o755)
 
-        if os_path.exists(PathAbertis):
+        if exists(PathAbertis):
             remove(PathAbertis)
 
         for name in ['armv7l', 'mips']:
