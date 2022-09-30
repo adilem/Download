@@ -141,7 +141,7 @@ net.ipv4.tcp_tw_recycle = 0""")
         f.close()
 
         with open('/etc/enigma2/settings', 'r+') as s:
-            if not findall('config.streaming.stream_ecm', f.read(), MULTILINE):
+            if not findall('config.streaming.stream_ecm', s.read(), MULTILINE):
                 s.write('config.streaming.stream_ecm=True')
         s.close()
 
