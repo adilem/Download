@@ -10,6 +10,7 @@ from os import chdir, chmod, remove, system, uname
 from os.path import exists, isfile, join
 from re import MULTILINE, findall
 from sys import version_info
+from time import sleep
 
 if version_info.major == 3:
     from urllib.error import HTTPError, URLError
@@ -57,6 +58,7 @@ Y88b  d88P 888  888 888  888 888  888 888  888 Y8b.     888
         print("Written by {}MOHAMED_OS{} {}(͡๏̯͡๏){}\n".format(
             B, C, Y, C).rjust(73), end='')
         print((self.date).rjust(35))
+        sleep(1)
 
     def info(self):
         try:
