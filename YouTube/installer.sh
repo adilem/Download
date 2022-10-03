@@ -51,9 +51,7 @@ fi
 
 ########################
 install() {
-    if grep -qs "Package: $1" $STATUS; then
-        echo
-    else
+    if ! grep -qs "Package: $1" $STATUS; then
         $OPKG >/dev/null 2>&1
         echo "   >>>>   Need to install $1   <<<<"
         echo
