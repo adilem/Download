@@ -140,15 +140,15 @@ Y88b  d88P 888  888 888  888 888  888 888  888 Y8b.     888
             with open('/etc/sysctl.conf', 'r+') as f:
                 if not findall('net.core.rmem_default', f.read(), MULTILINE):
                     f.writelines("""\n
-    ## added for Abertis ###
-    net.core.rmem_default = 16777216
-    net.core.rmem_max = 16777216
-    net.core.wmem_default = 16777216
-    net.core.wmem_max = 16777216
-    net.ipv4.udp_mem = 8388608 12582912 16777216
-    net.ipv4.tcp_rmem = 4096 87380 8388608
-    net.ipv4.tcp_wmem = 4096 65536 8388608
-    net.ipv4.tcp_tw_recycle = 0""")
+## added for Abertis ###
+net.core.rmem_default = 16777216
+net.core.rmem_max = 16777216
+net.core.wmem_default = 16777216
+net.core.wmem_max = 16777216
+net.ipv4.udp_mem = 8388608 12582912 16777216
+net.ipv4.tcp_rmem = 4096 87380 8388608
+net.ipv4.tcp_wmem = 4096 65536 8388608
+net.ipv4.tcp_tw_recycle = 0""")
             f.close()
 
             if isfile(self.path_astra):
