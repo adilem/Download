@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
-# code: BY MOHAMED_OS
-
+# code BY: MOHAMED_OS
 
 from __future__ import print_function
 
-from datetime import datetime
-from json import loads
 from os import chdir, remove, system
-from os.path import isfile
+from os.path import exists, isfile, join
 from re import MULTILINE, findall, match
 from sys import version_info
 from time import sleep
@@ -20,8 +17,6 @@ else:
 
     from urllib2 import HTTPError, Request, URLError, urlopen
 
-package = 'enigma2-plugin-softcams-'
-URL = 'https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Emu/'
 
 # colors
 C = "\033[0m"     # clear (end)
@@ -30,199 +25,211 @@ G = "\033[0;32m"  # green (process)
 B = "\033[0;36m"  # blue (choice)
 Y = "\033[0;33m"  # yellow (info)
 
+
 if hasattr(__builtins__, 'raw_input'):
     input = raw_input
 
 
-def info(item):
-    try:
-        req = Request('{}version.json'.format(URL))
-        req.add_header(
-            'User-Agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0')
-        response = urlopen(req)
-        link = loads(response.read())
-        return link.get(item)
-    except HTTPError as e:
-        print('HTTP Error code: ', e.code)
-    except URLError as e:
-        print('URL Error: ', e.reason)
+class Emulator():
+    URL = 'https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Emu/'
+    page = "https://github.com/MOHAMED19OS/Download/tree/main/Emu"
 
+    def __init__(self):
+        self.package = 'enigma2-plugin-softcams-'
 
-def banner():
-    ncam_ver = info('ncam')
-    oscam_ver = info('oscam')
-    system('clear')
-    print(B)
-    print(r"""
-___________        ____ ___
-\_   _____/ _____ |    |   \
- |    __)_ /     \|    |   /
- |        \  Y Y  \    |  /
-/_______  /__|_|  /______/
-        \/      \/ """, end='')
-    print("{} Install\n".format(C))
-    print("    {}Oscam{} : {}".format(Y, C, oscam_ver))
-    print("    {}Ncam{}  : {}\n".format(Y, C, ncam_ver))
+    def Stb_Image(self):
+        if isfile('/etc/opkg/opkg.conf'):
+            self.status = '/var/lib/opkg/status'
+            self.update = 'opkg update >/dev/null 2>&1'
+            self.install = 'opkg install'
+            self.uninstall = 'opkg remove --force-depends'
+            self.extension = 'ipk'
+        else:
+            self.status = '/var/lib/dpkg/status'
+            self.update = 'apt-get update >/dev/null 2>&1'
+            self.install = 'apt-get install'
+            self.uninstall = 'apt-get purge --auto-remove'
+            self.extension = 'deb'
+        return isfile('/etc/opkg/opkg.conf')
 
+    def info(self, name):
+        try:
+            req = Request(self.page)
+            req = Request(self.page)
+            req.add_header(
+                'User-Agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0')
+            response = urlopen(req)
+            link = response.read().decode('utf-8')
+            return findall(r"".join(['href=.*?\/Emu.*?">.*?', name, '_(.*?)_']), link)[0]
+        except HTTPError as e:
+            print('HTTP Error code: ', e.code)
+        except URLError as e:
+            print('URL Error: ', e.reason)
 
-def image():
-    global status, update, install, uninstall, extension
-    if isfile('/etc/opkg/opkg.conf'):
-        status = '/var/lib/opkg/status'
-        update = 'opkg update >/dev/null 2>&1'
-        install = 'opkg install'
-        uninstall = 'opkg remove --force-depends'
-        extension = 'ipk'
-    else:
-        status = '/var/lib/dpkg/status'
-        update = 'apt-get update >/dev/null 2>&1'
-        install = 'apt-get install'
-        uninstall = 'apt-get purge --auto-remove'
-        extension = 'deb'
-    return isfile('/etc/opkg/opkg.conf')
-
-
-def check(package):
-    with open(status) as f:
-        for items in f.readlines():
-            if items.startswith('Package:'):
-                if findall(package, items[items.index(' '):].strip(), MULTILINE):
-                    return package
-
-
-def stb_image():
-    try:
-        if isfile('/etc/issue'):
-            distro = open('/etc/issue').readlines()[-2].strip()[:-6].split()[0]
-            return distro.lower()
-        elif isfile('/usr/lib/enigma.info'):
-            distro = open('/usr/lib/enigma.info').readlines()
-            for c in distro:
-                if match('distro', c):
-                    return c.split('=')[-1].strip().lower()
-    except:
-        return 'undefined'
-
-
-def prompt(choices):
-
-    options = list(choices)
-    options.sort(key=int)
-
-    while True:
-        print(
-            "{}(?){} Choose an option [{}-{}] : ".format(B, C, options[0], options[-1]), end='')
-        choice = [str(x) for x in input().split()]
-
-        for name in choice:
-            if name not in options:
-                print("\n{}(!){} Select one of the available options !!\n".format(R, C))
-                continue
-        return choice
-
-
-def stb_image():
-    try:
-        if isfile('/etc/issue'):
-            image_type = open("/etc/issue").readlines()[-2].strip()[:-6]
-            return image_type.split()[0].lower()
-        elif isfile('/usr/lib/enigma.info'):
-            distro = open('/usr/lib/enigma.info').readlines()
-            for c in distro:
-                if match('distro', c):
-                    return c.split('=')[-1].strip().lower()
-    except:
-        return 'undefined'
-
-
-def main():
-    image()
-
-    if not check('libcurl4'):
+    def banner(self):
         system('clear')
-        print("   >>>>   {}Please Wait{} while we Install {}libcurl4{} ...".format(
-            G, C, Y, C))
-        system('{};{} libcurl4'.format(update, install))
+        print(B,
+              r"""
+            d88888b .88b  d88. db    db db       .d8b.  d888888b  .d88b.  d8888b.
+            88'     88'YbdP`88 88    88 88      d8' `8b `~~88~~' .8P  Y8. 88  `8D
+            88ooooo 88  88  88 88    88 88      88ooo88    88    88    88 88oobY'
+            88~~~~~ 88  88  88 88    88 88      88~~~88    88    88    88 88`8b
+            88.     88  88  88 88b  d88 88booo. 88   88    88    `8b  d8' 88 `88.
+            Y88888P YP  YP  YP ~Y8888P' Y88888P YP   YP    YP     `Y88P'  88   YD""", C)
+        print(
+            "".join(["\t\t\t{}Oscam Version{}: ".format(Y, C), self.info('oscam')]))
+        print(
+            "".join(["\t\t\t{}Ncam Version{}: ".format(Y, C), self.info('ncam')]))
 
-    if stb_image() == 'teamblue':
-        if not check('enigma2-plugin-systemplugins-softcamstartup'):
+    def check(self, pkg):
+        with open(self.status) as file:
+            for item in file.readlines():
+                if item.startswith('Package:'):
+                    if findall(pkg, item[item.index(' '):].strip(), MULTILINE):
+                        return True
+            file.close()
+
+    def image(self):
+        try:
+            if isfile('/etc/issue'):
+                distro = open(
+                    '/etc/issue').readlines()[-2].strip()[:-6].split()[0]
+                return distro.lower()
+            elif isfile('/usr/lib/enigma.info'):
+                distro = open('/usr/lib/enigma.info').readlines()
+                for c in distro:
+                    if match('distro', c):
+                        return c.split('=')[-1].strip().lower()
+        except:
+            return 'undefined'
+
+    def prompt(self, choices):
+
+        options = list(choices)
+        options.sort(key=int)
+
+        while True:
+            print(
+                "{}(?){} Choose an option [{}-{}] : ".format(B, C, options[0], options[-1]), end='')
+            choice = [str(x) for x in input().split()]
+
+            for name in choice:
+                if name not in options:
+                    print(
+                        "\n{}(!){} Select one of the available options !!\n".format(R, C))
+                    continue
+            return choice
+    def FixEmu(self):
+        for name in ["RELOAD.sh","SUPAUTO.sh"]:
+            if exists(join("/etc/",name)):
+                remove(join("/etc/",name))
+            with open('/etc/cron/crontabs/root', "r+") as f:
+                line = f.readline()
+                f.seek(0)
+                if name not in line:
+                    f.write(line)
+                f.truncate()
+        with open('/etc/init.d/fixemu.sh',"w") as file:
+            file.writelines("""#!/bin/bash\n
+if [ -e /etc/RELOAD.sh ]; then
+    rm /etc/RELOAD.sh
+fi
+
+if [ -e /etc/SUPAUTO.sh ]; then
+    rm /etc/SUPAUTO.sh
+fi
+sed -i '/RELOAD/d' /etc/cron/crontabs/root
+sed -i '/SUPAUTO/d' /etc/cron/crontabs/root\n""")
+            file.close()
+        print('ok supcam')
+        system("update-rc.d fixemu.sh defaults >/dev/null 2>&1")
+
+    def main(self):
+
+        self.Stb_Image()
+
+        if not self.check('libcurl4'):
             system('clear')
-            print("   >>>>   {}Please Wait{} while we Install {}SoftCam Startup{} ...".format(
+            print("   >>>>   {}Please Wait{} while we Install {}libcurl4{} ...".format(
                 G, C, Y, C))
-            system(
-                '{};{} enigma2-plugin-systemplugins-softcamstartup'.format(update, install))
+            system('{};{} libcurl4'.format(self.update, self.install))
 
-    if image():
-        cam = {
-            "1": "{}oscam".format(package),
-            "2": "{}ncam".format(package),
-            "3": "{}powercam".format(package),
-            "4": "{}revcam".format(package),
-            "5": "{}gosatplus".format(package),
-            "6": "{}supcam-oscam".format(package),
-            "7": "{}revcam-oscam".format(package),
-            "8": "{}gosatplus-oscam".format(package),
-            "9": "{}powercam-oscam".format(package),
-            "10": "{}supcam-ncam".format(package),
-            "11": "{}powercam-ncam".format(package),
-            "12": "{}revcam-ncam".format(package),
-            "13": "{}gosatplus-ncam".format(package),
-        }
-        menu = """
-        (1) Oscam       (6)  SupTV_Oscam        (11) PowerCam_Ncam
-        (2) Ncam        (7)  Revcam_Oscam       (12) Revcam_Ncam
-        (3) PowerCam    (8)  GosatPlus_Oscam    (13) GosatPlus_Ncam
-        (4) Revcam      (9)  PowerCam_Oscam
-        (5) GosatPlus   (10) SupTV_Ncam
-        """
-    else:
-        cam = {
-            "1": "{}oscam".format(package),
-            "2": "{}ncam".format(package),
-            "3": "{}revcam".format(package),
-            "4": "{}powercam".format(package),
-            "5": "{}gosatplus".format(package)
-        }
-        menu = """
-        (1) Oscam          (2) Ncam          (3) Revcam
-        (4) PowerCam       (5) GosatPlus
-        """
+        if self.image() == 'teamblue':
+            if not self.check('enigma2-plugin-systemplugins-softcamstartup'):
+                system('clear')
+                print("   >>>>   {}Please Wait{} while we Install {}SoftCam Startup{} ...".format(
+                    G, C, Y, C))
+                system(
+                    '{};{} enigma2-plugin-systemplugins-softcamstartup'.format(self.update, self.install))
 
-    banner()
+        if self.Stb_Image():
+            cam = {
+                "1": "".join([self.package, "oscam"]),
+                "2": "".join([self.package, "ncam"]),
+                "3": "".join([self.package, "powercam"]),
+                "4": "".join([self.package, "revcam"]),
+                "5": "".join([self.package, "gosatplus"]),
+                "6": "".join([self.package, "supcam-oscam"]),
+                "7": "".join([self.package, "revcam-oscam"]),
+                "8": "".join([self.package, "gosatplus-oscam"]),
+                "9": "".join([self.package, "powercam-oscam"]),
+                "10": "".join([self.package, "supcam-ncam"]),
+                "11": "".join([self.package, "powercam-ncam"]),
+                "12": "".join([self.package, "revcam-ncam"]),
+                "13": "".join([self.package, "gosatplus-ncam"])
+            }
+            menu = """
+            (1) Oscam       (6)  SupTV_Oscam        (11) PowerCam_Ncam
+            (2) Ncam        (7)  Revcam_Oscam       (12) Revcam_Ncam
+            (3) PowerCam    (8)  GosatPlus_Oscam    (13) GosatPlus_Ncam
+            (4) Revcam      (9)  PowerCam_Oscam
+            (5) GosatPlus   (10) SupTV_Ncam
+            """
+        else:
+            cam = {
+                "1": "".join([self.package, "oscam"]),
+                "2": "".join([self.package, "ncam"]),
+                "3": "".join([self.package, "revcam"]),
+                "4": "".join([self.package, "powercam"]),
+                "5": "".join([self.package, "gosatplus"])
+            }
+            menu = """
+            (1) Oscam          (2) Ncam          (3) Revcam
+            (4) PowerCam       (5) GosatPlus
+            """
+        self.banner()
 
-    print(menu)
+        print(menu)
+        choice = self.prompt(cam.keys())
 
-    choice = prompt(cam.keys())
+        for number in choice:
+            value = cam.get(number)
+            self.file = "{}_{}_all.{}".format(
+                value, self.info(value.split('-')[-1]), self.extension)
 
-    for number in choice:
-        value = cam.get(number)
-        file = "{}_{}_all.{}".format(
-            value, info(value.split('-')[-1]), extension)
+            if self.check(value):
+                system('{} {} '.format(self.uninstall, value))
 
-        if check(value):
-            system('{} {} '.format(uninstall, value))
-            sleep(2)
+            if isfile(self.file):
+                remove(self.file)
+                sleep(0.8)
 
-        if isfile(file):
-            remove(file)
+            chdir('/tmp')
+
+            system('clear')
+            print("{}Please Wait{} while we Download And Install {}{}{} ...".format(
+                G, C, Y, value, C))
+
+            urlretrieve("".join([self.URL, self.file]), filename=self.file)
             sleep(0.8)
 
-        chdir('/tmp')
+            system(" ".join([self.install, self.file]))
+            sleep(1)
 
-        system('clear')
-        print("{}Please Wait{} while we Download And Install {}{}{} ...".format(
-            G, C, Y, value, C))
-
-        urlretrieve("".join([URL, file]), filename=file)
-        sleep(0.8)
-
-        system(" ".join([install, file]))
-        sleep(1)
-
+            if "supcam" in value:
+                self.FixEmu()
 
 if __name__ == '__main__':
-    main()
-    banner()
+    build = Emulator()
+    build.main()
     print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)".format(R, C))
-    print((datetime.now().strftime("%d-%m-%Y %X")).rjust(25))
-    print()
