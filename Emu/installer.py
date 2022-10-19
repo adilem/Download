@@ -141,7 +141,6 @@ fi
 sed -i '/RELOAD/d' /etc/cron/crontabs/root
 sed -i '/SUPAUTO/d' /etc/cron/crontabs/root\n""")
             file.close()
-        print('ok supcam')
         system("update-rc.d fixemu.sh defaults >/dev/null 2>&1")
 
     def main(self):
