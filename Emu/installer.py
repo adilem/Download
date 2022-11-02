@@ -119,17 +119,22 @@ class Emulator():
                         "\n{}(!){} Select one of the available options !!\n".format(R, C))
                     continue
             return choice
+
     def FixEmu(self):
-        for name in ["RELOAD.sh","SUPAUTO.sh"]:
-            if exists(join("/etc/",name)):
-                remove(join("/etc/",name))
-            with open('/etc/cron/crontabs/root', "r+") as f:
+        for name in ["RELOAD.sh", "SUPAUTO.sh"]:
+            if exists(join("/etc/", name)):
+                remove(join("/etc/", name))
+            if exists('/etc/cron/crontabs/root'):
+                self.RootPath = '/etc/cron/crontabs/root'
+            else:
+                self.RootPath = '/var/spool/cron/crontabs/root'
+            with open(self.RootPath, "r+") as f:
                 line = f.readline()
                 f.seek(0)
                 if name not in line:
                     f.write(line)
                 f.truncate()
-        with open('/etc/init.d/fixemu.sh',"w") as file:
+        with open('/etc/init.d/fixemu.sh', "w") as file:
             file.writelines("""#!/bin/bash\n
 if [ -e /etc/RELOAD.sh ]; then
     rm /etc/RELOAD.sh
@@ -138,8 +143,8 @@ fi
 if [ -e /etc/SUPAUTO.sh ]; then
     rm /etc/SUPAUTO.sh
 fi
-sed -i '/RELOAD/d' /etc/cron/crontabs/root
-sed -i '/SUPAUTO/d' /etc/cron/crontabs/root\n""")
+sed -i '/RELOAD/d' {}
+sed -i '/SUPAUTO/d' {}\n""".format(self.RootPath, self.RootPath))
             file.close()
         system("update-rc.d fixemu.sh defaults >/dev/null 2>&1")
 
@@ -227,6 +232,7 @@ sed -i '/SUPAUTO/d' /etc/cron/crontabs/root\n""")
 
             if "supcam" in value:
                 self.FixEmu()
+
 
 if __name__ == '__main__':
     build = Emulator()
