@@ -13,7 +13,7 @@ TMPDIR='/tmp'
 PLUGINPATH='/usr/lib/enigma2/python/Plugins/Extensions/IPTVPlayer'
 SETTINGS='/etc/enigma2/settings'
 URL='http://ipkinstall.ath.cx/ipk-install'
-PYTHON_VERSION=$(python -c"import sys; print(sys.hexversion)")
+PYTHON_VERSION=$(python -c"import platform; print(platform.python_version())")
 
 #########################
 VERSION=$(wget $URL/E2IPLAYER-DREAMSATPANEL/e2iplayer.sh -qO- | grep 'versions=' | cut -d "=" -f2- | sed 's/^"\(.*\)".*/\1/')
@@ -32,14 +32,18 @@ elif [ -f /etc/apt/apt.conf ]; then
 fi
 
 #########################
-if [ "$PYTHON_VERSION" -eq 50923504 ]; then
+if [ "$PYTHON_VERSION" == 3.9.9 ] || [ "$PYTHON_VERSION" == 3.9.7 ]; then
     echo ":You have Python3.9 image ..."
     PLUGINPY3='E2IPLAYER_TSiplayer-PYTHON3.tar.gz'
     rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
-elif [ "$PYTHON_VERSION" -eq 50988272 ]; then
+elif [ "$PYTHON_VERSION" == 3.10.4 ]; then
     echo ":You have Python3.10 image ..."
     PLUGINPY4='E2IPLAYER_TSiplayer-PYTHON310.tar.gz'
     rm -rf ${TMPDIR}/"${PLUGINPY4:?}"
+elif [ "$PYTHON_VERSION" == 3.11.0 ]; then
+    echo ":You have $PYTHON_VERSION image ..."
+    PLUGINPY5='E2IPLAYER_TSiplayer-PYTHON311.tar.gz'
+    rm -rf ${TMPDIR}/"${PLUGINPY5:?}"
 else
     echo ":You have Python2 image ..."
     PLUGINPY2='E2IPLAYER_TSiplayer.tar.gz'
@@ -79,7 +83,7 @@ install() {
 }
 
 #########################
-if [ "$PYTHON_VERSION" == "50923504" ] || [ "$PYTHON_VERSION" == "50988272" ]; then
+if [ "$PYTHON_VERSION" == 3.9.9 ] || [ "$PYTHON_VERSION" == 3.9.7 ] || [ "$PYTHON_VERSION" == 3.11.0 ]; then
     for i in duktape python3-sqlite3; do
         install $i
     done
@@ -94,17 +98,23 @@ clear
 
 echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
 
-if [ "$PYTHON_VERSION" -eq 50923504 ]; then
+if [ "$PYTHON_VERSION" == 3.9.9 ] || [ "$PYTHON_VERSION" == 3.9.7 ]; then
     set -e
     echo
     wget $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY3 -qP $TMPDIR
     tar -xzf $TMPDIR/$PLUGINPY3 -C /
     set +e
-elif [ "$PYTHON_VERSION" -eq 50988272 ]; then
+elif [ "$PYTHON_VERSION" == 3.10.4 ]; then
     set -e
     echo
     wget $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY4 -qP $TMPDIR
     tar -xzf $TMPDIR/$PLUGINPY4 -C /
+    set +e
+elif [ "$PYTHON_VERSION" == 3.11.0 ]; then
+    set -e
+    echo
+    wget $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY5 -qP $TMPDIR
+    tar -xzf $TMPDIR/$PLUGINPY5 -C /
     set +e
 else
     set -e
@@ -132,7 +142,7 @@ if [ -d $PLUGINPATH ]; then
         echo "config.plugins.iptvplayer.default${plarform^^}MoviePlayer0=exteplayer"
         echo "config.plugins.iptvplayer.remember_last_position=true"
         echo "config.plugins.iptvplayer.extplayer_infobanner_clockformat=24"
-        echo "config.plugins.iptvplayer.extplayer_skin=halidri1080p1"
+        echo "config.plugins.iptvplayer.extplayer_skin=red"
         echo "config.plugins.iptvplayer.plarform=${plarform}"
         echo "config.plugins.iptvplayer.dukpath=/usr/bin/duk"
         echo "config.plugins.iptvplayer.wgetpath=wget"
@@ -140,10 +150,12 @@ if [ -d $PLUGINPATH ]; then
 fi
 
 #########################
-if [ "$PYTHON_VERSION" -eq 50923504 ]; then
+if [ "$PYTHON_VERSION" == 3.9.9 ] || [ "$PYTHON_VERSION" == 3.9.7 ]; then
     rm -rf ${TMPDIR}/"${PLUGINPY3:?}"
-elif [ "$PYTHON_VERSION" -eq 50988272 ]; then
+elif [ "$PYTHON_VERSION" == 3.10.4 ]; then
     rm -rf ${TMPDIR}/"${PLUGINPY4:?}"
+elif [ "$PYTHON_VERSION" == 3.11.0 ]; then
+    rm -rf ${TMPDIR}/"${PLUGINPY5:?}"
 else
     rm -rf ${TMPDIR}/"${PLUGINPY2:?}"
 fi
