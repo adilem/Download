@@ -131,7 +131,9 @@ Y888888P 88      YP   YP ~Y8888P' Y8888D' Y888888P  `Y88P'""", C)
         system(" ".join([self.install, file]))
         sleep(1)
 
-        system('killall -9 enigma2')
+        if isfile(join('/tmp/', file)):
+            remove(join('/tmp/', file))
+            sleep(0.8)
 
 
 if __name__ == '__main__':
