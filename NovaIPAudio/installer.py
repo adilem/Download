@@ -81,7 +81,7 @@ Y888888P 88      YP   YP ~Y8888P' Y8888D' Y888888P  `Y88P'""", C)
     def main(self):
         self.Stb_Image()
 
-        if not gethostname() == 'novaler4k':
+        if not gethostname() == 'novaler4k' or gethostname() == 'novaler4kse':
             print('\n{}(!){}sorry image not supported!!\n'.format(R, C).capitalize())
             sleep(0.8)
             print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
