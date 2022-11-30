@@ -1,4 +1,4 @@
-٧# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # code BY: MOHAMED_OS
 
 from os import chdir, popen, remove, system
