@@ -81,11 +81,12 @@ Y888888P 88      YP   YP ~Y8888P' Y8888D' Y888888P  `Y88P'""", C)
     def main(self):
         self.Stb_Image()
 
-        if not gethostname() == 'novaler4k' or not gethostname() == 'novaler4kse':
-            print('\n{}(!){}sorry image not supported!!\n'.format(R, C).capitalize())
-            sleep(0.8)
-            print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
-            exit(0)
+        for name in ['novaler4k','novaler4kse']:
+            if not gethostname() == name:
+                print('\n{}(!){}sorry image not supported!!\n'.format(R, C).capitalize())
+                sleep(0.8)
+                print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
+                exit(0)
 
         for filename in self.package:
             if not self.check(filename):
