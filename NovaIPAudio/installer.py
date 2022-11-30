@@ -4,6 +4,7 @@
 from os import chdir, popen, remove, system
 from os.path import isfile, join
 from re import MULTILINE, findall
+from socket import gethostname
 from sys import version_info
 from time import sleep
 
@@ -41,7 +42,6 @@ class IPaudio():
             self.update = 'opkg update >/dev/null 2>&1'
             self.install = 'opkg install'
             self.uninstall = 'opkg remove --force-depends'
-        return isfile('/etc/opkg/opkg.conf')
 
     def info(self, name):
         try:
@@ -81,7 +81,7 @@ Y888888P 88      YP   YP ~Y8888P' Y8888D' Y888888P  `Y88P'""", C)
     def main(self):
         self.Stb_Image()
 
-        if not self.Stb_Image():
+        if not gethostname() == 'novaler4k':
             print('\n{}(!){}sorry image not supported!!\n'.format(R, C).capitalize())
             sleep(0.8)
             print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
