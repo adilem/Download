@@ -32,8 +32,8 @@ class IPaudio():
                         'gstreamer1.0-plugins-good', 'python-core', 'python-cryptography', 'python-json', 'python-requests']
 
         if version_info.major == 3:
-            package = list(
-                map(lambda x: x.replace('python', 'python3'), package))
+            self.package = list(
+                map(lambda x: x.replace('python', 'python3'), self.package))
 
     def Stb_Image(self):
         if isfile('/etc/opkg/opkg.conf'):
@@ -87,15 +87,14 @@ Y888888P 88      YP   YP ~Y8888P' Y8888D' Y888888P  `Y88P'""", C)
             print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
             exit(0)
 
-        for file in self.package:
-            if self.check(file):
+        for filename in self.package:
+            if not self.check(filename):
                 system(self.update)
-                for name in self.check():
-                    system('clear')
-                    print("   >>>>   {}Please Wait{} while we Install {}{}{} ...".format(
-                        G, C, Y, name, C))
-                    system(" ".join([self.install, name]))
-                    sleep(1)
+                system('clear')
+                print("   >>>>   {}Please Wait{} while we Install {}{}{} ...".format(
+                    G, C, Y, filename, C))
+                system(" ".join([self.install, filename]))
+                sleep(1)
 
         system('clear')
         self.banner()
