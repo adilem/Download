@@ -109,7 +109,7 @@ Y888888P 88      YP   YP ~Y8888P' Y8888D' Y888888P  `Y88P'""", C)
             remove(join('/tmp/', file))
             sleep(0.8)
 
-        if self.version() == file.split('_')[1]:
+        if self.version(file.split('_')[0]) == file.split('_')[1]:
             system('clear')
             print('you are use the latest version: {}{}{}\n'.format(
                 Y, file.split('_')[1], C).capitalize())
