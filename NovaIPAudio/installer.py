@@ -29,6 +29,7 @@ class IPaudio():
     page = "https://github.com/MOHAMED19OS/Download/tree/main/NovaIPAudio"
 
     def __init__(self):
+        self.hostname = gethostname()
         self.package = ['enigma2-plugin-systemplugins-serviceapp', 'ffmpeg', 'gstreamer1.0-plugins-base',
                         'gstreamer1.0-plugins-good', 'python-core', 'python-cryptography', 'python-json', 'python-requests']
 
@@ -81,12 +82,16 @@ Y888888P 88      YP   YP ~Y8888P' Y8888D' Y888888P  `Y88P'""", C)
     def main(self):
         self.Stb_Image()
 
-        for name in ['novaler4k','novaler4kse']:
-            if gethostname() != name:
-                print('\n{}(!){}sorry image not supported!!\n'.format(R, C).capitalize())
-                sleep(0.8)
-                print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
-                exit(0)
+        if self.hostname == 'novaler4k' or self.hostname == 'novaler4kse':
+            pass
+        else:
+            print('\n{}(!){}sorry image not supported!!\n'.format(
+                R, C).capitalize())
+            sleep(0.8)
+            print('work only for novaler\n'.capitalize())
+            sleep(0.8)
+            print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
+            exit(0)
 
         for filename in self.package:
             if not self.check(filename):
