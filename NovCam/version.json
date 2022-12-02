@@ -1,5 +1,5 @@
 {
-    "version": "2.2-r1",
+    "version": "2.3-r1",
     "depends": [
         "python-requests",
         "libusb-1.0-0"
