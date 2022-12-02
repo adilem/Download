@@ -125,8 +125,7 @@ Y88b  d88P 888  888 888  888 888  888 888  888 Y8b.     888
             Y, C, R, C, G, C))
 
         try:
-            urlretrieve("".join([self.link, self.file_info[-1]]),
-                        filename=self.file_info[-1])
+            urlretrieve("".join([self.link, self.file_info[-1]]),filename=self.file_info[-1])
             with tarfile.open(self.file_info[-1]) as f:
                 f.extractall('/')
             f.close()
