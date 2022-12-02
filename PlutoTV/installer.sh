@@ -94,7 +94,7 @@ clear
 echo ""
 echo "***********************************************************************"
 echo "**                                                                    *"
-echo "**                       PlutoTV    : $VERSION                             *"
+echo "**                       PlutoTV    : $VERSION                        *"
 echo "**                       Uploaded by: MOHAMED_OS                      *"
 echo "**                       Develop by : Billy2011                       *"
 echo "**  Support    : https://www.tunisia-sat.com/forums/threads/4226416/  *"
