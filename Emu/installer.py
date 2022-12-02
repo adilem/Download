@@ -55,7 +55,6 @@ class Emulator():
     def info(self, name):
         try:
             req = Request(self.page)
-            req = Request(self.page)
             req.add_header(
                 'User-Agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0')
             response = urlopen(req)
