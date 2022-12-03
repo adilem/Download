@@ -2,13 +2,15 @@
 # code: BY MOHAMED_OS
 
 
-from json import loads
+from __future__ import print_function
+
 from os import chdir, popen, remove, system
 from os.path import isfile
-from sys import version_info
+from re import MULTILINE, findall
+from sys import version
 from time import sleep
 
-if version_info.major == 3:
+if version[0] == '3':
     from urllib.error import HTTPError, URLError
     from urllib.request import Request, urlopen, urlretrieve
 else:
@@ -16,115 +18,155 @@ else:
 
     from urllib2 import HTTPError, Request, URLError, urlopen
 
-
-# colors
 C = "\033[0m"     # clear (end)
 R = "\033[0;31m"  # red (error)
 G = "\033[0;32m"  # green (process)
 B = "\033[0;36m"  # blue (choice)
 Y = "\033[0;33m"  # yellow (info)
 
-URL = 'https://raw.githubusercontent.com/MOHAMED19OS/Download/main/NovCam/'
 
-if version_info.major == 3:
-    package = 'enigma2-plugin-extensions-novacam-suptv-activator-python3'
-else:
-    package = 'enigma2-plugin-extensions-novacam-suptv-activator-python2'
+if hasattr(__builtins__, 'raw_input'):
+    input = raw_input
 
 
-def Image():
-    global status, update, install, uninstall
-    if isfile('/etc/opkg/opkg.conf'):
-        status = '/var/lib/opkg/status'
-        update = 'opkg update >/dev/null 2>&1'
-        install = 'opkg install'
-        uninstall = 'opkg remove --force-depends'
-    return isfile('/etc/opkg/opkg.conf')
+class Novacam():
+    URL = 'https://raw.githubusercontent.com/MOHAMED19OS/NovCam/main/'
+    page = "https://github.com/MOHAMED19OS/Download/tree/main/NovCam"
 
+    def __init__(self):
+        self.package = ['python-requests', 'libusb-1.0-0']
 
-def info(item):
-    try:
-        req = Request('{}version.json'.format(URL))
-        req.add_header(
-            'User-Agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0')
-        response = urlopen(req)
-        link = loads(response.read()).get(item)
-        if item == 'depends':
-            if version_info.major == 3:
-                return list(map(lambda x: x.replace('python', 'python3'), link))
-        return link
-    except HTTPError as e:
-        print('HTTP Error code: ', e.code)
-    except URLError as e:
-        print('URL Error: ', e.reason)
+        if version[0] == 3:
+            self.package = list(
+                map(lambda x: x.replace('python', 'python3'), self.package))
 
-
-def check():
-    package_list = info('depends')
-    with open(status) as f:
-        for c in f.readlines():
-            if c.startswith('Package:'):
-                pkg = c[c.index(' '):].strip()
-                while (package_list.count(pkg)):
-                    package_list.remove(pkg)
-    return package_list
-
-
-def version():
-    return popen("opkg info {} | grep Version | awk '{{print $2}}'".format(package)).read().strip()
-
-
-def main():
-    if not Image():
-        print('\n{}(!){}sorry image not supported!!\n'.format(R, C).capitalize())
-        sleep(0.8)
-        print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
-        exit(0)
-
-    if check():
-        system(update)
-        for name in check():
-            system('clear')
-            print("   >>>>   {}Please Wait{} while we Install {}{}{} ...".format(
-                G, C, Y, name, C))
-            system(" ".join([install, name]))
-            sleep(1)
-
-    if version_info.major == 3:
-        file = "".join([package, "_{}_all.ipk".format(info('version'))])
-    else:
-        file = "".join([package, "_{}_all.ipk".format(info('version'))])
-
-    chdir('/tmp')
-
-    if isfile(file):
-        remove(file)
-        sleep(0.8)
-
-    if version() == info('version'):
+    def banner(self):
         system('clear')
-        print('you are use the latest version: {}{}{}\n'.format(
-            Y, info('version'), C).capitalize())
+        print(B, r"""
+    88b 88  dP"Yb  Yb    dP    db         dP""b8    db    8b    d8
+    88Yb88 dP   Yb  Yb  dP    dPYb       dP   `"   dPYb   88b  d88
+    88 Y88 Yb   dP   YbdP    dP__Yb      Yb       dP__Yb  88YbdP88
+    88  Y8  YbodP     YP    dP    Yb      YboodP dP    Yb 88 YY 88""", C)
+
+    def Stb_Image(self):
+        if isfile('/etc/opkg/opkg.conf'):
+            self.status = '/var/lib/opkg/status'
+            self.update = 'opkg update >/dev/null 2>&1'
+            self.install = 'opkg install'
+            self.uninstall = 'opkg remove --force-depends'
+
+    def package_check(self, pkg_name):
+        with open(self.status) as file:
+            for item in file.readlines():
+                if item.startswith('Package:'):
+                    if findall(pkg_name, item[item.index(' '):].strip(), MULTILINE):
+                        return True
+            file.close()
+
+    def version_pkg(self, name):
+        return popen("opkg info {} | grep Version | awk '{{print $2}}'".format(name)).read().strip()
+
+    def info(self, name):
+        try:
+            req = Request(self.page)
+            req.add_header(
+                'User-Agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0')
+            response = urlopen(req)
+            link = response.read().decode('utf-8')
+            return findall(r"".join(['href=.*?\/NovCam\/.*?(.*?', name, '.*?)">']), link)[0]
+        except HTTPError as e:
+            print('HTTP Error code: ', e.code)
+        except URLError as e:
+            print('URL Error: ', e.reason)
+
+    def prompt(self, choices):
+        options = list(choices)
+        while True:
+            print(
+                "{}(?){} Choose an option [{}-{}] : ".format(B, C, options[0], options[-1]), end='')
+            choice = str(input().strip())
+
+            if choice not in options:
+                print(
+                    "\n{}(!){} Select one of the available options !!\n".format(R, C))
+                continue
+            return choice
+
+    def Main_Menu(self):
+        print("\n{}(?){} Choose the Plugin Install:".format(B, C))
+
+        menu = """
+                    (1) NOVACAM - SUPTV FREE       (2) NOVACAM - SUPTV PREMIUM"""
+
+        print(menu, '\n')
+
+        self.cam = {"1": "suptv-activator", "2": "pr-suptv"}
+
+    def main(self):
+        self.Stb_Image()
+
+        self.banner()
+        sleep(1)
+        print("\n")
+
+        print("\n{}(!){} Please Wait Check Package ...".format(R, C))
+        system(self.update)
+        sleep(1)
+
+        for file_name in self.package:
+            if not self.package_check(file_name):
+                system('clear')
+                print("     Need To InsTall : {}{}{}\n".format(Y, file_name, C))
+                system(" ".join([self.install, file_name]))
+                sleep(1)
+
+        system('clear')
+        self.banner()
+        sleep(1)
+        print("\n")
+
+        self.Main_Menu()
+
+        if self.prompt(self.cam.keys()) == '1':
+            file_name = self.info(self.cam.get('1'))
+        else:
+            file_name = self.info(self.cam.get('2'))
+
+        if version[0] == '3':
+            file_name.replace('python2', 'python3')
+
+        if self.version_pkg(file_name.split('_')[0]) == file_name.split('_')[1]:
+            system('clear')
+            print('you are use the latest version: {}{}{}\n'.format(
+                Y, file_name.split('_')[1], C).capitalize())
+            sleep(0.8)
+            print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
+            exit()
+        else:
+            system("".join([self.uninstall, file_name.split('_')[0]]))
+
+        system('clear')
+        print("{}Please Wait{} while we Download And Install {}NovCam{} ...".format(
+            G, C, Y, C))
+
+        chdir('/tmp')
+
+        if isfile(file_name):
+            remove(file_name)
+            sleep(0.8)
+
+        urlretrieve("".join([self.URL, file_name]), filename=file_name)
         sleep(0.8)
-        print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
-        exit()
-    else:
-        system("".join([uninstall, package]))
 
-    system('clear')
-    print("{}Please Wait{} while we Download And Install {}NovaCam{} ...".format(
-        G, C, Y, C))
+        system(" ".join([self.install, file_name]))
+        sleep(1)
 
-    urlretrieve("".join([URL, file]), filename=file)
-    sleep(0.8)
-
-    system(" ".join([install, file]))
-    sleep(1)
-
-    system('killall -9 enigma2')
+        if isfile(file_name):
+            remove(file_name)
+            sleep(0.8)
 
 
 if __name__ == '__main__':
-    Image()
-    main()
+    build = Novacam()
+    build.main()
     print("\n   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
