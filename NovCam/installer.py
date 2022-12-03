@@ -84,7 +84,7 @@ class Novacam():
         while True:
             print(
                 "{}(?){} Choose an option [{}-{}] : ".format(B, C, options[0], options[-1]), end='')
-            choice = str(input().strip())
+            choice = input().strip()
 
             if choice not in options:
                 print(
