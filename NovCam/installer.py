@@ -30,7 +30,7 @@ if hasattr(__builtins__, 'raw_input'):
 
 
 class Novacam():
-    URL = 'https://raw.githubusercontent.com/MOHAMED19OS/NovCam/main/'
+    URL = 'https://raw.githubusercontent.com/MOHAMED19OS/Download/main/NovCam/'
     page = "https://github.com/MOHAMED19OS/Download/tree/main/NovCam"
 
     def __init__(self):
