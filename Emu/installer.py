@@ -147,6 +147,10 @@ if [ $STB_IMAGE = 'egami' ] || [ $STB_IMAGE = 'openbh' ]; then
     ln -sf /etc/init.d/softcam.None /etc/init.d/softcam
     update-rc.d softcam defaults
 
+    if [ -e /etc/init.d/softcam.SupCam ]; then
+        rm -rf /etc/init.d/softcam.SupCam
+    fi
+
 fi
 if [ -e /etc/RELOAD.sh ]; then
     rm /etc/RELOAD.sh
