@@ -153,11 +153,11 @@ if [ $STB_IMAGE = 'egami' ] || [ $STB_IMAGE = 'openbh' ]; then
 
 fi
 if [ -e /etc/RELOAD.sh ]; then
-    rm /etc/RELOAD.sh
+    rm -rf /etc/RELOAD.sh
 fi
 
 if [ -e /etc/SUPAUTO.sh ]; then
-    rm /etc/SUPAUTO.sh
+    rm -rf /etc/SUPAUTO.sh
 fi
 sed -i '/RELOAD/d' {}
 sed -i '/SUPAUTO/d' {}\n""".format(self.RootPath, self.RootPath))
