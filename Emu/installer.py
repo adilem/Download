@@ -135,9 +135,9 @@ class Emulator():
                 f.truncate()
         with open('/etc/init.d/fixemu.sh', "w") as file:
             file.writelines("""#!/bin/bash\n
-STB_IMAGE=$(cut /etc/opkg/all-feed.conf -d'-' -f1 | awk '{ print $2 }')
+STB_IMAGE=$(cut /etc/opkg/all-feed.conf -d'-' -f1 | awk '{{ print $2 }}')
 
-if [ '${STB_IMAGE}' = 'egami' ] || [ '${STB_IMAGE}' = 'openbh' ]; then
+if [ '$STB_IMAGE' = 'egami' ] || [ '$STB_IMAGE' = 'openbh' ]; then
     update-rc.d -f softcam remove
     sleep 1
     unlink /etc/init.d/softcam
