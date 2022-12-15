@@ -55,11 +55,11 @@ class Novacam():
             self.install = 'opkg install'
             self.uninstall = 'opkg remove --force-depends'
 
-    def package_check(self, pkg_name):
+    def package_check(self, name):
         with open(self.status) as file:
             for item in file.readlines():
                 if item.startswith('Package:'):
-                    if findall(pkg_name, item[item.index(' '):].strip(), MULTILINE):
+                    if findall(name, item[item.index(' '):].strip(), MULTILINE):
                         return True
             file.close()
 
@@ -113,11 +113,11 @@ class Novacam():
         system(self.update)
         sleep(1)
 
-        for file_name in self.package:
-            if not self.package_check(file_name):
+        for pkg_name in self.package:
+            if not self.package_check(pkg_name):
                 system('clear')
-                print("     Need To InsTall : {}{}{}\n".format(Y, file_name, C))
-                system(" ".join([self.install, file_name]))
+                print("     Need To InsTall : {}{}{}\n".format(Y, pkg_name, C))
+                system(" ".join([self.install, pkg_name]))
                 sleep(1)
 
         system('clear')
@@ -128,22 +128,25 @@ class Novacam():
         self.Main_Menu()
 
         if self.prompt(self.cam.keys()) == '1':
+
             file_name = self.info(self.cam.get('1'))
         else:
             file_name = self.info(self.cam.get('2'))
 
         if version_info[0] == 3:
-            file_name.replace('python2', 'python3')
+            file_ipk = file_name.replace('python2', 'python3')
+        else:
+            file_ipk = file_name.replace('python3', 'python2')
 
-        if self.version_pkg(file_name.split('_')[0]) == file_name.split('_')[1]:
+        if self.version_pkg(file_ipk.split('_')[0]) == file_ipk.split('_')[1]:
             system('clear')
             print('you are use the latest version: {}{}{}\n'.format(
-                Y, file_name.split('_')[1], C).capitalize())
+                Y, file_ipk.split('_')[1], C).capitalize())
             sleep(0.8)
             print("   Written by {}MOHAMED_OS{} (͡๏̯͡๏)\n".format(R, C))
             exit()
         else:
-            system("".join([self.uninstall, file_name.split('_')[0]]))
+            system("".join([self.uninstall, file_ipk.split('_')[0]]))
 
         system('clear')
         print("{}Please Wait{} while we Download And Install {}NovCam{} ...".format(
@@ -151,18 +154,18 @@ class Novacam():
 
         chdir('/tmp')
 
-        if isfile(file_name):
-            remove(file_name)
+        if isfile(file_ipk):
+            remove(file_ipk)
             sleep(0.8)
 
-        urlretrieve("".join([self.URL, file_name]), filename=file_name)
+        urlretrieve("".join([self.URL, file_ipk]), filename=file_ipk)
         sleep(0.8)
 
-        system(" ".join([self.install, file_name]))
+        system(" ".join([self.install, file_ipk]))
         sleep(1)
 
-        if isfile(file_name):
-            remove(file_name)
+        if isfile(file_ipk):
+            remove(file_ipk)
             sleep(0.8)
 
 
