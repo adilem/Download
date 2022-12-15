@@ -7,10 +7,10 @@ from __future__ import print_function
 from os import chdir, popen, remove, system
 from os.path import isfile
 from re import MULTILINE, findall
-from sys import version
+from sys import version_info
 from time import sleep
 
-if version[0] == '3':
+if version_info[0] == 3:
     from urllib.error import HTTPError, URLError
     from urllib.request import Request, urlopen, urlretrieve
 else:
@@ -36,7 +36,7 @@ class Novacam():
     def __init__(self):
         self.package = ['python-requests', 'libusb-1.0-0']
 
-        if version[0] == 3:
+        if version_info[0] == 3:
             self.package = list(
                 map(lambda x: x.replace('python', 'python3'), self.package))
 
@@ -132,7 +132,7 @@ class Novacam():
         else:
             file_name = self.info(self.cam.get('2'))
 
-        if version[0] == '3':
+        if version_info[0] == 3:
             file_name.replace('python2', 'python3')
 
         if self.version_pkg(file_name.split('_')[0]) == file_name.split('_')[1]:
