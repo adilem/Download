@@ -66,15 +66,15 @@ rm -rf /iptvplayer_rootfs
 
 #########################
 install() {
-    if ! grep -qs "Package: $1" $STATUS; then
+    if ! grep -qs "Package: $1" "$STATUS"; then
         $OPKG >/dev/null 2>&1
         echo "   >>>>   Please Wait to install $1   <<<<"
         echo
-        if [ $OSTYPE = "Opensource" ]; then
+        if [ "$OSTYPE" = "Opensource" ]; then
             $OPKGINSTAL "$1"
             sleep 1
             clear
-        elif [ $OSTYPE = "DreamOS" ]; then
+        elif [ "$OSTYPE" = "DreamOS" ]; then
             $OPKGINSTAL "$1" -y
             sleep 1
             clear
@@ -83,7 +83,7 @@ install() {
 }
 
 #########################
-if [ "$PYTHON_VERSION" == 3.9.9 ] || [ "$PYTHON_VERSION" == 3.9.7 ] || [ "$PYTHON_VERSION" == 3.11.0 ]; then
+if [ "$PYTHON_VERSION" == 3.9.9 ] || [ "$PYTHON_VERSION" == 3.9.7 ] || [ "$PYTHON_VERSION" == 3.10.4 ] || [ "$PYTHON_VERSION" == 3.11.0 ]; then
     for i in duktape python3-sqlite3; do
         install $i
     done
@@ -101,26 +101,26 @@ echo "Downloading And Insallling IPTVPlayer plugin Please Wait ......"
 if [ "$PYTHON_VERSION" == 3.9.9 ] || [ "$PYTHON_VERSION" == 3.9.7 ]; then
     set -e
     echo
-    wget $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY3 -qP $TMPDIR
-    tar -xzf $TMPDIR/$PLUGINPY3 -C /
+    wget $URL/E2IPLAYER-DREAMSATPANEL/"$PLUGINPY3" -qP $TMPDIR
+    tar -xzf $TMPDIR/"$PLUGINPY3" -C /
     set +e
 elif [ "$PYTHON_VERSION" == 3.10.4 ]; then
     set -e
     echo
-    wget $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY4 -qP $TMPDIR
-    tar -xzf $TMPDIR/$PLUGINPY4 -C /
+    wget $URL/E2IPLAYER-DREAMSATPANEL/"$PLUGINPY4" -qP $TMPDIR
+    tar -xzf $TMPDIR/"$PLUGINPY4" -C /
     set +e
 elif [ "$PYTHON_VERSION" == 3.11.0 ]; then
     set -e
     echo
-    wget $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY5 -qP $TMPDIR
-    tar -xzf $TMPDIR/$PLUGINPY5 -C /
+    wget $URL/E2IPLAYER-DREAMSATPANEL/"$PLUGINPY5" -qP $TMPDIR
+    tar -xzf $TMPDIR/"$PLUGINPY5" -C /
     set +e
 else
     set -e
     echo
-    wget $URL/E2IPLAYER-DREAMSATPANEL/$PLUGINPY2 -qP $TMPDIR
-    tar -xzf $TMPDIR/$PLUGINPY2 -C /
+    wget $URL/E2IPLAYER-DREAMSATPANEL/"$PLUGINPY2" -qP $TMPDIR
+    tar -xzf $TMPDIR/"$PLUGINPY2" -C /
     set +e
 fi
 
@@ -171,7 +171,7 @@ echo "**  Support    : https://www.tunisia-sat.com/forums/threads/3951696/  *"
 echo "**                                                                    *"
 echo "***********************************************************************"
 echo ""
-if [ $OSTYPE = "DreamOS" ]; then
+if [ "$OSTYPE" = "DreamOS" ]; then
     sleep 2
     systemctl restart enigma2
 else
