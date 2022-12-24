@@ -3,7 +3,7 @@
 # SCRIPT : DOWNLOAD AND INSTALL YouTube
 # ###########################################
 #
-# Command: wget https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube/installer.sh -qO - | /bin/sh
+# Command: wget https://raw.githubusercontent.com/adilem/Download/main/YouTube/installer.sh -qO - | /bin/sh
 #
 # ###########################################
 
@@ -11,7 +11,7 @@
 # Configure where we can find things here #
 TMPDIR='/tmp'
 PACKAGE='enigma2-plugin-extensions-youtube'
-MY_URL='https://raw.githubusercontent.com/MOHAMED19OS/Download/main/YouTube'
+MY_URL='https://raw.githubusercontent.com/adilem/Download/main/YouTube'
 PYTHON_VERSION=$(python -c"import sys; print(sys.version_info.major)")
 
 #########################
