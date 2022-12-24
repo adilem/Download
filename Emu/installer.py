@@ -31,8 +31,8 @@ if hasattr(__builtins__, 'raw_input'):
 
 
 class Emulator():
-    URL = 'https://raw.githubusercontent.com/MOHAMED19OS/Download/main/Emu/'
-    page = "https://github.com/MOHAMED19OS/Download/tree/main/Emu"
+    URL = 'https://raw.githubusercontent.com/adilem/Download/main/Emu/'
+    page = "https://github.com/adilem/Download/tree/main/Emu"
 
     def __init__(self):
         self.package = 'enigma2-plugin-softcams-'
